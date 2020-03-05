@@ -12,7 +12,7 @@ public class AddressBookApp
     
     public static void main(String[] args)
     {
-        String fileName, entryName;
+        String fileName;
         
         System.out.print("Enter address book filename: ");
         fileName = input.nextLine();
@@ -45,10 +45,7 @@ public class AddressBookApp
         {
             String[] parts = line.split(":");
             
-            // Insert your code here to add a new address book entry.
-            // Note: 
-            // parts[0] contains the person's name.
-            // parts[1], parts[2], etc. contain the person's email address(es).
+            addressBook.insert(parts);
             
             line = reader.readLine();
         }
@@ -66,9 +63,11 @@ public class AddressBookApp
     private static void showMenu(AddressBook addressBook)
     {
         boolean done = false;
+        ArrayList<String> emailList;
+        String name, email;
+
         while(!done)
         {
-            int option;
             System.out.println("(1) Search by name, (2) Search by email, (3) Quit");
             
             try
@@ -77,16 +76,40 @@ public class AddressBookApp
                 {
                     case 1:
                         System.out.print("Enter name: ");
-                        String name = input.nextLine();
+                        name = input.nextLine();
                         
-                        // Insert your code here to find an entry by name and display it.
+                        try
+                        {
+                            emailList = addressBook.findEmail(name);
+                            
+                            System.out.println("Result(s) found:");
+                            for(String s : emailList)
+                            {
+                                System.out.println(s);
+                            }
+                        }
+                        catch(NoSuchElementException e)
+                        {
+                            System.out.println(e.getMessage());
+                        }
+                        
                         break;
                         
                     case 2:
                         System.out.print("Enter email address: ");
-                        String email = input.nextLine();
+                        email = input.nextLine();
+
+                        try
+                        {
+                            name = addressBook.findName(email);
+                            
+                            System.out.println("Result found:\n" + name);
+                        }
+                        catch(NoSuchElementException e)
+                        {
+                            System.out.println(e.getMessage());
+                        }
                         
-                        // Insert your code here to find an entry by email and display it.
                         break;
                         
                     case 3:
