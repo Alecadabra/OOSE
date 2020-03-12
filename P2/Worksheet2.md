@@ -79,3 +79,10 @@ public boolean test(Place element, int code)
 
 # Q2
 
+They do not actually implement the functionality and rely on a subclass to function.
+
+# Q3
+
+## (a)
+
+See AddressBook
