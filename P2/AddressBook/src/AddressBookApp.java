@@ -1,6 +1,8 @@
 import java.io.*;
 import java.util.*;
 
+import javax.swing.text.html.Option;
+
 /**
  * A simple address book application.
  * @author Dave and ...
@@ -8,24 +10,43 @@ import java.util.*;
 public class AddressBookApp 
 {
     /** Used to obtain user input. */
-    private static Scanner input = new Scanner(System.in);
+    private static Scanner input;
+    private static ArrayList<Option> options;
+    private static AddressBook addressBook;
     
     public static void main(String[] args)
     {
+        input = new Scanner(System.in);
+        options = populateOptions();
         String fileName;
-        
+
         System.out.print("Enter address book filename: ");
         fileName = input.nextLine();
         
         try
         {
-            AddressBook addressBook = readAddressBook(fileName);
+            addressBook = readAddressBook(fileName);
             showMenu(addressBook);
         }
         catch(IOException e)
         {
             System.out.println("Could not read from " + fileName + ": " + e.getMessage());
         }
+    }
+
+    /**
+     * Populate options
+     * 
+     * @return ArrayList<Option> populated by searchbyemail ([0]) and searchbyname ([1])
+     */
+    private Arraylist<Option> populateOptions()
+    {
+        options = new ArrayList<>();
+
+        options.add(new SearchByEmail());
+        options.add(new SearchByNane());
+
+        return options;
     }
     
     /**
@@ -63,8 +84,7 @@ public class AddressBookApp
     private static void showMenu(AddressBook addressBook)
     {
         boolean done = false;
-        ArrayList<String> emailList;
-        String name, email;
+        String search, result;
 
         while(!done)
         {
@@ -75,12 +95,13 @@ public class AddressBookApp
                 switch(Integer.parseInt(input.nextLine()))
                 {
                     case 1:
+                        // Search for emails by name
                         System.out.print("Enter name: ");
-                        name = input.nextLine();
+                        search = input.nextLine();
                         
                         try
                         {
-                            emailList = addressBook.findEmail(name);
+                            result = options.get(0).doOption(search);
                             
                             System.out.println("Result(s) found:");
                             for(String s : emailList)

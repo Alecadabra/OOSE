@@ -7,9 +7,22 @@ public class SearchByName implements Option
     /**
      * Default constructor
      */
-    protected SearchByName()
+    protected SearchByName(AddressBook addressBook)
     {
-        emails
+        ArrayList<String> emailList = new ArrayList<>();
+        // List of emails for this name
+    
+    for(int i = 1; i < elem.length; i++)
+    {
+        emailList.add(elem[i]);
+            // Populate email list
+
+        names.put(elem[i], elem[0]);
+            // Populate names map for each email
+    }
+
+    emails.put(elem[0], emailList);
+        // Populate emails map for this name
     }
 
     /**
