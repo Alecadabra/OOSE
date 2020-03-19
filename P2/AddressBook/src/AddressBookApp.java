@@ -5,20 +5,20 @@ import javax.swing.text.html.Option;
 
 /**
  * A simple address book application.
- * @author Dave and ...
+ * @author Dave and Alec
  */
 public class AddressBookApp 
-{
-    /** Used to obtain user input. */
-    private static Scanner input;
-    private static ArrayList<Option> options;
-    private static AddressBook addressBook;
-    
+{  
     public static void main(String[] args)
     {
-        input = new Scanner(System.in);
-        options = populateOptions();
+        Scanner input = new Scanner(System.in);
+            // Used to obtain user input
+        ArrayList<Option> options;
+            // List of searchbyemail (idx 0) and searchbyname (idx 1) options
+        AddressBook addressBook;
+            // Address book of name/email(s) read from file
         String fileName;
+            // File name to read address book data from
 
         System.out.print("Enter address book filename: ");
         fileName = input.nextLine();
@@ -26,11 +26,13 @@ public class AddressBookApp
         try
         {
             addressBook = readAddressBook(fileName);
+            options = populateOptions(addressBook);
             showMenu(addressBook);
         }
         catch(IOException e)
         {
-            System.out.println("Could not read from " + fileName + ": " + e.getMessage());
+            System.out.println("Could not read from " + fileName + ": " + 
+                e.getMessage());
         }
     }
 
@@ -39,12 +41,12 @@ public class AddressBookApp
      * 
      * @return ArrayList<Option> populated by searchbyemail ([0]) and searchbyname ([1])
      */
-    private Arraylist<Option> populateOptions()
+    private static Arraylist<Option> populateOptions()
     {
         options = new ArrayList<>();
 
-        options.add(new SearchByEmail());
-        options.add(new SearchByNane());
+        options.add(new SearchByEmail(addressBook));
+        options.add(new SearchByNane(addressBook));
 
         return options;
     }
@@ -56,7 +58,8 @@ public class AddressBookApp
      * @return A new AddressBook object containing all the information.
      * @throws IOException If the file cannot be read.
      */
-    private static AddressBook readAddressBook(String fileName) throws IOException
+    private static AddressBook readAddressBook(String fileName)
+        throws IOException
     {
         AddressBook addressBook = new AddressBook();
         
@@ -64,9 +67,7 @@ public class AddressBookApp
         String line = reader.readLine();
         while(line != null)
         {
-            String[] parts = line.split(":");
-            
-            addressBook.insert(parts);
+            addressBook.insert(line.split(":"));
             
             line = reader.readLine();
         }
@@ -88,7 +89,8 @@ public class AddressBookApp
 
         while(!done)
         {
-            System.out.println("(1) Search by name, (2) Search by email, (3) Quit");
+            System.out.println(
+                "(1) Search by name, (2) Search by email, (3) Quit");
             
             try
             {

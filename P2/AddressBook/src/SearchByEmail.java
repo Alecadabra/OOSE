@@ -9,7 +9,7 @@ public class SearchByEmail implements Option
      */
     protected SearchByEmail()
     {
-        emails
+        
     }
 
     /**
