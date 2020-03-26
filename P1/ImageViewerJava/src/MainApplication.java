@@ -3,7 +3,6 @@ import javafx.application.Platform;
 import javafx.stage.Stage;
 
 import java.io.*;
-import java.util.Scanner;
 
 /**
  * Main class representing the entry point (and controller) of the application.
