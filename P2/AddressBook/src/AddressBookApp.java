@@ -1,20 +1,22 @@
 import java.io.*;
 import java.util.*;
+import java.util.Scanner;
 
-import javax.swing.text.html.Option;
+//import javax.swing.text.html.Option;
 
 /**
  * A simple address book application.
  * @author Dave and Alec
  */
 public class AddressBookApp 
-{  
+{
+    private static ArrayList<Option> options;
+        // List of searchbyemail (idx 0) and searchbyname (idx 1) options
+
     public static void main(String[] args)
     {
         Scanner input = new Scanner(System.in);
             // Used to obtain user input
-        ArrayList<Option> options;
-            // List of searchbyemail (idx 0) and searchbyname (idx 1) options
         AddressBook addressBook;
             // Address book of name/email(s) read from file
         String fileName;
@@ -34,6 +36,8 @@ public class AddressBookApp
             System.out.println("Could not read from " + fileName + ": " + 
                 e.getMessage());
         }
+
+        input.close();
     }
 
     /**
@@ -41,12 +45,12 @@ public class AddressBookApp
      * 
      * @return ArrayList<Option> populated by searchbyemail ([0]) and searchbyname ([1])
      */
-    private static Arraylist<Option> populateOptions()
+    private static ArrayList<Option> populateOptions(AddressBook addressBook)
     {
         options = new ArrayList<>();
 
         options.add(new SearchByEmail(addressBook));
-        options.add(new SearchByNane(addressBook));
+        options.add(new SearchByName(addressBook));
 
         return options;
     }
@@ -54,7 +58,7 @@ public class AddressBookApp
     /**
      * Read the address book file, containing all the names and email addresses.
      *
-     * @param fileName The name of the address book file.
+     * @param fileName The name string of the address book file.
      * @return A new AddressBook object containing all the information.
      * @throws IOException If the file cannot be read.
      */
@@ -86,6 +90,7 @@ public class AddressBookApp
     {
         boolean done = false;
         String search, result;
+        Scanner input = new Scanner(System.in);
 
         while(!done)
         {
@@ -105,11 +110,7 @@ public class AddressBookApp
                         {
                             result = options.get(0).doOption(search);
                             
-                            System.out.println("Result(s) found:");
-                            for(String s : emailList)
-                            {
-                                System.out.println(s);
-                            }
+                            System.out.println("Result found:\n" + result);
                         }
                         catch(NoSuchElementException e)
                         {
@@ -119,14 +120,15 @@ public class AddressBookApp
                         break;
                         
                     case 2:
+                        // Search for names by email
                         System.out.print("Enter email address: ");
-                        email = input.nextLine();
-
+                        search = input.nextLine();
+                        
                         try
                         {
-                            name = addressBook.findName(email);
+                            result = options.get(1).doOption(search);
                             
-                            System.out.println("Result found:\n" + name);
+                            System.out.println("Result found:\n" + result);
                         }
                         catch(NoSuchElementException e)
                         {
@@ -136,6 +138,7 @@ public class AddressBookApp
                         break;
                         
                     case 3:
+                        // Exit
                         done = true;
                         break;
                 }
@@ -146,5 +149,7 @@ public class AddressBookApp
                 System.out.println("Enter a number");
             }
         }
+
+        input.close();
     }
 }

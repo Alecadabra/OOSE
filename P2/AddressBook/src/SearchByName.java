@@ -2,50 +2,30 @@ import java.util.*;
 
 public class SearchByName implements Option
 {
-    private HashMap<String, ArrayList<String>> emails;
+    private AddressBook addressBook;
 
     /**
-     * Default constructor
+     * Constructor
      */
-    protected SearchByName(AddressBook addressBook)
+    protected SearchByName(AddressBook inAddressBook)
     {
-        String emailsForName;
-            // Emails asscosiated with this name
-        StringBuilder builder;
-
-        for(int i = 1; i < elem.length; i++)
-        {
-            emailList.add(elem[i]);
-                // Populate email list
-
-            names.put(elem[i], elem[0]);
-                // Populate names map for each email
-        }
-
-        emails.put(elem[0], emailList);
-            // Populate emails map for this name
+        addressBook = inAddressBook;
     }
 
     /**
      * Finds the email address(es) for the given name
      * 
-     * @param name The name to look up
-     * @return ArrayList of string(s) of email(s)
+     * @param s The name string to look up
+     * @return Result string
      * @throws NoSuchElementException If no entry is found for the name
      */
-    @Override public String doOption(String s)
-        throws NoSuchElementException
+    @Override public String doOption(String s) throws NoSuchElementException
     {
-        ArrayList<String> emailList;
-        
-        emailList = emails.get(s);
+        return addressBook.findEmail(s);
+    }
 
-        if(emailList == null)
-        {
-            throw new NoSuchElementException("No name \"" + s +
-                "\" found in address book");
-        }
-
-        return emailList.toString();
+    @Override public boolean requiresText()
+    {
+        return true;
     }
 }

@@ -7,8 +7,10 @@ import java.util.*;
  */
 public class AddressBook
 {
-    HashMap<String, ArrayList<String>> emails;
+    HashMap<String, String> emails;
+        // Map of emails, keyed by name
     HashMap<String, String> names;
+        // Map of names, keyed by email
 
     /**
      * Default constructor
@@ -27,62 +29,65 @@ public class AddressBook
      */
     public void insert(String[] elem)
     {
-        ArrayList<String> emailList = new ArrayList<>();
-            // List of emails for this name
+        StringBuilder emailStr = new StringBuilder();
+            // String of emails for this name
         
         for(int i = 1; i < elem.length; i++)
         {
-            emailList.add(elem[i]);
-                // Populate email list
+            if(emailStr.toString().equals(""))
+            {
+                // First string being added
+                emailStr.append(elem[i]);
+            }
+            else
+            {
+                // Not the first string for this name
+                emailStr.append("\n" + elem[i]);
+            }
 
             names.put(elem[i], elem[0]);
                 // Populate names map for each email
         }
 
-        emails.put(elem[0], emailList);
+        emails.put(elem[0], emailStr.toString());
             // Populate emails map for this name
     }
     
     /**
      * Finds the email address(es) for the given name
-     * @param name The name to look up
-     * @return ArrayList of string(s) of email(s)
+     * @param String The name to look up
+     * @return String of of email(s) found (Seperated by newlines)
      * @throws NoSuchElementException If no entry is found for the name
      */
-    public ArrayList<String> findEmail(String name) 
-        throws NoSuchElementException
+    public String findEmail(String search) throws NoSuchElementException
     {
-        ArrayList<String> emailList;
-        
-        emailList = emails.get(name);
+        String result = emails.get(search);
 
-        if(emailList == null)
+        if(result.toString().equals(""))
         {
-            throw new NoSuchElementException("No name \"" + name +
+            throw new NoSuchElementException("No name \"" + search +
                 "\" found in address book");
         }
 
-        return emailList;
+        return result;
     }
 
     /**
      * Finds the name of the person with the given email address
-     * @param email The email to search for
+     * @param String The email to search for
      * @return String of name found
      * @throws NoSuchElementException If no entry is found for the name
      */
-    public String findName(String email) throws NoSuchElementException
+    public String findName(String search) throws NoSuchElementException
     {
-        String name;
+        String result = names.get(search);
 
-        name = names.get(email);
-
-        if(name == null)
+        if(result == null)
         {
-            throw new NoSuchElementException("No email \"" + email +
+            throw new NoSuchElementException("No email \"" + search +
                 "\" found in address book");
         }
 
-        return name;
+        return result;
     }
 }
