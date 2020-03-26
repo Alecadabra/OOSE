@@ -1,9 +1,7 @@
 import java.util.*;
 
-public class SearchByName implements Option
+public class SearchByName extends Option
 {
-    private AddressBook addressBook;
-
     /**
      * Constructor
      */
