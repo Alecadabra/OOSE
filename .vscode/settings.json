@@ -4,5 +4,6 @@
         "**/.project": true,
         "**/.settings": true,
         "**/.factorypath": true
-    }
+    },
+    "python.pythonPath": "C:\\Users\\aleca\\AppData\\Local\\Programs\\Python\\Python38\\python.exe"
 }
