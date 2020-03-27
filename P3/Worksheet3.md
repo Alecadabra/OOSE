@@ -38,3 +38,10 @@ Pass exceptions to the Player class. This means exception messages are handled b
 
 ### (b)
 
+The player class should not be aware that an exception is a `PodDownloadExceptiobn` or a `StreamConnectException` as these are specific to the implementation of the MediaLoader interface.
+
+Player should catch an exception higher on the inheritance tree than `PodDownloadExceptiobn` and `StreamConnectException` and send the message to be handled by `UserInterface.showError()`
+
+## Q4
+
+See AddressBook directory
