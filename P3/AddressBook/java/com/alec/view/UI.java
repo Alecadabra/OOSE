@@ -1,6 +1,8 @@
-package p3.addressbook.view
+package com.alec.view;
 
 import java.util.Scanner;
+
+import controller.OptionHandler;
 
 public class UI
 {
@@ -33,7 +35,7 @@ public class UI
      *
      * @param addressBook The AddressBook object to search.
      */
-    private static void showMenu(OptionHandler optHandler)
+    public static void showMenu(OptionHandler optHandler)
     {
         boolean done = false;
         String search, result;

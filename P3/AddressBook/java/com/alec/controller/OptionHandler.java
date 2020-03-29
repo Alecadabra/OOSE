@@ -1,4 +1,4 @@
-package p3.addressbook.controller;
+package com.alec.controller;
 
 import java.util.ArrayList;
 

@@ -1,6 +1,8 @@
-package p3.addressbook.controller;
+package com.alec.controller;
 
 import java.util.*;
+
+import com.alec.model.AddressBook;
 
 public class SearchByEmail extends Option
 {

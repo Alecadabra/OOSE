@@ -1,6 +1,8 @@
-package p3.addressbook.controller;
+package com.alec.controller;
 
-import java.util.*;
+import java.util.NoSuchElementException;
+
+import com.alec.model.AddressBook;
 
 public class SearchByName extends Option
 {

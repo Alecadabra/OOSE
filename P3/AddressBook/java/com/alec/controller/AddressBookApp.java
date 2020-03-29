@@ -1,7 +1,11 @@
-package p3.addressbook.controller;
+package com.alec.controller;
 
-import java.io.*;
-import java.util.Scanner;
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+
+import com.alec.model.AddressBook;
+import com.alec.view.UI;
 
 //import javax.swing.text.html.Option;
 
@@ -13,7 +17,7 @@ public class AddressBookApp
 {
     public static void main(String[] args)
     {
-        Optionhandler optHandler;
+        OptionHandler optHandler;
             // Handles search options
         AddressBook addressBook;
             // Address book of name/email(s) read from file
@@ -30,7 +34,7 @@ public class AddressBookApp
             optHandler.addOption(new SearchByEmail(addressBook));
             optHandler.addOption(new SearchByName(addressBook));
 
-            UI.showMenu(opthandler);
+            UI.showMenu(optHandler);
         }
         catch(IOException e)
         {

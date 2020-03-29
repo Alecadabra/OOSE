@@ -1,6 +1,7 @@
-package p3.addressbook.model
+package com.alec.model;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.NoSuchElementException;
 
 /**
  * Contains all the address book entries.
