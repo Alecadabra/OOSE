@@ -12,7 +12,7 @@ public class ImageRecord
         caption = newCaption;
     }
     
-    public String getFilename()
+    public String getFileName()
     {
         return filename;
     }

@@ -1,7 +1,5 @@
 import java.util.*;
 
-import javax.imageio.ImageReadParam;
-
 /**
  * Represents an album of images.
  */
@@ -16,19 +14,19 @@ public class Album
         i = 0;
     }
 
-    public insert(String fileName, String caption)
+    public void insert(String fileName, String caption)
     {
         imageRecords.add(new ImageRecord(fileName, caption));
     }
 
     public String getFileName()
     {
-        return imageRecords[i].getFileName();
+        return imageRecords.get(i).getFileName();
     }
 
     public String getCaption()
     {
-        return imageRecords[i].getCaption();
+        return imageRecords.get(i).getCaption();
     }
 
     public void prev()
@@ -45,7 +43,7 @@ public class Album
 
     public void next()
     {
-        if(i < imageRecords.length)
+        if(i < imageRecords.size())
         {
             i++;
         }
