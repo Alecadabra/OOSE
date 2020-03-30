@@ -1,4 +1,4 @@
-package com.alec.model;
+package model;
 
 import java.util.HashMap;
 import java.util.NoSuchElementException;
@@ -92,5 +92,14 @@ public class AddressBook
         }
 
         return result;
+    }
+
+    public String toString()
+    {
+        String bookString;
+
+        bookString = emails.toString() + "\n" + names.toString();
+
+        return bookString;
     }
 }

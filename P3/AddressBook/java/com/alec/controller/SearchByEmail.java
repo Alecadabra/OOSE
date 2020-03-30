@@ -1,17 +1,18 @@
-package com.alec.controller;
+package controller;
 
 import java.util.*;
 
-import com.alec.model.AddressBook;
+import model.AddressBook;
 
 public class SearchByEmail extends Option
 {
     /**
      * Constructor
      */
-    protected SearchByEmail(AddressBook inAddressBook)
+    public SearchByEmail(AddressBook inAddressBook)
     {
-        addressBook = inAddressBook;
+        super();
+        super.addressBook = inAddressBook;
     }
 
     /**

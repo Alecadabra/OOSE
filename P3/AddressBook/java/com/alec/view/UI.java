@@ -1,4 +1,4 @@
-package com.alec.view;
+package view;
 
 import java.util.Scanner;
 
@@ -23,8 +23,7 @@ public class UI
 
         System.out.print("Alert: " + prompt + "\n> ");
 
-        input =  sc.nextLine();
-        sc.close();
+        input = sc.nextLine();
 
         return input;
     }

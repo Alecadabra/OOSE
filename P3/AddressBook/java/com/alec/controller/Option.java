@@ -1,6 +1,6 @@
-package java.com.alec.controller;
+package controller;
 
-import com.alec.model.AddressBook;
+import model.AddressBook;
 
 public abstract class Option
 {

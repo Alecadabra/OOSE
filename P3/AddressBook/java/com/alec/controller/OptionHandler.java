@@ -1,4 +1,4 @@
-package com.alec.controller;
+package controller;
 
 import java.util.ArrayList;
 

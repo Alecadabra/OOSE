@@ -1,11 +1,12 @@
-package com.alec.controller;
+package controller;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
-import com.alec.model.AddressBook;
-import com.alec.view.UI;
+//import controller.OptionHandler;
+import model.AddressBook;
+import view.UI;
 
 //import javax.swing.text.html.Option;
 
@@ -31,8 +32,8 @@ public class AddressBookApp
             addressBook = readAddressBook(fileName);
 
             optHandler = new OptionHandler();
-            optHandler.addOption(new SearchByEmail(addressBook));
             optHandler.addOption(new SearchByName(addressBook));
+            optHandler.addOption(new SearchByEmail(addressBook));
 
             UI.showMenu(optHandler);
         }

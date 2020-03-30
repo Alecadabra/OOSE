@@ -1,17 +1,18 @@
-package com.alec.controller;
+package controller;
 
 import java.util.NoSuchElementException;
 
-import com.alec.model.AddressBook;
+import model.AddressBook;
 
 public class SearchByName extends Option
 {
     /**
      * Constructor
      */
-    protected SearchByName(AddressBook inAddressBook)
+    public SearchByName(AddressBook inAddressBook)
     {
-        addressBook = inAddressBook;
+        super();
+        super.addressBook = inAddressBook;
     }
 
     /**
