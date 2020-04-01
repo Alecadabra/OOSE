@@ -22,13 +22,27 @@ Not giving different behaviour based on the exception. Instead, have multiple ca
 
 ### (a)
 
-**Actors**
+#### Actors
 
-Autopilot software system, pilot, copilot, control tower communication, onboard sensors
+Autopilot software system, pilot, copilot, control tower communication, sensors, navigation system, UI
 
-**Concerns**
+### (b)
 
-*Leaving for later*
+#### Model (Storage of things)
+
+Player character, inventory
+
+#### View (User interaction)
+
+UI, Menu, graphics, user input
+
+#### Controller (Algorithms)
+
+Physics engine, networking, movement
+
+### (c)
+
+UI, networking, play/pause, decoding and compression
 
 ## Q3
 
