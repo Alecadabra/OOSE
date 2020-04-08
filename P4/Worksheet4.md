@@ -36,6 +36,12 @@ This is decorator pattern in the left, B is the decorator. Composite pattern on 
 
 ## Q2
 
+> One of the lecture examples uses the Composite Pattern to represent files and directories, and shows how to find a given named file within the structure. However, it is somewhat limited.
+
 ### (a) (i)
 
-Leave for workshop
+A hash table/map/dict/assoc arr would be much faster.
+
+### (b) & (c)
+
+...
