@@ -70,3 +70,7 @@ Have the map store a list of entries and return the list
 ## (c)
 
 Something
+
+# Q3
+
+See ImageViewerJava directory
