@@ -5,28 +5,28 @@ import java.util.*;
  */
 public class Album 
 {
-    private ArrayList<ImageRecord> imageRecords;
+    private ArrayList<ImageRecord> images;
     private int i;
 
     public Album()
     {
-        imageRecords = new ArrayList<>();
+        images = new ArrayList<>();
         i = 0;
     }
 
-    public void insert(String fileName, String caption)
+    public void insert(Image inImage)
     {
-        imageRecords.add(new ImageRecord(fileName, caption));
+        images.add(inImage);
     }
 
     public String getFileName()
     {
-        return imageRecords.get(i).getFileName();
+        return images.get(i).getFileName();
     }
 
-    public String getCaption()
+    public String getInfo()
     {
-        return imageRecords.get(i).getCaption();
+        return images.get(i).getDetails();
     }
 
     public void prev()
@@ -43,7 +43,7 @@ public class Album
 
     public void next()
     {
-        if(i < imageRecords.size())
+        if(i < images.size())
         {
             i++;
         }

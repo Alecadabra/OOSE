@@ -51,20 +51,20 @@ public class MainWindow
     }
     
     /**
-     * Builds the main UI, based on an Album and a JavaFX 'Stage' (which is basically a 
-     * pre-existing window).
+     * Builds the main UI, based on an Album and a JavaFX 'Stage' (which is 
+     * basically a pre-existing window).
      */
     public void show()
     {
         Platform.setImplicitExit(true);
         stage.setTitle("JavaFX Image Viewer");
         
-        // *** Fix this code so that it loads the initial (first) image. ***
         String url = new File(album.getFileName()).toURI().toString();
-        imageWidget.setImage(new Image(url));
+        imageWidget.setImage(new ImageRecord(url));
         
-        // Add 'mainBox' to the window. This is a container for holding the other bits: the toolbar, 
-        // scroller (containing the image), and caption.
+        // Add 'mainBox' to the window. This is a container for holding the
+        // other bits: the toolbar, scroller (containing the image), and
+        // caption.
         Scene scene = new Scene(mainBox);
         stage.setScene(scene);
         
@@ -73,7 +73,8 @@ public class MainWindow
         ToolBar toolBar = new ToolBar(prevBtn, nextBtn);
         mainBox.setTop(toolBar);
         
-        // Set up nextBtnHandler() to be called when nextBtn is clicked, and similarly for prevBtn.
+        // Set up nextBtnHandler() to be called when nextBtn is clicked, and
+        // similarly for prevBtn.
         // (This uses Java 8's 'method reference' feature.)
         prevBtn.setOnAction(this::prevBtnHandler);
         nextBtn.setOnAction(this::nextBtnHandler);
@@ -82,8 +83,7 @@ public class MainWindow
         scroller.setContent(imageWidget);
         mainBox.setCenter(scroller);
         
-        // *** Fix this code so that it displays the caption for the first image. ***
-        captionWidget.setText(album.getCaption());
+        captionWidget.setText(album.getInfo());
         mainBox.setBottom(captionWidget);
         
         stage.sizeToScene();
@@ -103,11 +103,10 @@ public class MainWindow
      */
     private void prevBtnHandler(ActionEvent event)
     {
-        // *** Fix this code so that it actually displays the previous image & caption. ***
         album.prev();
         String url = new File(album.getFileName()).toURI().toString();
-        imageWidget.setImage(new Image(url));
-        captionWidget.setText(album.getCaption());
+        imageWidget.setImage(new ImageRecord(url));
+        captionWidget.setText(album.getInfo());
     }
 
     /**
@@ -115,10 +114,9 @@ public class MainWindow
      */
     private void nextBtnHandler(ActionEvent event)
     {
-        // *** Fix this code so that it actually displays the next image & caption. ***
         album.next();
         String url = new File(album.getFileName()).toURI().toString();
-        imageWidget.setImage(new Image(url));
-        captionWidget.setText(album.getCaption());
+        imageWidget.setImage(new ImageRecord(url));
+        captionWidget.setText(album.getInfo());
     }
 }

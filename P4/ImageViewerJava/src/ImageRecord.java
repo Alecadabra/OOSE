@@ -1,25 +1,24 @@
 /**
  * Represents an image in an album.
  */
-public class ImageRecord
+public class ImageRecord implements Image
 {
     private String filename;
-    private String caption;
+    private String details;
     
-    public ImageRecord(String newFilename, String newCaption)
+    public ImageRecord(String newFilename, String newDetails)
     {
         filename = newFilename;
-        caption = newCaption;
+        details = newDetails;
     }
     
-    public String getFileName()
+    @Override public String getFileName()
     {
         return filename;
     }
     
-    public String getCaption()
+    @Override public String getDetails()
     {
-        return caption;
+        return details;
     }
 }
-

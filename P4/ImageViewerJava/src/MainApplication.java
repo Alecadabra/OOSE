@@ -12,7 +12,8 @@ public class MainApplication extends Application
     public static void main(String[] args)
     {
         Application.launch(args); // Run JavaFX
-        // This will effectively do 'new MainApplication()' and then call 'start(...)'.
+        // This will effectively do 'new MainApplication()' and then call
+        // 'start(...)'.
     }
     
     /**
@@ -32,7 +33,8 @@ public class MainApplication extends Application
         
         if(albumFile == null)
         {
-            Platform.exit(); // Otherwise JavaFX keeps the program open, doing nothing.
+            Platform.exit();
+                // Otherwise JavaFX keeps the program open, doing nothing.
         }
         else
         {
@@ -53,32 +55,66 @@ public class MainApplication extends Application
     }
     
     /**
-     * Reads an album file, given a filename and an Album object. Returns true if
-     * successful, or false if the file could not be read.
+     * Reads an album file, given a filename and an Album object. Returns true
+     * if successful, or false if the file could not be read.
      *
-     * @param albumFile The file storing the list of image filenames and their captions.
+     * @param albumFile The file storing the list of image filenames and their 
+     * captions.
      * @param album An Album object to populate.
      * 
      * @throws IOException If the file could not be read.
      */
-    private static void readAlbumFile(File albumFile, Album album) throws IOException
+    private static void readAlbumFile(File albumFile, Album album)
+        throws IOException
     {
         BufferedReader reader = new BufferedReader(new FileReader(albumFile));
+
         String line = reader.readLine();
+
+        // Image and components
+        Image img;
+        String[] lineParts;
+        String imgFileName;
+        String imgCaption;
+        String[] detailParts;
+
         while(line != null)
         {
             if(line.trim().length() > 0) // Ignore blank lines
             {
-                String[] parts = line.split(":", 2);
+                lineParts = line.split(":");
                 
-                String imageFilename = albumFile.getParent() + File.separatorChar + parts[0];
-                String imageCaption = "";
-                if(parts.length == 2)
+                // Set file name
+                imgFileName = albumFile.getParent() +
+                    File.separatorChar + lineParts[0];
+                
+                // Set caption
+                if(lineParts.length > 1) imgCaption = lineParts[1];
+                else                     imgCaption = "";
+
+                // Construct concrete image for tail of decorator linked list
+                img = new ImageRecord(imgFileName, imgCaption);
+                
+                // Set additional details
+                for(int i = 2; i < lineParts.length; i++)
                 {
-                    imageCaption = parts[1];
+                    detailParts = lineParts[i].split("=");
+
+                    switch(detailParts[0])
+                    {
+                        case "date":
+                            img = new DateDetail(detailParts[1], img);
+                            break;
+                        case "gps":
+                        {
+                            img = new 
+                        }
+                    }
+
+
                 }
                 
-                album.insert(imageFilename, imageCaption);
+                album.insert(img);
             }
                         
             line = reader.readLine();
