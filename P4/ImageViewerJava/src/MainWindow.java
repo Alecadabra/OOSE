@@ -60,7 +60,7 @@ public class MainWindow
         stage.setTitle("JavaFX Image Viewer");
         
         String url = new File(album.getFileName()).toURI().toString();
-        imageWidget.setImage(new ImageRecord(url));
+        imageWidget.setImage(new Image(url));
         
         // Add 'mainBox' to the window. This is a container for holding the
         // other bits: the toolbar, scroller (containing the image), and
@@ -105,7 +105,7 @@ public class MainWindow
     {
         album.prev();
         String url = new File(album.getFileName()).toURI().toString();
-        imageWidget.setImage(new ImageRecord(url));
+        imageWidget.setImage(new Image(url));
         captionWidget.setText(album.getInfo());
     }
 
@@ -116,7 +116,7 @@ public class MainWindow
     {
         album.next();
         String url = new File(album.getFileName()).toURI().toString();
-        imageWidget.setImage(new ImageRecord(url));
+        imageWidget.setImage(new Image(url));
         captionWidget.setText(album.getInfo());
     }
 }

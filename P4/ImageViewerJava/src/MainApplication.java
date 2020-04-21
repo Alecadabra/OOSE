@@ -46,9 +46,10 @@ public class MainApplication extends Application
                 // Display the window.
                 window.show();
             }
-            catch(IOException e)
+            catch(Exception e)
             {
-                System.err.println("Error while reading " + albumFile);
+                System.err.println("Error while reading " + albumFile + 
+                    ": " + e.getMessage());
                 Platform.exit();
             }
         }
@@ -72,7 +73,7 @@ public class MainApplication extends Application
         String line = reader.readLine();
 
         // Image and components
-        Image img;
+        ImageFile img;
         String[] lineParts;
         String imgFileName;
         String imgCaption;
@@ -103,23 +104,37 @@ public class MainApplication extends Application
                     switch(detailParts[0])
                     {
                         case "date":
+                        {
                             img = new DateDetail(detailParts[1], img);
                             break;
+                        }
                         case "gps":
                         {
-                            img = new 
+                            detailParts = detailParts[1].split(" ");
+                            img = new GPSDetail(
+                                Double.parseDouble(detailParts[0]), // x coord
+                                Double.parseDouble(detailParts[1]), // y coord
+                                Double.parseDouble(detailParts[2]), // z coord
+                                img);                               // next
+                            break;
+                        }
+                        case "rating":
+                        {
+                            img = new RatingDetail(
+                                Integer.parseInt(detailParts[1]), // rating int
+                                img);                             // next
+                            break;
                         }
                     }
-
-
                 }
                 
+                // Insert the image into the album
                 album.insert(img);
             }
-                        
+            
+            // Read next line
             line = reader.readLine();
         }
         reader.close();
     }
-
 }

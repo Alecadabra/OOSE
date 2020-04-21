@@ -4,7 +4,7 @@ public class GPSDetail extends Detail
     private double y;
     private double z;
 
-    public GPSDetail(double x, double y, double z, Image next)
+    public GPSDetail(double x, double y, double z, ImageFile next)
     {
         super(next);
         this.x = x;

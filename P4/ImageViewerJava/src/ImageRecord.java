@@ -1,15 +1,15 @@
 /**
  * Represents an image in an album.
  */
-public class ImageRecord implements Image
+public class ImageRecord implements ImageFile
 {
     private String filename;
     private String details;
     
-    public ImageRecord(String newFilename, String newDetails)
+    public ImageRecord(String fileName, String details)
     {
-        filename = newFilename;
-        details = newDetails;
+        this.filename = fileName;
+        this.details = details;
     }
     
     @Override public String getFileName()

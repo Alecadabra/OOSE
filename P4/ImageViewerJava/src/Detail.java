@@ -1,8 +1,11 @@
-public abstract class Detail implements Image
+/**
+ * Decorator pattern implementation to add details to an image
+ */
+public abstract class Detail implements ImageFile
 {
-    protected Image next;
+    protected ImageFile next;
 
-    public Detail(Image next)
+    public Detail(ImageFile next)
     {
         this.next = next;
     }

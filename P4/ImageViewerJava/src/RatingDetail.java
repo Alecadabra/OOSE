@@ -2,7 +2,7 @@ public class RatingDetail extends Detail
 {
     private int rating;
 
-    public RatingDetail(int rating, Image next)
+    public RatingDetail(int rating, ImageFile next)
     {
         super(next);
         this.rating = rating;
@@ -10,6 +10,6 @@ public class RatingDetail extends Detail
 
     @Override public String getDetails()
     {
-        return next.getDetails() + "; Rating: "
+        return next.getDetails() + "; Rating: " + rating;
     }
 }

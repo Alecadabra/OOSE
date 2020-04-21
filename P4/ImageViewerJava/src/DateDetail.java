@@ -2,7 +2,7 @@ public class DateDetail extends Detail
 {
     private String date;
 
-    protected DateDetail(String date, Image next)
+    protected DateDetail(String date, ImageFile next)
     {
         super(next);
         this.date = date;

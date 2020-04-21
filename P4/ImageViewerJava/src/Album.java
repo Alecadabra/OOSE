@@ -5,7 +5,7 @@ import java.util.*;
  */
 public class Album 
 {
-    private ArrayList<ImageRecord> images;
+    private ArrayList<ImageFile> images;
     private int i;
 
     public Album()
@@ -14,7 +14,7 @@ public class Album
         i = 0;
     }
 
-    public void insert(Image inImage)
+    public void insert(ImageFile inImage)
     {
         images.add(inImage);
     }
