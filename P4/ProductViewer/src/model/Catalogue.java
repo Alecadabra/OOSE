@@ -8,35 +8,35 @@ import java.util.*;
  */ 
 public class Catalogue
 {
-    private Set<ProductGroup> groups = new TreeSet<>();
-    private Map<String,ProductGroup> groupMap = new HashMap<>();
+    private Set<CompositeEntry> entries = new TreeSet<>();
+    private Map<String,CompositeEntry> entryMap = new HashMap<>();
     
     public Catalogue() {}
     
     /** Retrieves all existing product groups. */
-    public Set<ProductGroup> getProductGroupSet()
+    public Set<CompositeEntry> getProductGroupSet()
     {
-        return Collections.unmodifiableSet(groups);
+        return Collections.unmodifiableSet(entries);
     }
     
     /** 
      * Retrieves a specific named product group, or null if no group has the 
      * name specified. 
      */
-    public ProductGroup getProductGroup(String name)
+    public CompositeEntry getProductGroup(String name)
     {
-        return groupMap.get(name);
+        return entryMap.get(name);
     }
     
     /** Adds a new product group. */
-    public void addProductGroup(ProductGroup group)
+    public void addProductGroup(CompositeEntry group)
     {
-        if(groups.contains(group))
+        if(entries.contains(group))
         {
-            throw new IllegalArgumentException("ProductGroup already exists");
+            throw new IllegalArgumentException("CompositeEntry already exists");
         }
-        groups.add(group);
-        groupMap.put(group.getName(), group);
+        entries.add(group);
+        entryMap.put(group.getName(), group);
     }
 
     /**
@@ -100,11 +100,11 @@ public class Catalogue
     private void parseProduct(String productName, String groupName, 
         String priceStr, String numberInStockStr) throws CatalogueException
     {
-        ProductGroup group = groupMap.get(groupName);
+        CompositeEntry group = entryMap.get(groupName);
         if(group == null)
         {
             throw new CatalogueException(String.format(
-                "ProductGroup '%s' not defined for product '%s'", 
+                "CompositeEntry '%s' not defined for product '%s'", 
                 groupName, productName));
         }
         
@@ -130,7 +130,7 @@ public class Catalogue
         // TODO: we'll need this check, but it will fail with the current 
         // 'catalogue.txt' file, since the parent groups have not been specified.
         
-        // ProductGroup parent = groupMap.get(parentName);
+        // CompositeEntry parent = groupMap.get(parentName);
         // if(parent == null)
         // {
         //     throw new CatalogueException(String.format(
@@ -138,8 +138,8 @@ public class Catalogue
         //         parentName, groupName));
         // }
         
-        ProductGroup group = new ProductGroup(groupName);
-        groups.add(group);
-        groupMap.put(groupName, group);
+        CompositeEntry group = new CompositeEntry(groupName);
+        entries.add(group);
+        entryMap.put(groupName, group);
     }
 }

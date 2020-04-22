@@ -5,5 +5,6 @@
         "**/.settings": true,
         "**/.factorypath": true
     },
-    "python.pythonPath": "C:\\Users\\aleca\\AppData\\Local\\Programs\\Python\\Python38\\python.exe"
+    "python.pythonPath": "C:\\Users\\aleca\\AppData\\Local\\Programs\\Python\\Python38\\python.exe",
+    "java.dependency.syncWithFolderExplorer": true
 }

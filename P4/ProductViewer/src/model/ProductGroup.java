@@ -3,36 +3,30 @@ package model;
 import java.util.*;
 
 /**
- * Represents a product group. Product groups are compared on the basis of 
+ * Represents a product group.<CompositeEntry groups are compared on the basis of 
  * their names.
  */
-public class ProductGroup implements CompositeEntry, Comparable<ProductGroup>
+public class ProductGroup extends CompositeEntry
 {
-    private String name;
-    private Set<Product> products;
+    private Set<CompositeEntry> products;
     
     public ProductGroup(String name)
     {
-        this.name = name;
+        super(name);
         this.products = new TreeSet<>();
     }
     
-    public String getName()
-    {
-        return name;
-    }
-    
-    public Set<Product> getProducts()
+    public Set<CompositeEntry> getProducts()
     {
         return Collections.unmodifiableSet(products);
     }
     
-    public boolean hasProduct(Product p)
+    public boolean hasProduct(CompositeEntry p)
     {
         return products.contains(p);
     }
     
-    public void addProduct(Product p)
+    public void addProduct(CompositeEntry p)
     {
         products.add(p);
     }
@@ -46,17 +40,5 @@ public class ProductGroup implements CompositeEntry, Comparable<ProductGroup>
             eq = name.equals(((ProductGroup)obj).name);
         }
         return eq;
-    }
-    
-    @Override
-    public int hashCode()
-    {
-        return name.hashCode();
-    }
-    
-    @Override
-    public int compareTo(ProductGroup group)
-    {
-        return name.compareTo(group.name);
     }
 }

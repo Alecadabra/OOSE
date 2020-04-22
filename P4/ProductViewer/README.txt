@@ -14,3 +14,7 @@ $ ./gradlew run
 
 (You *must* have Java version 11 or higher installed, but the Gradle script
 will take care of everything else.)
+
+==============================
+
+Never fully implemented into the composite model
