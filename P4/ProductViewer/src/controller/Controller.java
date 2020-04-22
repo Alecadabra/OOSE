@@ -47,19 +47,23 @@ public class Controller
     {
         if(productName == null || productName.equals(""))
         {
-            throw new ControllerException("The product name cannot be null or empty.");
+            throw new ControllerException(
+                "The product name cannot be null or empty.");
         }
         
         if(groupName == null || groupName.equals(""))
         {
-            throw new ControllerException("The product group name cannot be null or empty.");
+            throw new ControllerException(
+                "The product group name cannot be null or empty.");
         }
         
         if(price < 0.0f || numberInStock < 0)
         {
-            throw new ControllerException("The price and number-in-stock cannot be less than 0.");
+            throw new ControllerException(
+                "The price and number-in-stock cannot be less than 0.");
         }
         
+        // Find the specified group
         ProductGroup group = catalogue.getProductGroup(groupName);
         if(group == null)
         {
@@ -71,10 +75,11 @@ public class Controller
         if(group.hasProduct(product))
         {   
             throw new ControllerException(String.format(
-                "Product group '%s' already has an existing product named '%s'.",
-                groupName, productName));            
+                ("Product group '%s' already has an existing product named" +
+                " '%s'."), groupName, productName));
         }
         
+        // Add new product to the group
         group.addProduct(product);
     }
     

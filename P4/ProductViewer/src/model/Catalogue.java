@@ -42,13 +42,15 @@ public class Catalogue
     /**
      * Reads a catalogue file, given a filename.
      *
-     * @param filename The file storing the list of image filenames and their captions.
+     * @param filename The file storing the list of image filenames and their 
+     * captions.
      * @throws CatalogueException If the file could not be read or parsed.
      */
     public void readFrom(String filename) throws CatalogueException
     {
         // Note: this is a try-with-resources statement.
-        try(BufferedReader reader = new BufferedReader(new FileReader(filename)))
+        try(BufferedReader reader = new BufferedReader(
+                                        new FileReader(filename)))
         {
             String line = reader.readLine();
             while(line != null)
@@ -59,11 +61,17 @@ public class Catalogue
                     switch(parts.length)
                     {
                         case 2:
-                            parseProductGroup(parts[0], parts[1]);
+                            parseProductGroup(
+                                parts[0],  // Group name
+                                parts[1]); // Parent name
                             break;
                         
                         case 4:
-                            parseProduct(parts[0], parts[1], parts[2], parts[3]);
+                            parseProduct(
+                                parts[0],  // Product name
+                                parts[1],  // Group name
+                                parts[2],  // Price string
+                                parts[3]); // Number in stock string
                             break;
                             
                         default:
@@ -90,7 +98,7 @@ public class Catalogue
     
     /** Adds a new product, given product information in String form. */
     private void parseProduct(String productName, String groupName, 
-                              String priceStr, String numberInStockStr) throws CatalogueException
+        String priceStr, String numberInStockStr) throws CatalogueException
     {
         ProductGroup group = groupMap.get(groupName);
         if(group == null)
@@ -109,13 +117,15 @@ public class Catalogue
         catch(NumberFormatException e)
         {
             throw new CatalogueException(String.format(
-                "Product '%s' has an invalid price ('%s') and/or numberInStock ('%s')", 
+                ("Product '%s' has an invalid price ('%s') and/or " +
+                "numberInStock ('%s')"), 
                 productName, priceStr, numberInStockStr));                
         }
     }
     
     /** Adds a new product group, given group information in String form. */
-    private void parseProductGroup(String groupName, String parentName) throws CatalogueException
+    private void parseProductGroup(String groupName, String parentName)
+        throws CatalogueException
     {
         // TODO: we'll need this check, but it will fail with the current 
         // 'catalogue.txt' file, since the parent groups have not been specified.

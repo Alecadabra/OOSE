@@ -50,7 +50,8 @@ public class ProductViewer extends Application
         }
         catch(CatalogueException e)
         {
-            System.err.printf("Error while reading '%s': '%s'\n", catalogueFile, e.getMessage());
+            System.err.printf("Error while reading '%s': '%s'\n",
+                catalogueFile, e.getMessage());
             System.exit(1);
         }
     }
