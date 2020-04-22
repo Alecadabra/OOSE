@@ -6,7 +6,7 @@ import java.util.*;
  * Represents a product group. Product groups are compared on the basis of 
  * their names.
  */
-public class ProductGroup implements Comparable<ProductGroup>
+public class ProductGroup implements CompositeEntry, Comparable<ProductGroup>
 {
     private String name;
     private Set<Product> products;
