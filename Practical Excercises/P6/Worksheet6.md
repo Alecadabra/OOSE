@@ -118,3 +118,46 @@ EmailSystem email = new EmailSystem(...);
 
 sec = new SecuritySystem(sens, motionSensor, heatSensor, alarm, email);
 ```
+
+## Question 3 - Dependency Injection – Design
+
+### (a)
+
+1: A linked list of tabs, since deletion from any point is common and there shouldn't be too many tabs stored at once.
+
+2: A shuffling array list for quick access when the user switches tabs, with an O(N) operation each time a tab is closed to shuffle elements down, which reduces to O(1) when removing from the end, which is more common.
+
+### (b)
+
+Self-explanatory unless I'm missing something
+
+### (c)
+
+```java
+BrowserWindow win;
+Tab t1, t2, t3;
+UrlLoader loader;
+NetworkConnection net;
+HtmlDoc doc1, doc2;
+Directory doc3;
+Image i1, i2;
+LinkedList<Tab> tabList = new LinkedList<>();
+HashMap<..., Image> imgMap = new HashMap<>();
+
+net = new NetworkConnection(...)
+loader = new UrlLoader(net);
+i1 = new Image(...);
+i2 = new Image(...);
+imgMap.add(..., i1);
+imgMap.add(..., i2);
+doc1 = new HtmlDoc(i1, i2, ...);
+doc2 = new HtmlDoc(...);
+doc3 = new Directory(...);
+t1 = new Tab(doc1);
+t2 = new Tab(doc2);
+t3 = new Tab(doc3);
+tabList.add(t1);
+tabList.add(t2);
+tabList.add(t3);
+win = new BrowserWindow(tabList);
+```
