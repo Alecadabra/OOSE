@@ -9,6 +9,8 @@ import java.util.Date;
  */
 public class AddReminderWindow extends JFrame
 {
+    private static final long serialVersionUID = 1L;
+
     private static final int PADDING = 10;
     
     private Controller controller;

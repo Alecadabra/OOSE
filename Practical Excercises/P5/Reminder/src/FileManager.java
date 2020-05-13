@@ -16,13 +16,14 @@ public class FileManager
         List<Reminder> reminders = new LinkedList<Reminder>();
         BufferedReader reader = null;
         String line;
+        Scanner sc = null;
         try
         {
             reader = new BufferedReader(new FileReader(filename));
             line = reader.readLine();
             while(line != null)
             {
-                Scanner sc = new Scanner(line);
+                sc = new Scanner(line);
                 if(sc.hasNextLong())
                 {
                     Date date = new Date(sc.nextLong()); 
@@ -37,6 +38,10 @@ public class FileManager
             if(reader != null)
             {
                 reader.close();
+            }
+            if(sc != null)
+            {
+                sc.close();
             }
         }
         return reminders;
@@ -65,5 +70,15 @@ public class FileManager
                 writer.close();
             }
         }
+    }
+
+    public static void setup()
+    {
+        
+    }
+
+    private class FileObserver implements Observer
+    {
+        private ReminderList list;
     }
 }

@@ -6,10 +6,14 @@ import java.util.*;
 public class ReminderList
 {
     private List<Reminder> reminders;
+    private List<Observer> obs;
 
     public ReminderList()
     {
         reminders = new ArrayList<Reminder>();
+        obs = new ArrayList<>();
+
+        //TODO
     }
     
     /** Add a single reminder to the list. */
