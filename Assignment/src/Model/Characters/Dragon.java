@@ -1,7 +1,6 @@
-package Model.Enemies;
+package Model.Characters;
 
 import static java.lang.Math.random;
-import static java.lang.Math.min;
 
 public class Dragon extends Enemy
 {
@@ -20,7 +19,7 @@ public class Dragon extends Enemy
     }
 
     @Override
-    public int getDamage()
+    protected int getDamage()
     {
         int dmg;
         double randVal = random();
@@ -31,7 +30,7 @@ public class Dragon extends Enemy
              * when it attacks:
                (a) damage inflicted will double (25% chance), or
                (b) it will recover 10 health (10% chance). */
-            if(randVal > 0.1)
+            if(randVal < 0.25)
             {
                 // Damage inflicted will double (25% chance)
                 dmg = getBaseDamage() * 2;
@@ -41,7 +40,7 @@ public class Dragon extends Enemy
             {
                 // It will recover 10 health (10% chance)
                 dmg = getBaseDamage();
-                hp = min(maxHp, hp + 10);
+                heal(10);
                 // TODO Notify view
 
             }

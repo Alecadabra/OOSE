@@ -2,7 +2,7 @@ package Model.Items;
 
 import Model.Enchantments.Enchantable;
 
-public class Weapon extends Item implements Enchantable
+public class Weapon extends Enchantable
 {
     private String weaponType;
     private String damageType;

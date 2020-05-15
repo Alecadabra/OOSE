@@ -6,12 +6,16 @@ public class FireDamage extends Enchantment
 {
     public FireDamage(Enchantable next)
     {
-        super(next, 20); // Costs 20 gold
+        super(
+            "Fire Damage", // Name
+            20, // Cost
+            next // Next decoration
+        );
     }
 
     @Override
-    public int getEffect()
+    public int getDamage()
     {
-        return next.getEffect() + (int)(5.0 + random() * 5.0);
-    }    
+        return next.getDamage() + (int)(5.0 + random() * 5.0);
+    }
 }

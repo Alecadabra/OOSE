@@ -1,6 +1,11 @@
 package Model.Enchantments;
 
-public interface Enchantable
+import Model.Items.Item;
+
+public abstract class Enchantable extends Item
 {
-    public abstract int getEffect();
+    public Enchantable(String name, int cost, int minEffect, int maxEffect)
+    {
+        super(name, cost, minEffect, maxEffect);
+    }
 }

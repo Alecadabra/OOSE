@@ -47,9 +47,29 @@ public abstract class Item
         return 0;
     }
 
+    public int getDefence()
+    {
+        return 0;
+    }
+
     public int getHealing()
     {
         return 0;
     }
 
+    @Override
+    public boolean equals(Object o)
+    {
+        boolean equal = false;
+
+        if(o instanceof Item)
+        {
+            if(((Item)o).getDescription().equals(getDescription()))
+            {
+                equal = true;
+            }
+        }
+
+        return equal;
+    }
 }

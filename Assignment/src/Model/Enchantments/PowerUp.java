@@ -4,12 +4,16 @@ public class PowerUp extends Enchantment
 {
     public PowerUp(Enchantable next)
     {
-        super(next, 10); // Costs 10 gold
+        super(
+            "Power-Up", // Name
+            10, // Cost
+            next // Next decoration
+        );
     }
 
     @Override
-    public int getEffect()
+    public int getDamage()
     {
-        return (int)((double)next.getEffect() * 1.1);
+        return (int)((double)next.getDamage() * 1.1);
     }
 }

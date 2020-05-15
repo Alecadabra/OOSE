@@ -1,18 +1,24 @@
 package Model.Enchantments;
 
-public abstract class Enchantment implements Enchantable
+public abstract class Enchantment extends Enchantable
 {
     protected Enchantable next;
-    private int cost;
 
-    public Enchantment(Enchantable next, int cost)
+    public Enchantment(String name, int cost, Enchantable next)
     {
+        super(name, cost, 0, 0);
         this.next = next;
-        this.cost = cost;
     }
 
+    @Override
     public int getCost()
     {
-        return cost;
+        return next.getCost() + cost;
+    }
+
+    @Override
+    public int getSell()
+    {
+        return next.getSell() + cost / 2;
     }
 }

@@ -1,4 +1,4 @@
-package Model.Enemies;
+package Model.Characters;
 
 import static java.lang.Math.random;
 
@@ -19,7 +19,7 @@ public class Ogre extends Enemy
 }
 
     @Override
-    public int getDamage()
+    protected int getDamage()
     {
         int dmg;
 

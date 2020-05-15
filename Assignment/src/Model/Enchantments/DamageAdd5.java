@@ -4,12 +4,16 @@ public class DamageAdd5 extends Enchantment
 {
     public DamageAdd5(Enchantable next)
     {
-        super(next, 10); // Costs 10 gold
+        super(
+            "Damage +5", // Name
+            10, // Cost
+            next // Next decoration
+        );
     }
 
     @Override
-    public int getEffect()
+    public int getDamage()
     {
-        return next.getEffect() + 5;
+        return next.getDamage() + 5;
     }
 }

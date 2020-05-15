@@ -16,4 +16,10 @@ public class Armour extends Item
     {
         return String.format("%s (%s)", name, material);
     }
+
+    @Override
+    public int getDefence()
+    {
+        return getEffect();
+    }
 }
