@@ -1,5 +1,8 @@
 package Model.Items;
 
+/**
+ * An exception thrown by classes in Model.Items
+ */
 public class ItemException extends Exception
 {
     private static final long serialVersionUID = 1L;

@@ -6,12 +6,24 @@ import Model.Items.Inventory;
 import Model.Items.Item;
 import Model.Items.ItemException;
 
+/**
+ * Represents a playable character. Is a character that has an inventory of
+ * items, and has a weapon and armour equipped.
+ */
 public class PlayerCharacter extends Character
 {
     private Inventory inv;
     private String weapon;
     private String armour;
 
+    /**
+     * Constructor.
+     * @param name Name of player character
+     * @param maxHp Maximum possible health
+     * @param inWeapon Starting weapon
+     * @param inArmour Starting armour
+     * @param gold Gold in posession
+     */
     public PlayerCharacter(String name, int maxHp, Item inWeapon, Item inArmour,
         int gold)
     {
@@ -21,8 +33,8 @@ public class PlayerCharacter extends Character
         this.armour = inArmour.getDescription();
         try
         {
-            inv.put(inWeapon);
-            inv.put(inArmour);
+            inv.add(inWeapon);
+            inv.add(inArmour);
         }
         catch(ItemException e)
         {
@@ -30,6 +42,11 @@ public class PlayerCharacter extends Character
         }
     }
 
+    /**
+     * Get the damage dealt by this character for an attack. Uses the damage of
+     * the currently equipped weapon.
+     * @return Damage integer
+     */
     @Override
     protected int getDamage()
     {
@@ -48,6 +65,11 @@ public class PlayerCharacter extends Character
         return damage;
     }
 
+    /**
+     * Get the defence of this character for defending agaisnt an attack. Uses
+     * the defence of the currently equipped armour.
+     * @return Defence integer
+     */
     @Override
     protected int getDefence()
     {
@@ -66,11 +88,15 @@ public class PlayerCharacter extends Character
         return defence;
     }
 
+    /**
+     * Add an item to the inventory.
+     * @param item Item to add
+     */
     public void addItem(Item item)
     {
         try
         {
-            inv.put(item);
+            inv.add(item);
         }
         catch(ItemException e)
         {
@@ -78,6 +104,11 @@ public class PlayerCharacter extends Character
         }
     }
 
+    /**
+     * Remove an item from the inventory and return it.
+     * @param desc The getDescription() of the item to remove
+     * @return Item removed
+     */
     public Item removeItem(String desc)
     {
         Item item;
@@ -95,6 +126,11 @@ public class PlayerCharacter extends Character
         return item;
     }
 
+    /**
+     * Get an item from the inventory.
+     * @param desc The getDescription() of the item to remove
+     * @return The item
+     */
     public Item getItem(String desc)
     {
         Item item;
@@ -112,6 +148,10 @@ public class PlayerCharacter extends Character
         return item;
     }
 
+    /**
+     * Get an (unmodifiable) list of all items in inventory, with duplicates
+     * @return Unmodifiable list
+     */
     public List<Item> getAllItems()
     {
         return inv.getAll();

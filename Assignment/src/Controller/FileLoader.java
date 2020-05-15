@@ -12,17 +12,29 @@ import Model.Items.Item;
 import Model.Items.Potion;
 import Model.Items.Weapon;
 
+/**
+ * Extends a ShopLoader to iterate over a file of Items. Items must be
+ * separated by newlines and attributes must be separated by a comma and a
+ * space. Eg. {@code W, Short Sword, 5, 9, 10, slashing, Sword} for a weapon
+ * called {@code Short Sword} with 5-9 damage, cost of 10 gold,
+ * {@code slashing} damage and type {@code Sword}.
+ */
 public class FileLoader extends ShopLoader
 {
     private FileInputStream strm;
     private InputStreamReader rdr;
     private BufferedReader bfr;
     private String line;
-    private String fileName;
     private String[] elem;
 
+    /**
+     * Constructor, opens file and reads first line
+     * @param fileName Name of file to read from
+     * @throws ShopLoaderException If an error occured in I/O
+     */
     public FileLoader(String fileName) throws ShopLoaderException
     {
+        super();
         try
         {
             this.strm = new FileInputStream(fileName);
@@ -32,10 +44,8 @@ public class FileLoader extends ShopLoader
         }
         catch(IOException e)
         {
-            throw new ShopLoaderException("File IO error", e);
+            throw new ShopLoaderException("File I/O error", e);
         }
-
-        this.fileName = fileName;
     }
 
     @Override
@@ -75,6 +85,20 @@ public class FileLoader extends ShopLoader
         return item;
     }
 
+    /**
+     * Remove is not supported
+     * @throws UnsupportedOperationException When called
+     */
+    @Override
+    public void remove() throws UnsupportedOperationException
+    {
+        throw new UnsupportedOperationException("Remove not supported");
+    }
+
+    /**
+     * Reads attributes of a weapon, parses values and constructs weapon.
+     * @return The new weapon
+     */
     private Weapon readWeapon()
     {
         Weapon weapon = null;
@@ -92,11 +116,11 @@ public class FileLoader extends ShopLoader
             damageType = elem[5];
             weaponType = elem[6];
 
-            if(verifyName(name) &&
+            if(verifyStringAttr(name) &&
                verifyEffectRange(minDamage, maxDamage) &&
                verifyCost(cost) &&
-               verifyName(damageType) &&
-               verifyName(weaponType))
+               verifyStringAttr(damageType) &&
+               verifyStringAttr(weaponType))
             {
                 weapon = new Weapon(name, cost, minDamage, maxDamage,
                     weaponType, damageType);
@@ -114,6 +138,11 @@ public class FileLoader extends ShopLoader
         return weapon;
     }
 
+    /**
+     * Reads attributes of a piece of armour, parses values and constructs
+     * the armour.
+     * @return The new armour
+     */
     private Armour readArmour()
     {
         Armour armour = null;
@@ -130,10 +159,10 @@ public class FileLoader extends ShopLoader
             cost = Integer.parseInt(elem[4]);
             material = elem[5];
 
-            if(verifyName(name) &&
+            if(verifyStringAttr(name) &&
                verifyEffectRange(minDefence, maxDefence) &&
                verifyCost(cost) &&
-               verifyName(material))
+               verifyStringAttr(material))
             {
                 armour = new Armour(name, cost, minDefence, maxDefence,
                     material);
@@ -151,6 +180,11 @@ public class FileLoader extends ShopLoader
         return armour;
     }
 
+    /**
+     * Reads attributes of a potion, parses values and constructs either a
+     * health or damage potion.
+     * @return The new potion
+     */
     private Potion readPotion()
     {
         Potion potion = null;
@@ -167,10 +201,9 @@ public class FileLoader extends ShopLoader
             cost = Integer.parseInt(elem[4]);
             type = elem[5].charAt(0);
 
-            if(verifyName(name) &&
+            if(verifyStringAttr(name) &&
                verifyEffectRange(minEffect, maxEffect) &&
                verifyCost(cost) &&
-               verifyName(material) &&
                (type == 'H' || type == 'D'))
             {
                 if(type == 'H')
@@ -197,6 +230,10 @@ public class FileLoader extends ShopLoader
         return potion;
     }
 
+    /**
+     * Reads the next line in the file.
+     * @throws IOException If an IOException occured
+     */
     private void readLine() throws IOException
     {
         line = bfr.readLine();
@@ -207,6 +244,7 @@ public class FileLoader extends ShopLoader
         else
         {
             elem = null;
+            bfr.close();
         }
     }
 }

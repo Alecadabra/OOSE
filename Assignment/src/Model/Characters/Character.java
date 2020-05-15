@@ -5,6 +5,9 @@ import static java.lang.Math.min;
 
 import Model.Items.Item;
 
+/**
+ * Represents a game character.
+ */
 public abstract class Character
 {
     protected String name;
@@ -12,6 +15,12 @@ public abstract class Character
     protected int hp;
     protected int gold;
 
+    /**
+     * Constructor.
+     * @param name Name of character
+     * @param maxHp Maximum possible health
+     * @param gold Gold in posession
+     */
     public Character(String name, int maxHp, int gold)
     {
         this.name = name;
@@ -20,13 +29,21 @@ public abstract class Character
         this.gold = gold;
     }
 
+    /**
+     * Get the damage dealt by this character for an attack.
+     * @return Damage integer
+     */
     protected abstract int getDamage();
 
+    /**
+     * Get the defence of this character for defending agaisnt an attack.
+     * @return Defence integer
+     */
     protected abstract int getDefence();
 
     /**
      * Have the character attack another character. The other character will
-     * defend against the attack and may or may not take damage
+     * defend against the attack and may or may not take damage.
      * @param character Character to attack
      */
     public void attack(Character character)
@@ -50,7 +67,7 @@ public abstract class Character
 
     /**
      * Heal the character by a given amount of health points. Does not heal
-     * beyond the maximum health of the character
+     * beyond the maximum health of the character.
      * @param amount Amount to heal by
      */
     public void heal(int amount)
@@ -61,7 +78,7 @@ public abstract class Character
 
     /**
      * Use a given item (Eg. a potion) on the character, which will either heal
-     * or damage them
+     * or damage them.
      * @param item Item to use
      */
     public void use(Item item)
@@ -71,16 +88,28 @@ public abstract class Character
         // TODO notify view
     }
 
+    /**
+     * Get the name of the character.
+     * @return Name string
+     */
     public String getName()
     {
         return name;
     }
 
+    /**
+     * Get the current health of the character.
+     * @return Health integer
+     */
     public int getHp()
     {
         return hp;
     }
 
+    /**
+     * Get the current amount of gold in posession of this character.
+     * @return Gold integer
+     */
     public int getGold()
     {
         return gold;

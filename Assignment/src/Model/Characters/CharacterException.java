@@ -1,5 +1,8 @@
 package Model.Characters;
 
+/**
+ * An Exception thrown by classes in Model.Characters
+ */
 public class CharacterException extends Exception
 {
     private static final long serialVersionUID = 1L;

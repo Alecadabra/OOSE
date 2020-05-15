@@ -1,5 +1,8 @@
 package Controller;
 
+/**
+ * An exception thrown by ShopLoader implementations
+ */
 public class ShopLoaderException extends Exception
 {
     private static final long serialVersionUID = 1L;
