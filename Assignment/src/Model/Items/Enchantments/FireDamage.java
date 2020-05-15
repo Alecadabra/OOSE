@@ -1,4 +1,4 @@
-package Model.Enchantments;
+package Model.Items.Enchantments;
 
 import static java.lang.Math.random;
 

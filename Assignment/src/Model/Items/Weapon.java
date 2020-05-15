@@ -1,16 +1,16 @@
 package Model.Items;
 
-import Model.Enchantments.Enchantable;
+import Model.Items.Enchantments.Enchantable;
 
 public class Weapon extends Enchantable
 {
     private String weaponType;
     private String damageType;
     
-    public Weapon(String name, int cost, int minEffect, int maxEffect,
+    public Weapon(String name, int cost, int minDamage, int maxDamage,
         String weaponType, String damageType)
     {
-        super(name, cost, minEffect, maxEffect);
+        super(name, cost, minDamage, maxDamage);
         this.weaponType = weaponType;
         this.damageType = damageType;
     }

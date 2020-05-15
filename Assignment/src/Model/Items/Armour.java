@@ -4,10 +4,10 @@ public class Armour extends Item
 {
     String material;
     
-    public Armour(String name, int cost, int minEffect, int maxEffect,
+    public Armour(String name, int cost, int minDefence, int maxDefence,
         String material)
     {
-        super(name, cost, minEffect, maxEffect);
+        super(name, cost, minDefence, maxDefence);
         this.material = material;
     }
 

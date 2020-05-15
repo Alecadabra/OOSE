@@ -1,4 +1,4 @@
-package Model.Enchantments;
+package Model.Items.Enchantments;
 
 public abstract class Enchantment extends Enchantable
 {
@@ -19,6 +19,6 @@ public abstract class Enchantment extends Enchantable
     @Override
     public int getSell()
     {
-        return next.getSell() + cost / 2;
+        return next.getSell() + getSell();
     }
 }

@@ -1,4 +1,4 @@
-package Model.Enchantments;
+package Model.Items.Enchantments;
 
 public class DamageAdd2 extends Enchantment
 {

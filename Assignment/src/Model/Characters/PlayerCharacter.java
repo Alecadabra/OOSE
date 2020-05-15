@@ -4,6 +4,7 @@ import java.util.List;
 
 import Model.Items.Inventory;
 import Model.Items.Item;
+import Model.Items.ItemException;
 
 public class PlayerCharacter extends Character
 {
@@ -12,14 +13,21 @@ public class PlayerCharacter extends Character
     private String armour;
 
     public PlayerCharacter(String name, int maxHp, Item inWeapon, Item inArmour,
-        int gold) throws CharacterException
+        int gold)
     {
         super(name, maxHp, gold);
         this.inv = new Inventory(15); // Max size of 15
-        inv.put(inWeapon);
         this.weapon = inWeapon.getDescription();
-        inv.put(inArmour);
         this.armour = inArmour.getDescription();
+        try
+        {
+            inv.put(inWeapon);
+            inv.put(inArmour);
+        }
+        catch(ItemException e)
+        {
+            // TODO notify view
+        }
     }
 
     @Override
@@ -31,7 +39,7 @@ public class PlayerCharacter extends Character
         {
             damage = inv.get(weapon).getDamage();
         }
-        catch(CharacterException e)
+        catch(ItemException e)
         {
             // TODO notify view
             damage = 0;
@@ -49,7 +57,7 @@ public class PlayerCharacter extends Character
         {
             defence = inv.get(armour).getDefence();
         }
-        catch(CharacterException e)
+        catch(ItemException e)
         {
             // TODO notify view
             defence = 0;
@@ -64,7 +72,7 @@ public class PlayerCharacter extends Character
         {
             inv.put(item);
         }
-        catch(CharacterException e)
+        catch(ItemException e)
         {
             // TODO notify view
         }
@@ -78,7 +86,7 @@ public class PlayerCharacter extends Character
         {
             item = inv.remove(desc);
         }
-        catch(CharacterException e)
+        catch(ItemException e)
         {
             // TODO notify view
             item = null;
@@ -95,7 +103,7 @@ public class PlayerCharacter extends Character
         {
             item = inv.get(desc);
         }
-        catch(CharacterException e)
+        catch(ItemException e)
         {
             // TODO notify view
             item = null;

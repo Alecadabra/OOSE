@@ -1,15 +1,15 @@
 package Model.Items;
 
-public class ItemsException extends Exception
+public class ItemException extends Exception
 {
     private static final long serialVersionUID = 1L;
 
-    public ItemsException(String message, Throwable cause)
+    public ItemException(String message, Throwable cause)
     {
         super(message, cause);
     }
 
-    public ItemsException(String message)
+    public ItemException(String message)
     {
         super(message);
     }

@@ -18,14 +18,14 @@ public class Inventory
         this.size = 0;
     }
 
-    public void put(Item item) throws ItemsException
+    public void put(Item item) throws ItemException
     {
         LinkedList<Item> list;
         String key = item.getDescription();
 
         if(size == maxSize)
         {
-            throw new ItemsException("Inventory full");
+            throw new ItemException("Inventory full");
         }
         
         if(!inv.containsKey(key))
@@ -43,14 +43,14 @@ public class Inventory
         }
     }
 
-    public Item get(String key) throws ItemsException
+    public Item get(String key) throws ItemException
     {
         Item item;
         LinkedList<Item> list;
 
         if(!inv.containsKey(key))
         {
-            throw new ItemsException("No such item in inventory");
+            throw new ItemException("No such item in inventory");
         }
 
         list = inv.get(key);
@@ -59,14 +59,14 @@ public class Inventory
         return item;
     }
 
-    public Item remove(String key) throws ItemsException
+    public Item remove(String key) throws ItemException
     {
         Item item;
         LinkedList<Item> list;
 
         if(!inv.containsKey(key))
         {
-            throw new ItemsException("No such item in inventory");
+            throw new ItemException("No such item in inventory");
         }
 
         list = inv.get(key);

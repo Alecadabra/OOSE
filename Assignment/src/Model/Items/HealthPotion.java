@@ -2,9 +2,9 @@ package Model.Items;
 
 public class HealthPotion extends Potion
 {
-    public HealthPotion(String name, int cost, int minEffect, int maxEffect)
+    public HealthPotion(String name, int cost, int minHealing, int maxHealing)
     {
-        super(name, cost, minEffect, maxEffect);
+        super(name, cost, minHealing, maxHealing);
     }
 
     @Override

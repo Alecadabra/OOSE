@@ -14,4 +14,9 @@ public class ShopStorage
         this.items = new ArrayList<>();
         this.loader = loader;
     }
+
+    public void load()
+    {
+        loader.load(items);
+    }
 }

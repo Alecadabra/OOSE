@@ -1,4 +1,4 @@
-package Model.Enchantments;
+package Model.Items.Enchantments;
 
 import Model.Items.Item;
 
