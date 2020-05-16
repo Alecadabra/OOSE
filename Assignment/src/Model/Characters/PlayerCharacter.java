@@ -25,10 +25,10 @@ public class PlayerCharacter extends Character
      * @param gold Gold in posession
      */
     public PlayerCharacter(String name, int maxHp, Item inWeapon, Item inArmour,
-        int gold)
+        int gold) throws CharacterException
     {
         super(name, maxHp, gold);
-        this.inv = new Inventory(15); // Max size of 15
+        this.inv = new Inventory(15); // TODO make inv size based on config
         this.weapon = inWeapon.getDescription();
         this.armour = inArmour.getDescription();
         try
@@ -38,17 +38,19 @@ public class PlayerCharacter extends Character
         }
         catch(ItemException e)
         {
-            // TODO notify view
+            throw new CharacterException("Could not create character; " +
+                e.getMessage(), e);
         }
     }
 
     /**
      * Get the damage dealt by this character for an attack. Uses the damage of
-     * the currently equipped weapon.
+     * the currently equipped damage item.
      * @return Damage integer
+     * @throws CharacterException If an error occured
      */
     @Override
-    protected int getDamage()
+    protected int getDamage() throws CharacterException
     {
         int damage;
 
@@ -58,8 +60,9 @@ public class PlayerCharacter extends Character
         }
         catch(ItemException e)
         {
-            // TODO notify view
-            damage = 0;
+            throw new CharacterException(
+                "Could not get damage for equipped damage item; " +
+                e.getMessage(), e);
         }
 
         return damage;
@@ -67,11 +70,12 @@ public class PlayerCharacter extends Character
 
     /**
      * Get the defence of this character for defending agaisnt an attack. Uses
-     * the defence of the currently equipped armour.
+     * the defence of the currently worn defence item.
      * @return Defence integer
+     * @throws CharacterException If an error occured
      */
     @Override
-    protected int getDefence()
+    protected int getDefence() throws CharacterException
     {
         int defence;
         
@@ -81,8 +85,9 @@ public class PlayerCharacter extends Character
         }
         catch(ItemException e)
         {
-            // TODO notify view
-            defence = 0;
+            throw new CharacterException(
+                "Could not get defence for worn defence item; " +
+                e.getMessage(), e);
         }
 
         return defence;
@@ -91,8 +96,9 @@ public class PlayerCharacter extends Character
     /**
      * Add an item to the inventory.
      * @param item Item to add
+     * @throws CharacterException If an error occured
      */
-    public void addItem(Item item)
+    public void addItem(Item item) throws CharacterException
     {
         try
         {
@@ -100,16 +106,19 @@ public class PlayerCharacter extends Character
         }
         catch(ItemException e)
         {
-            // TODO notify view
+            throw new CharacterException(
+                "Could not add item to inventory; " + e.getMessage(), e);
         }
     }
 
     /**
      * Remove an item from the inventory and return it.
+     * 
      * @param desc The getDescription() of the item to remove
      * @return Item removed
+     * @throws CharacterException If an error occured
      */
-    public Item removeItem(String desc)
+    public Item removeItem(String desc) throws CharacterException
     {
         Item item;
 
@@ -119,8 +128,8 @@ public class PlayerCharacter extends Character
         }
         catch(ItemException e)
         {
-            // TODO notify view
-            item = null;
+            throw new CharacterException(
+                "Could not remove item from inventory; " + e.getMessage(), e);
         }
 
         return item;
@@ -128,10 +137,12 @@ public class PlayerCharacter extends Character
 
     /**
      * Get an item from the inventory.
+     * 
      * @param desc The getDescription() of the item to remove
      * @return The item
+     * @throws CharacterException If an error occured
      */
-    public Item getItem(String desc)
+    public Item getItem(String desc) throws CharacterException
     {
         Item item;
 
@@ -141,8 +152,8 @@ public class PlayerCharacter extends Character
         }
         catch(ItemException e)
         {
-            // TODO notify view
-            item = null;
+            throw new CharacterException(
+                "Could not get item from inventory; " + e.getMessage(), e);
         }
 
         return item;

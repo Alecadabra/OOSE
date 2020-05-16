@@ -2,6 +2,7 @@ package Controller;
 
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.NoSuchElementException;
 
 import Model.Items.Item;
 
@@ -10,7 +11,8 @@ import Model.Items.Item;
  * Extending classes must implement the standard Iterator methods to return
  * a new Item object on each iteration, with the Item fields validated with the
  * protected validation methods provided. Extending classes should throw
- * ShopLoaderExceptions when appropriate.
+ * NoSuchElementException within next() for any type of error with a detailed
+ * message.
  */
 public abstract class ShopLoader implements Iterator<Item>, Iterable<Item>
 {
@@ -20,11 +22,19 @@ public abstract class ShopLoader implements Iterator<Item>, Iterable<Item>
      * list.
      * @param list Empty ArrayList of Items to fill
      */
-    public void load(ArrayList<Item> list)
+    public void load(ArrayList<Item> list) throws ShopLoaderException
     {
-        for(Item item : this)
+        try
         {
-            list.add(item);
+            for(Item item : this)
+            {
+                list.add(item);
+            }
+        }
+        catch(NoSuchElementException e)
+        {
+            throw new ShopLoaderException("Could not load shop item data; " +
+                e.getMessage(), e);
         }
     }
 
@@ -36,7 +46,7 @@ public abstract class ShopLoader implements Iterator<Item>, Iterable<Item>
      */
     protected boolean verifyStringAttr(String name)
     {
-        return name.equals("");
+        return !name.equals("");
     }
 
     /**

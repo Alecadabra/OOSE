@@ -1,6 +1,7 @@
 package Model.Characters;
 
 import static java.lang.Math.random;
+import static java.lang.Math.round;
 
 /**
  * Represents a computer-controlled enemy character.
@@ -11,7 +12,7 @@ public abstract class Enemy extends Character
     protected int maxDamage;
     protected int minDefence;
     protected int maxDefence;
-    
+
     /**
      * Constructor.
      * @param name Name of enemy
@@ -45,7 +46,7 @@ public abstract class Enemy extends Character
      */
     protected int getBaseDamage()
     {
-        return (int)(minDamage + random() * (maxDamage - minDamage));
+        return (int)round(minDamage + random() * (maxDamage - minDamage));
     }
 
     /**
@@ -70,7 +71,7 @@ public abstract class Enemy extends Character
      */
     protected int getBaseDefence()
     {
-        return (int)(minDefence + random() * (maxDefence - minDefence));
+        return (int)round(minDefence + random() * (maxDefence - minDefence));
     }
 
     /**

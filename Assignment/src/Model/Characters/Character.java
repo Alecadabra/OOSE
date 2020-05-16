@@ -32,21 +32,23 @@ public abstract class Character
     /**
      * Get the damage dealt by this character for an attack.
      * @return Damage integer
+     * @throws CharacterException If an error occured
      */
-    protected abstract int getDamage();
+    protected abstract int getDamage() throws CharacterException;
 
     /**
      * Get the defence of this character for defending agaisnt an attack.
      * @return Defence integer
      */
-    protected abstract int getDefence();
+    protected abstract int getDefence() throws CharacterException;
 
     /**
      * Have the character attack another character. The other character will
      * defend against the attack and may or may not take damage.
      * @param character Character to attack
+     * @throws CharacterException If an error occured
      */
-    public void attack(Character character)
+    public void attack(Character character) throws CharacterException
     {
         character.defend(getDamage());
         // TODO notify view
@@ -58,8 +60,9 @@ public abstract class Character
      * If the damage is greater than the defence of the character, the character
      * takes (damage - defence) damage to their health points.
      * @param damage Damage to be taken
+     * @throws CharacterException If an error occured
      */
-    public void defend(int damage)
+    public void defend(int damage) throws CharacterException
     {
         hp -= max(0, damage - getDefence());
         // TODO notify view
@@ -78,10 +81,11 @@ public abstract class Character
 
     /**
      * Use a given item (Eg. a potion) on the character, which will either heal
-     * or damage them.
+     * or damage them (or both).
      * @param item Item to use
+     * @throws CharacterException If an error occured
      */
-    public void use(Item item)
+    public void use(Item item) throws CharacterException
     {
         heal(item.getHealing());
         defend(item.getDamage());

@@ -2,20 +2,18 @@ package Model.Characters;
 
 import static java.lang.Math.random;
 
+/**
+ * Represents a Slime Enemy. Has 10 health, 3-5 damage, 0-2 defence, 10 gold.
+ * Special ability: 20% chance that its attack will have no damage.
+ */
 public class Slime extends Enemy
 {
-    public Slime(String name, int maxHp, int minDamage, int maxDamage,
-        int minDefence, int maxDefence, int gold)
+    /**
+     * Construct a new Slime.
+     */
+    public Slime()
     {
-        super(
-            "Slime", // Name
-            10, // Max health
-            5, // Min damage
-            3, // Max damage
-            0, // Min defence
-            2, // Max defence
-            10 // Gold awarded upon defeat
-        );
+        super("Slime", 10, 3, 5, 0, 2, 10);
     }
 
     @Override

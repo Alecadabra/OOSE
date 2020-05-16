@@ -3,6 +3,7 @@ package Model.Items;
 import java.util.ArrayList;
 
 import Controller.ShopLoader;
+import Controller.ShopLoaderException;
 
 public class ShopStorage
 {
@@ -15,8 +16,15 @@ public class ShopStorage
         this.loader = loader;
     }
 
-    public void load()
+    public void load() throws ItemException
     {
-        loader.load(items);
+        try
+        {
+            loader.load(items);
+        }
+        catch(ShopLoaderException e)
+        {
+            throw new ItemException(e.getMessage(), e);
+        }
     }
 }

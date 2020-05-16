@@ -2,21 +2,19 @@ package Model.Characters;
 
 import static java.lang.Math.random;
 
+/**
+ * Represents a Goblin Enemy. Has 30 health, 3-8 damage, 4-8 defence, 20 gold.
+ * Special ability: 50% chance that its attack will have 3 extra damage.
+ */
 public class Goblin extends Enemy
 {
-    public Goblin(String name, int maxHp, int minDamage, int maxDamage,
-    int minDefence, int maxDefence, int gold)
-{
-    super(
-        "Goblin", // Name
-        30, // Max health
-        3, // Min damage
-        8, // Max damage
-        4, // Min defence
-        8, // Max defence
-        20 // Gold awarded upon defeat
-    );
-}
+    /**
+     * Construct a new Goblin.
+     */
+    public Goblin()
+    {
+        super("Goblin", 30, 3, 8, 4, 8, 20);
+    }
 
     @Override
     protected int getDamage()

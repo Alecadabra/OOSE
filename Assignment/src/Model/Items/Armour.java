@@ -44,4 +44,15 @@ public class Armour extends Item
     {
         return getEffect();
     }
+
+    /**
+     * Determines if an item can be worn as a defence increasing item by a
+     * player character.
+     * @return True if wearable, false otherwise
+     */
+    @Override
+    public boolean isWearable()
+    {
+        return true;
+    }
 }

@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.NoSuchElementException;
 
 import Model.Items.Armour;
 import Model.Items.DamagePotion;
@@ -28,7 +29,7 @@ public class FileLoader extends ShopLoader
     private String[] elem;
 
     /**
-     * Constructor, opens file and reads first line
+     * Constructor, opens file and reads first line.
      * @param fileName Name of file to read from
      * @throws ShopLoaderException If an error occured in I/O
      */
@@ -44,7 +45,8 @@ public class FileLoader extends ShopLoader
         }
         catch(IOException e)
         {
-            throw new ShopLoaderException("File I/O error", e);
+            throw new ShopLoaderException(
+                "File I/O error opening file; " + e.getMessage(), e);
         }
     }
 
@@ -61,13 +63,25 @@ public class FileLoader extends ShopLoader
 
         switch(line.charAt(0))
         {
-            case 'W': item = readWeapon();
-            case 'A': item = readArmour();
-            case 'P': item = readPotion();
+            case 'W':
+            {
+                item = readWeapon();
+                break;
+            }
+            case 'A':
+            {
+                item = readArmour();
+                break;
+            }
+            case 'P':
+            {
+                item = readPotion();
+                break;
+            }
             default:
             {
-                // TODO notify view
-                item = null;
+                throw new NoSuchElementException(
+                    "Invalid values in input file; " + line);
             }
         }
 
@@ -77,9 +91,10 @@ public class FileLoader extends ShopLoader
         }
         catch(IOException e)
         {
-            // TODO notify view
             elem = null;
             line = null;
+            throw new NoSuchElementException(
+                "File I/O Error; " + e.getMessage());
         }
 
         return item;
@@ -99,7 +114,7 @@ public class FileLoader extends ShopLoader
      * Reads attributes of a weapon, parses values and constructs weapon.
      * @return The new weapon
      */
-    private Weapon readWeapon()
+    private Weapon readWeapon() throws NoSuchElementException
     {
         Weapon weapon = null;
         String name;
@@ -127,12 +142,20 @@ public class FileLoader extends ShopLoader
             }
             else
             {
-                // TODO notify view
+                throw new NoSuchElementException(String.format(
+                    "Invalid values in input file: Weapon, name = %s, " +
+                    "damage = %d-%d, cost = %d, damage type = %s, " +
+                    "weapon type = %s", name, minDamage, maxDamage, cost,
+                    damageType, weaponType));
             }
         }
         catch(NumberFormatException e)
         {
-            // TODO notify view
+            throw new NoSuchElementException(String.format(
+                "Invalid values in input file: Weapon, name = %s, " +
+                "damage = %s-%s, cost = %s, damage type = %s, " +
+                "weapon type = %s", elem[1], elem[2], elem[3], elem[4],
+                elem[5], elem[6]));
         }
 
         return weapon;
@@ -143,7 +166,7 @@ public class FileLoader extends ShopLoader
      * the armour.
      * @return The new armour
      */
-    private Armour readArmour()
+    private Armour readArmour() throws NoSuchElementException
     {
         Armour armour = null;
         String name;
@@ -169,12 +192,18 @@ public class FileLoader extends ShopLoader
             }
             else
             {
-                // TODO notify view
+                throw new NoSuchElementException(String.format(
+                    "Invalid values in input file: Armour, name = %s, " +
+                    "defence = %d-%d, cost = %d, material = %s",
+                    name, minDefence, maxDefence, cost, material));
             }
         }
         catch(NumberFormatException e)
         {
-            // TODO notify view
+            throw new NoSuchElementException(String.format(
+                "Invalid values in input file: Armour, name = %s, " +
+                "defence = %s-%s, cost = %s, material = %s",
+                elem[1], elem[2], elem[3], elem[4], elem[5]));
         }
 
         return armour;
@@ -219,12 +248,18 @@ public class FileLoader extends ShopLoader
             }
             else
             {
-                // TODO notify view 
+                throw new NoSuchElementException(String.format(
+                    "Invalid values in input file: Potion, name = %s, " +
+                    "effect = %d-%d, cost = %d, type = $c",
+                    name, minEffect, maxEffect, cost, type));
             }
         }
         catch(NumberFormatException e)
         {
-            // TODO notify view
+            throw new NoSuchElementException(String.format(
+                "Invalid values in input file: Potion, name = %s, " +
+                "effect = %s-%s, cost = %s, type = $s",
+                elem[1], elem[2], elem[3], elem[4], elem[5]));
         }
 
         return potion;
@@ -232,11 +267,20 @@ public class FileLoader extends ShopLoader
 
     /**
      * Reads the next line in the file.
-     * @throws IOException If an IOException occured
+     * @throws NoSuchElementException If an I/O error occured
      */
-    private void readLine() throws IOException
+    private void readLine() throws NoSuchElementException
     {
-        line = bfr.readLine();
+        try
+        {
+            line = bfr.readLine();
+        }
+        catch(IOException e)
+        {
+            throw new NoSuchElementException(
+                "File I/O error; " + e.getMessage());
+        }
+
         if(line != null)
         {
             elem = line.split(", ");
@@ -244,7 +288,21 @@ public class FileLoader extends ShopLoader
         else
         {
             elem = null;
-            bfr.close();
+            try
+            {
+                bfr.close();
+            }
+            catch(IOException e)
+            {
+                try
+                {
+                    strm.close();
+                }
+                catch(IOException ee) { /* Nothing to do */ }
+
+                throw new NoSuchElementException(
+                    "File I/O error closing file; " + e.getMessage());
+            }
         }
     }
 }

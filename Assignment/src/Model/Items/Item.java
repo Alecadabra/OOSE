@@ -1,6 +1,7 @@
 package Model.Items;
 
 import static java.lang.Math.random;
+import static java.lang.Math.round;
 
 /** 
  * Represents an item that can be stored in a player character's inventory or
@@ -76,7 +77,7 @@ public abstract class Item
      */
     protected int getEffect()
     {
-        return (int)(minEffect + random() * (maxEffect - minEffect));
+        return (int)round(minEffect + random() * (maxEffect - minEffect));
     }
 
     /**
@@ -106,6 +107,50 @@ public abstract class Item
     public int getHealing()
     {
         return 0;
+    }
+
+    /**
+     * Determines if an item can be equipped as a damage dealing item by a
+     * player character. False by default, override this method if the item
+     * is equipabble.
+     * @return True if equipabble, false otherwise
+     */
+    public boolean isEquipabble()
+    {
+        return false;
+    }
+
+    /**
+     * Determines if an item can be worn as a defence increasing item by a
+     * player character. False by default, override this method if the item
+     * is wearable.
+     * @return True if wearable, false otherwise
+     */
+    public boolean isWearable()
+    {
+        return false;
+    }
+
+    /**
+     * Determines if an item can be used as a damage dealing and/or healing
+     * item by a player character. False by default, override this method if
+     * the item is usable.
+     * @return True if usable, false otherwise
+     */
+    public boolean isUsable()
+    {
+        return false;
+    }
+
+    /**
+     * Determines if an item can be enchanted to extends it's functionality
+     * when providing defence and/or dealing damage. False by default, override
+     * this method if the item is enchantable.
+     * @return True if enchantable, false otherwise
+     */
+    public boolean isEnchantable()
+    {
+        return false;
     }
 
     @Override

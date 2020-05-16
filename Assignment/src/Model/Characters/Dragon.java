@@ -2,20 +2,18 @@ package Model.Characters;
 
 import static java.lang.Math.random;
 
+/**
+ * Represents a Dragon Enemy. Has 30 health, 3-8 damage, 4-8 defence, 20 gold.
+ * Special ability: 50% chance that its attack will have 3 extra damage.
+ */
 public class Dragon extends Enemy
 {
-    public Dragon(String name, int maxHp, int minDamage, int maxDamage,
-    int minDefence, int maxDefence, int gold)
+    /**
+     * Construct a new Dragon.
+     */
+    public Dragon()
     {
-        super(
-            "Dragon", // Name
-            100, // Max health
-            15, // Min damage
-            30, // Max damage
-            15, // Min defence
-            20, // Max defence
-            100 // Gold awarded upon defeat
-        );
+        super("Dragon", 100, 15, 30, 15, 20, 100);
     }
 
     @Override

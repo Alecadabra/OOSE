@@ -51,4 +51,15 @@ public class Weapon extends Enchantable
     {
         return getEffect();
     }
+
+    /**
+     * Determines if an item can be equipped as a damage dealing item by a
+     * player character.
+     * @return True if equipabble, false otherwise
+     */
+    @Override
+    public boolean isEquipabble()
+    {
+        return true;
+    }
 }
