@@ -20,7 +20,7 @@ import Model.Items.Weapon;
  * called {@code Short Sword} with 5-9 damage, cost of 10 gold,
  * {@code slashing} damage and type {@code Sword}.
  */
-public class FileLoader extends ShopLoader
+public class FileShopLoader extends ShopLoader
 {
     private FileInputStream strm;
     private InputStreamReader rdr;
@@ -31,23 +31,24 @@ public class FileLoader extends ShopLoader
     /**
      * Constructor, opens file and reads first line.
      * @param fileName Name of file to read from
-     * @throws ShopLoaderException If an error occured in I/O
+     * @throws NoSuchElementException If an error occured in I/O
      */
-    public FileLoader(String fileName) throws ShopLoaderException
+    public FileShopLoader(String fileName) throws NoSuchElementException
     {
         super();
         try
         {
             this.strm = new FileInputStream(fileName);
-            this.rdr = new InputStreamReader(strm);
-            this.bfr = new BufferedReader(rdr);
-            readLine();
         }
         catch(IOException e)
         {
-            throw new ShopLoaderException(
-                "File I/O error opening file; " + e.getMessage(), e);
+            throw new NoSuchElementException(
+                "File I/O error opening file; " + e.getMessage());
         }
+
+        this.rdr = new InputStreamReader(strm);
+        this.bfr = new BufferedReader(rdr);
+        readLine();
     }
 
     @Override
@@ -85,18 +86,8 @@ public class FileLoader extends ShopLoader
             }
         }
 
-        try
-        {
-            readLine();
-        }
-        catch(IOException e)
-        {
-            elem = null;
-            line = null;
-            throw new NoSuchElementException(
-                "File I/O Error; " + e.getMessage());
-        }
-
+        readLine();
+        
         return item;
     }
 

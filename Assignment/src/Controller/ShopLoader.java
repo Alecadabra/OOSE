@@ -11,8 +11,7 @@ import Model.Items.Item;
  * Extending classes must implement the standard Iterator methods to return
  * a new Item object on each iteration, with the Item fields validated with the
  * protected validation methods provided. Extending classes should throw
- * NoSuchElementException within next() for any type of error with a detailed
- * message.
+ * NoSuchElementException for any type of error with a detailed message.
  */
 public abstract class ShopLoader implements Iterator<Item>, Iterable<Item>
 {
