@@ -1,7 +1,7 @@
 package Controller;
 
 /**
- * An exception thrown by ShopLoader implementations
+ * An exception thrown by ShopLoaders
  */
 public class ShopLoaderException extends Exception
 {
