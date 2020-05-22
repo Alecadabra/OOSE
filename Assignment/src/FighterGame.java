@@ -2,7 +2,9 @@ import java.util.Scanner;
 
 import Controller.ConfigHandler;
 import Controller.Controller;
-import Controller.Shop;
+import Controller.ShopLoader;
+import Model.Characters.PlayerCharacter;
+import Model.Items.ShopStorage;
 import View.UserInterface;
 import View.UserInterfaceException;
 
@@ -14,7 +16,9 @@ public class FighterGame
         ConfigHandler config;
         String configFile;
         Controller controller;
-        Shop shop;
+        ShopLoader shopLoader;
+        ShopStorage shopStorage;
+        PlayerCharacter player;
 
         if(args.length == 0)
         {
@@ -31,19 +35,32 @@ public class FighterGame
 
         try
         {
+            // Start the config handler
             config = new ConfigHandler(configFile);
 
+            // Get the user interface
             ui = config.getUI();
-            shop = new Shop(config.getShopLoader());
 
-            controller = new Controller(ui, shop);
+            // Get the player character
+            player = config.getPlayerCharacter();
+
+            // Set up shop - get the loader from confighandler, make a new
+            // shop storage, load the data into the shopstorage
+            shopLoader = config.getShopLoader();
+            shopStorage = new ShopStorage(shopLoader);
+            shopStorage.load();
+
+            // Set up the controller and run the game!
+            controller = new Controller(ui, shop, player);
+            controller.run();
         }
         catch(Exception e)
         {
             try
             {
+                // Try print the error through the UI if it's currently working
                 // TODO Error message through UI
-                throw new UserInterfaceException("Stub");
+                throw new UserInterfaceException("Stub"); // TODO remove
             }
             catch(UserInterfaceException ee)
             {

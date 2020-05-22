@@ -10,6 +10,7 @@ import Model.Items.Armour;
 import Model.Items.DamagePotion;
 import Model.Items.HealthPotion;
 import Model.Items.Item;
+import Model.Items.ItemException;
 import Model.Items.Potion;
 import Model.Items.Weapon;
 
@@ -43,7 +44,7 @@ public class FileShopLoader extends ShopLoader
         catch(IOException e)
         {
             throw new NoSuchElementException(
-                "File I/O error opening file; " + e.getMessage());
+                "File I/O error opening input file; " + e.getMessage());
         }
 
         this.rdr = new InputStreamReader(strm);
@@ -122,31 +123,14 @@ public class FileShopLoader extends ShopLoader
             damageType = elem[5];
             weaponType = elem[6];
 
-            if(verifyStringAttr(name) &&
-               verifyEffectRange(minDamage, maxDamage) &&
-               verifyCost(cost) &&
-               verifyStringAttr(damageType) &&
-               verifyStringAttr(weaponType))
-            {
-                weapon = new Weapon(name, cost, minDamage, maxDamage,
-                    weaponType, damageType);
-            }
-            else
-            {
-                throw new NoSuchElementException(String.format(
-                    "Invalid values in input file: Weapon, name = %s, " +
-                    "damage = %d-%d, cost = %d, damage type = %s, " +
-                    "weapon type = %s", name, minDamage, maxDamage, cost,
-                    damageType, weaponType));
-            }
+            weapon = new Weapon(name, cost, minDamage, maxDamage,
+                weaponType, damageType);
         }
-        catch(NumberFormatException e)
+        catch(NumberFormatException | IndexOutOfBoundsException | 
+            ItemException e)
         {
-            throw new NoSuchElementException(String.format(
-                "Invalid values in input file: Weapon, name = %s, " +
-                "damage = %s-%s, cost = %s, damage type = %s, " +
-                "weapon type = %s", elem[1], elem[2], elem[3], elem[4],
-                elem[5], elem[6]));
+            throw new NoSuchElementException("Invalid values in input file; " +
+                e.getMessage());
         }
 
         return weapon;
@@ -173,28 +157,15 @@ public class FileShopLoader extends ShopLoader
             cost = Integer.parseInt(elem[4]);
             material = elem[5];
 
-            if(verifyStringAttr(name) &&
-               verifyEffectRange(minDefence, maxDefence) &&
-               verifyCost(cost) &&
-               verifyStringAttr(material))
-            {
-                armour = new Armour(name, cost, minDefence, maxDefence,
-                    material);
-            }
-            else
-            {
-                throw new NoSuchElementException(String.format(
-                    "Invalid values in input file: Armour, name = %s, " +
-                    "defence = %d-%d, cost = %d, material = %s",
-                    name, minDefence, maxDefence, cost, material));
-            }
+
+            armour = new Armour(name, cost, minDefence, maxDefence,
+                material);
         }
-        catch(NumberFormatException e)
+        catch(NumberFormatException | IndexOutOfBoundsException | 
+            ItemException e)
         {
-            throw new NoSuchElementException(String.format(
-                "Invalid values in input file: Armour, name = %s, " +
-                "defence = %s-%s, cost = %s, material = %s",
-                elem[1], elem[2], elem[3], elem[4], elem[5]));
+            throw new NoSuchElementException("Invalid values in input file; " +
+                e.getMessage());
         }
 
         return armour;
@@ -219,38 +190,31 @@ public class FileShopLoader extends ShopLoader
             minEffect = Integer.parseInt(elem[2]);
             maxEffect = Integer.parseInt(elem[3]);
             cost = Integer.parseInt(elem[4]);
-            type = elem[5].charAt(0);
+            type = Character.toUpperCase(elem[5].charAt(0));
 
-            if(verifyStringAttr(name) &&
-               verifyEffectRange(minEffect, maxEffect) &&
-               verifyCost(cost) &&
-               (type == 'H' || type == 'D'))
+            if(type == 'H')
             {
-                if(type == 'H')
-                {
-                    potion = new HealthPotion(name, cost, minEffect,
-                        maxEffect);
-                }
-                else
-                {
-                    potion = new DamagePotion(name, cost, minEffect,
-                        maxEffect);
-                }
+                potion = new HealthPotion(name, cost, minEffect,
+                    maxEffect);
+            }
+            else if(type == 'D')
+            {
+                potion = new DamagePotion(name, cost, minEffect,
+                    maxEffect);
             }
             else
             {
-                throw new NoSuchElementException(String.format(
-                    "Invalid values in input file: Potion, name = %s, " +
-                    "effect = %d-%d, cost = %d, type = $c",
-                    name, minEffect, maxEffect, cost, type));
+                // Invalid potion type
+                throw new ItemException(String.format(
+                    "Invalid value for potion (type = %c)", type));
             }
+
         }
-        catch(NumberFormatException e)
+        catch(NumberFormatException | IndexOutOfBoundsException | 
+            ItemException e)
         {
-            throw new NoSuchElementException(String.format(
-                "Invalid values in input file: Potion, name = %s, " +
-                "effect = %s-%s, cost = %s, type = $s",
-                elem[1], elem[2], elem[3], elem[4], elem[5]));
+            throw new NoSuchElementException("Invalid values in input file; " +
+                e.getMessage());
         }
 
         return potion;
@@ -269,12 +233,16 @@ public class FileShopLoader extends ShopLoader
         catch(IOException e)
         {
             throw new NoSuchElementException(
-                "File I/O error; " + e.getMessage());
+                "File I/O error reading input file; " + e.getMessage());
         }
 
         if(line != null)
         {
-            elem = line.split(", ");
+            elem = line.split(",");
+            for(int i = 0; i < elem.length; i++)
+            {
+                elem[i] = elem[i].strip();
+            }
         }
         else
         {
@@ -292,7 +260,7 @@ public class FileShopLoader extends ShopLoader
                 catch(IOException ee) { /* Nothing to do */ }
 
                 throw new NoSuchElementException(
-                    "File I/O error closing file; " + e.getMessage());
+                    "File I/O error closing input file; " + e.getMessage());
             }
         }
     }

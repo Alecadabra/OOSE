@@ -1,7 +1,6 @@
 package View;
 
 import java.util.List;
-import java.util.Set;
 
 public interface UserInterface
 {
@@ -9,5 +8,11 @@ public interface UserInterface
 
     public void showList(String title, List<String> list);
 
-    public String selectFromSet(String prompt, Set<String> set);
+    public String inputFrom(String prompt, List<String> options);
+
+    public String inputUnchecked(String prompt);
+
+    public void showWelcome();
+
+    public void showGoodbye();
 }

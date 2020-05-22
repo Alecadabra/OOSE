@@ -22,11 +22,23 @@ public abstract class Item
      * @param maxEffect Maximum value that this item can return on getEffect()
      */
     public Item(String name, int cost, int minEffect, int maxEffect)
+        throws ItemException
     {
-        this.name = name;
-        this.cost = cost;
-        this.minEffect = minEffect;
-        this.maxEffect = maxEffect;
+        if(verifyStringAttr(name) &&
+            verifyCost(cost) &&
+            verifyEffectRange(minEffect, maxEffect))
+        {
+            this.name = name;
+            this.cost = cost;
+            this.minEffect = minEffect;
+            this.maxEffect = maxEffect;
+        }
+        else
+        {
+            throw new ItemException(String.format("Invalid values for item " +
+                "(name = %s, cost = %d, effect = %d-%d)",
+                name, cost, minEffect, maxEffect));
+        }
     }
 
     /**
@@ -167,5 +179,40 @@ public abstract class Item
         }
 
         return equal;
+    }
+    
+    /**
+     * Verify legality of a string attribute of an Item, for example a name.
+     * String attributes are legal if they are non-empty.
+     * @param name String to check
+     * @return True if legal and false otherwise
+     */
+    protected boolean verifyStringAttr(String name)
+    {
+        return !name.equals("");
+    }
+
+    /**
+     * Verify legality of a min/max effect range of an Item. Effect ranges are
+     * legal if they are greater than or equal to zero, and the max is atleast
+     * the min.
+     * @param min Minimum effect value
+     * @param max Maximum effect value
+     * @return True if legal and false otherwise
+     */
+    protected boolean verifyEffectRange(int min, int max)
+    {
+        return min >= 0 && max >= 0 && min <= max;
+    }
+
+    /**
+     * Verify legality of a cost attribue of an Item. Cost attributes are legal
+     * if they are greater than or equal to zero.
+     * @param cost The cost value
+     * @return True if legal and false otherwise
+     */
+    protected static boolean verifyCost(int cost)
+    {
+        return cost >= 0;
     }
 }

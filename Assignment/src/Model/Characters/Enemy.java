@@ -6,7 +6,7 @@ import static java.lang.Math.round;
 /**
  * Represents a computer-controlled enemy character.
  */
-public abstract class Enemy extends Character
+public abstract class Enemy extends GameCharacter
 {
     protected int minDamage;
     protected int maxDamage;

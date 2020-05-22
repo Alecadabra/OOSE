@@ -8,6 +8,12 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.NoSuchElementException;
 
+import Model.Characters.PlayerCharacter;
+import Model.Characters.CharacterException;
+import Model.Items.Armour;
+import Model.Items.Item;
+import Model.Items.ItemException;
+import Model.Items.Weapon;
 import View.SimpleCLI;
 import View.UserInterface;
 
@@ -53,6 +59,146 @@ public class ConfigHandler
         }
 
         return factory;
+    }
+
+    public PlayerCharacter getPlayerCharacter() throws ConfigException
+    {
+        PlayerCharacter player = null;
+        String[] playerConfig = getConfig("Player");
+
+        String name;
+        int maxHp, gold;
+        Item inWeapon, inArmour;
+
+        try
+        {
+            name = playerConfig[0];
+            maxHp = Integer.parseInt(playerConfig[1]);
+            inWeapon = getStartingWeapon();
+            inArmour = getStartingArmour();
+            gold = Integer.parseInt(playerConfig[2]);
+
+            player =
+                new PlayerCharacter(name, maxHp, inWeapon, inArmour, gold);
+        }
+        catch(NumberFormatException | IndexOutOfBoundsException e)
+        {
+            // Accessing array or parsing ints threw an exception
+            throw new ConfigException("Couldn't construct player; " +
+                "Invalid player config (name, max health, starting gold); " +
+                e.getMessage(), e);
+        }
+        catch(ConfigException e)
+        {
+            // getStarting*() threw an exception
+            throw new ConfigException("Couldn't construct player; " +
+                e.getMessage(), e);
+        }
+        catch(CharacterException e)
+        {
+            // PlayerCharacter constructor threw an exception
+            throw new ConfigException("Couldn't construct player; " +
+                e.getMessage(), e);
+        }
+
+        return player;
+    }
+
+    public Item getStartingWeapon() throws ConfigException
+    {
+        Item item = null;
+        String[] itemConfig = getConfig("Starting Weapon");
+
+        String name;
+        int cost, minEffect, maxEffect;
+
+        switch(itemConfig[0])
+        {
+            case "Weapon":
+            {
+                String weaponType, damageType;
+
+                try
+                {
+                    name = itemConfig[1];
+                    cost = Integer.parseInt(itemConfig[2]);
+                    minEffect = Integer.parseInt(itemConfig[3]);
+                    maxEffect = Integer.parseInt(itemConfig[4]);
+                    weaponType = itemConfig[5];
+                    damageType = itemConfig[6];
+
+                    item = new Weapon(name, cost, minEffect, maxEffect,
+                        weaponType, damageType);
+                }
+                catch(NumberFormatException | IndexOutOfBoundsException | 
+                    ItemException e)
+                {
+                    // Accessing array or parsing ints threw an exception
+                    throw new ConfigException(
+                        "Couldn't construct starting weapon; " +
+                        "Invalid weapon config (item type, name, cost, " +
+                        "min damage, max damage, weapon type, damage type); " +
+                        e.getMessage(), e);
+                }
+            }
+        }
+
+        if(item == null)
+        {
+            throw new ConfigException(
+                "Couldn't construct starting weapon; "+
+                "Invalid weapon config item type");
+        }
+
+        return item;
+    }
+
+    public Item getStartingArmour() throws ConfigException
+    {
+        Item item = null;
+        String[] itemConfig = getConfig("Starting Armour");
+
+        String name;
+        int cost, minEffect, maxEffect;
+
+        switch(itemConfig[0])
+        {
+            case "Armour":
+            {
+                String material;
+
+                try
+                {
+                    name = itemConfig[1];
+                    cost = Integer.parseInt(itemConfig[2]);
+                    minEffect = Integer.parseInt(itemConfig[3]);
+                    maxEffect = Integer.parseInt(itemConfig[4]);
+                    material = itemConfig[5];
+
+                    item = new Armour(name, cost, minEffect, maxEffect,
+                        material);
+                }
+                catch(NumberFormatException | IndexOutOfBoundsException | 
+                    ItemException e)
+                {
+                    // Accessing array or parsing ints threw an exception
+                    throw new ConfigException(
+                        "Couldn't construct starting armour; " +
+                        "Invalid armour config (item type, name, cost, " +
+                        "min damage, max damage, material); " +
+                        e.getMessage(), e);
+                }
+            }
+        }
+
+        if(item == null)
+        {
+            throw new ConfigException(
+                "Couldn't construct starting armour; "+
+                "Invalid armour config item type");
+        }
+
+        return item;
     }
 
     public UserInterface getUI() throws ConfigException
@@ -115,6 +261,7 @@ public class ConfigHandler
     {
         String line;
         String[] elem;
+        String[] configElem;
 
         // If config file hasn't been read yet
         if(config.isEmpty())
@@ -122,10 +269,24 @@ public class ConfigHandler
             try
             {
                 line = bfr.readLine();
-                elem = line.split(" = ", 1);
+                elem = line.split("=", 1);
                 while(line != null)
                 {
-                    config.put(elem[0], elem[1].split(", "));
+                    // Make sure line isnt a comment or whitespace
+                    if(!(line.charAt(0) == '#' || line.equals("")))
+                    {
+                        // Remove spaces and make lowercase before keying
+                        elem[0] = elem[0].toLowerCase().replaceAll(" ", "");
+
+                        configElem = elem[1].split(",");
+                        for(int i = 0; i < configElem.length; i++)
+                        {
+                            // Remove surrounding whitespace
+                            configElem[i] = configElem[i].strip();
+                        }
+
+                        config.put(elem[0], configElem);
+                    }
 
                     line = bfr.readLine();
                     elem = line.split(" = ", 1);
@@ -148,7 +309,8 @@ public class ConfigHandler
                 "Configuration not present in config file", name));
         }
 
-        return config.get(name);
+        // Remove spaces and make lowercase before keying
+        return config.get(name.toLowerCase().replaceAll(" ", ""));
     }
 
     /*

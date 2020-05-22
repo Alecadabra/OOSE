@@ -10,7 +10,7 @@ import Model.Items.ItemException;
  * Represents a playable character. Is a character that has an inventory of
  * items, and has a weapon and armour equipped.
  */
-public class PlayerCharacter extends Character
+public class PlayerCharacter extends GameCharacter
 {
     private Inventory inv;
     private String weapon;

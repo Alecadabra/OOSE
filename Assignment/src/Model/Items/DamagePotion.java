@@ -13,6 +13,7 @@ public class DamagePotion extends Potion
      * @param maxDamage Maximum value that this item can return on getDamage()
      */
     public DamagePotion(String name, int cost, int minDamage, int maxDamage)
+        throws ItemException
     {
         super(name, cost, minDamage, maxDamage);
     }

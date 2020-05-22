@@ -10,6 +10,7 @@ public class HealthPotion extends Potion
      * @param maxDefence Maximum value that this item can return on getHealing()
      */
     public HealthPotion(String name, int cost, int minHealing, int maxHealing)
+        throws ItemException
     {
         super(name, cost, minHealing, maxHealing);
     }

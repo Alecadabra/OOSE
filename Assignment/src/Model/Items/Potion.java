@@ -15,6 +15,7 @@ public abstract class Potion extends Item
      * or getHealing()
      */
     public Potion(String name, int cost, int minEffect, int maxEffect)
+        throws ItemException
     {
         super(name, cost, minEffect, maxEffect);
     }

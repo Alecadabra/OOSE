@@ -1,5 +1,7 @@
 package Model.Items.Enchantments;
 
+import Model.Items.ItemException;
+
 /**
  * Enchantment that modifies the damage done to a damage dealing item. Adds 5
  * damage.
@@ -11,7 +13,7 @@ public class DamageAdd5 extends Enchantment
      * @param next The Enchantable Item that this enchantment is being applied
      * to
      */
-    public DamageAdd5(Enchantable next)
+    public DamageAdd5(Enchantable next) throws ItemException
     {
         super("Damage +5", 10, next);
     }

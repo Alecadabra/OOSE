@@ -1,5 +1,7 @@
 package Model.Items.Enchantments;
 
+import Model.Items.ItemException;
+
 /**
  * Represents an enchantment that can be applied to an enchantable item
  * (returns true on {@code isEnchantable}) to extends it's functionality when
@@ -17,6 +19,7 @@ public abstract class Enchantment extends Enchantable
      * to
      */
     public Enchantment(String name, int cost, Enchantable next)
+        throws ItemException
     {
         super(name, cost, 0, 0);
         this.next = next;

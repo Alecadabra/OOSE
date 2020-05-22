@@ -32,34 +32,60 @@ public class SimpleCLI implements UserInterface
     }
 
     @Override
-    public String selectFromSet(String prompt, Set<String> set)
+    public String inputFrom(String prompt, List<String> options)
     {
         String in = null;
-        boolean match = false;
-        Iterator<String> iter = set.iterator();
+        Iterator<String> iter = options.iterator();
+        String match = null;
+        String curr;
 
         // TODO clean up :)
 
-        while(!match)
+        while(match == null)
         {
-            System.out.println(prompt);
-            in = sc.nextLine();
+            System.out.print(prompt + ": ");
+            in = sc.nextLine().toLowerCase().trim();
 
-            while(iter.hasNext() && !match)
+            while(iter.hasNext() && match == null)
             {
-                if(iter.next().contains(in))
+                curr = iter.next().toLowerCase().trim();
+
+                if(curr.contains(in))
                 {
-                    match = true;
+                    match = curr;
                 }
             }
             
-            if(!match)
+            if(match == null)
             {
                 System.out.println("Invalid input");
             }
         }
 
         return in;
+    }
+
+    @Override
+    public String inputUnchecked(String prompt)
+    {
+        String in = null;
+
+        System.out.print(prompt + ": ");
+        in = sc.nextLine().trim();
+
+        
+    }
+
+    @Override
+    public void showWelcome()
+    {
+        System.out.println("Welcome!");
+    }
+
+    @Override
+    public void showGoodbye()
+    {
+        System.out.println("Goodbye!");
     }
 
     

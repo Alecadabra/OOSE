@@ -1,6 +1,7 @@
 package Model.Items.Enchantments;
 
 import Model.Items.Item;
+import Model.Items.ItemException;
 
 /**
  * Defines an Item that can be enchanted. Uses the decorator pattern.
@@ -15,6 +16,7 @@ public abstract class Enchantable extends Item
      * @param maxEffect Maximum value that this item can return on getEffect()
      */
     public Enchantable(String name, int cost, int minEffect, int maxEffect)
+        throws ItemException
     {
         super(name, cost, minEffect, maxEffect);
     }

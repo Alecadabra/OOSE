@@ -17,10 +17,20 @@ public class Armour extends Item
      * @param material Material armour is made out of (Has no effect)
      */
     public Armour(String name, int cost, int minDefence, int maxDefence,
-        String material)
+        String material) throws ItemException
     {
         super(name, cost, minDefence, maxDefence);
-        this.material = material;
+        if(verifyStringAttr(material))
+        {
+            this.material = material;
+        }
+        else
+        {
+            throw new ItemException(String.format(
+                "Invalid value for armour (material = %s)",
+                material));
+        }
+        
     }
 
     /**

@@ -21,11 +21,21 @@ public class Weapon extends Enchantable
      * @param damageType Type of damage this weapon deals (Has no effect)
      */
     public Weapon(String name, int cost, int minDamage, int maxDamage,
-        String weaponType, String damageType)
+        String weaponType, String damageType) throws ItemException
     {
         super(name, cost, minDamage, maxDamage);
-        this.weaponType = weaponType;
-        this.damageType = damageType;
+        if(verifyStringAttr(weaponType) &&
+            verifyStringAttr(damageType))
+        {
+            this.weaponType = weaponType;
+            this.damageType = damageType;
+        }
+        else
+        {
+            throw new ItemException(String.format("Invalid values for weapon " +
+                "(weapon type = %s, damage type = %s)",
+                weaponType, damageType));
+        }
     }
 
     /**

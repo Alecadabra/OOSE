@@ -8,7 +8,7 @@ import Model.Items.Item;
 /**
  * Represents a game character.
  */
-public abstract class Character
+public abstract class GameCharacter
 {
     protected String name;
     protected int maxHp;
@@ -21,7 +21,7 @@ public abstract class Character
      * @param maxHp Maximum possible health
      * @param gold Gold in posession
      */
-    public Character(String name, int maxHp, int gold)
+    public GameCharacter(String name, int maxHp, int gold)
     {
         this.name = name;
         this.maxHp = maxHp;
@@ -48,7 +48,7 @@ public abstract class Character
      * @param character Character to attack
      * @throws CharacterException If an error occured
      */
-    public void attack(Character character) throws CharacterException
+    public void attack(GameCharacter character) throws CharacterException
     {
         character.defend(getDamage());
         // TODO notify view
@@ -99,6 +99,15 @@ public abstract class Character
     public String getName()
     {
         return name;
+    }
+
+    /**
+     * Set the name of the character.
+     * @param name Name string
+     */
+    public void setName(String name)
+    {
+        this.name = name;
     }
 
     /**
