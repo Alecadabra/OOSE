@@ -3,7 +3,6 @@ package View;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
-import java.util.Set;
 
 public class SimpleCLI implements UserInterface
 {
@@ -14,6 +13,13 @@ public class SimpleCLI implements UserInterface
         sc = new Scanner(System.in);
     }   
     
+    @Override
+    public void display(String title, String content)
+    {
+        System.out.println(title);
+        System.out.println(content);
+    }
+
     @Override
     public void log(String message)
     {
@@ -68,12 +74,9 @@ public class SimpleCLI implements UserInterface
     @Override
     public String inputUnchecked(String prompt)
     {
-        String in = null;
-
         System.out.print(prompt + ": ");
-        in = sc.nextLine().trim();
 
-        
+        return sc.nextLine().trim();
     }
 
     @Override

@@ -4,7 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.Arrays;
+import java.lang.reflect.Constructor;
 import java.util.HashMap;
 import java.util.NoSuchElementException;
 
@@ -44,18 +44,36 @@ public class ConfigHandler
     {
         EnemyFactory factory = null;
         String[] factoryConfig = getConfig("Enemies");
-        String bossName = factoryConfig[0];
-        String[] enemies =
-            Arrays.copyOfRange(factoryConfig, 1, factoryConfig.length);
+        int numEnemies = (factoryConfig.length - 1) / 3;
+        Constructor<?> bossConstructor;
+        Constructor<?>[] enemyConstructors = new Constructor<?>[numEnemies];
+        int[] enemyProbs = new int[numEnemies];
+        int[] enemyModifiers = new int[numEnemies];
 
         try
         {
-            factory = new EnemyFactory(bossName, enemies);
+            for(int i = 0, j = 1; i < numEnemies; i++, j += 3)
+            {
+                enemyConstructors[i] = (Constructor<?>)
+                    Class.forName(factoryConfig[j]).getConstructor();
+                enemyProbs[i] = Integer.parseInt(factoryConfig[j + 1]);
+                enemyModifiers[i] = Integer.parseInt(factoryConfig[j + 2]);
+            }
+
+            bossConstructor = (Constructor<?>)
+               Class.forName(factoryConfig[0]).getConstructor();
+
+            factory = new EnemyFactory(bossConstructor, enemyConstructors, 
+                enemyProbs, enemyModifiers);
         }
-        catch(EnemyFactoryException e)
+        catch(NumberFormatException | ReflectiveOperationException |
+            EnemyFactoryException e)
         {
-            throw new ConfigException(
-                "Couldn't construct EnemyFactory" + e.getMessage(), e);
+            throw new ConfigException("Couldn't construct EnemyFactory; " +
+                "Invalid enemy config (boss, enemy 1 name, " +
+                "enemy 1 initial probability, " +
+                "enemy 1 probability modifier, enemy 2 name, ...); "+
+                e.getMessage(), e);
         }
 
         return factory;

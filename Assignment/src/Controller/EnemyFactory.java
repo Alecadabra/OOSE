@@ -13,46 +13,19 @@ import Model.Characters.Enemy;
  */
 public class EnemyFactory
 {
-    private int[] enemyProbs;
-    private int[] enemyModifiers;
     Constructor<?> bossConstructor;
     Constructor<?>[] enemyConstructors;
+    private int[] enemyProbs;
+    private int[] enemyModifiers;
 
-    public EnemyFactory(String bossName, String... enemies)
-        throws EnemyFactoryException
+    public EnemyFactory(Constructor<?> bossConstructor,
+        Constructor<?>[] enemyConstructors, int[] enemyProbs,
+        int[] enemyModifiers) throws EnemyFactoryException
     {
-        try
-        {
-            // Get default constructor for the boss
-            this.bossConstructor = Class.forName(bossName).getConstructor();
-
-            // Initialise arrays based on the number of varargs
-            this.enemyConstructors = new Constructor<?>[enemies.length / 3];
-            this.enemyProbs = new int[enemies.length / 3];
-            this.enemyModifiers = new int[enemies.length / 3];
-
-            // Iterate through varargs (i), setting elements of field arrays (j)
-            for(int i = 0, j = 0; i < enemies.length; i += 3, j++)
-            {
-                // Get default constructor for an enemy
-                this.enemyConstructors[j] =
-                    Class.forName(enemies[i]).getConstructor();
-                // Set the initial probablility for an enemy
-                this.enemyProbs[j] = Integer.parseInt(enemies[i + 1]);
-                // Set the probability modifier for an enemy
-                this.enemyModifiers[j] = Integer.parseInt(enemies[i + 2]);
-            }
-        }
-        catch(NumberFormatException e)
-        {
-            throw new EnemyFactoryException(String.format(
-                "Could not initialise enemy factory; %s", e.getMessage()), e);
-        }
-        catch(ReflectiveOperationException e)
-        {
-            throw new EnemyFactoryException(String.format(
-                "Could not initialise enemy factory; %s", e.getMessage()), e);
-        }
+        this.bossConstructor = bossConstructor;
+        this.enemyConstructors = enemyConstructors;
+        this.enemyProbs = enemyProbs;
+        this.enemyModifiers = enemyModifiers;
     }
 
     public Enemy getEnemy() throws EnemyFactoryException

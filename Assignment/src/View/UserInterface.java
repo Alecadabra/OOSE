@@ -4,6 +4,10 @@ import java.util.List;
 
 public interface UserInterface
 {
+    public void heading(String heading);
+    
+    public void display(String content);
+
     public void log(String message);
 
     public void showList(String title, List<String> list);
@@ -11,8 +15,4 @@ public interface UserInterface
     public String inputFrom(String prompt, List<String> options);
 
     public String inputUnchecked(String prompt);
-
-    public void showWelcome();
-
-    public void showGoodbye();
 }

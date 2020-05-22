@@ -3,7 +3,6 @@ import java.util.Scanner;
 import Controller.ConfigHandler;
 import Controller.Controller;
 import Controller.ShopLoader;
-import Model.Characters.PlayerCharacter;
 import Model.Items.ShopStorage;
 import View.UserInterface;
 import View.UserInterfaceException;
@@ -18,7 +17,6 @@ public class FighterGame
         Controller controller;
         ShopLoader shopLoader;
         ShopStorage shopStorage;
-        PlayerCharacter player;
 
         if(args.length == 0)
         {
@@ -41,9 +39,6 @@ public class FighterGame
             // Get the user interface
             ui = config.getUI();
 
-            // Get the player character
-            player = config.getPlayerCharacter();
-
             // Set up shop - get the loader from confighandler, make a new
             // shop storage, load the data into the shopstorage
             shopLoader = config.getShopLoader();
@@ -51,7 +46,12 @@ public class FighterGame
             shopStorage.load();
 
             // Set up the controller and run the game!
-            controller = new Controller(ui, shop, player);
+            controller = new Controller(
+                ui,
+                config.getPlayerCharacter(),
+                config.getEnemyFactory(),
+                shopStorage
+            );
             controller.run();
         }
         catch(Exception e)
