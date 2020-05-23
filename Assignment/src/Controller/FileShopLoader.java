@@ -6,18 +6,20 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.NoSuchElementException;
 
-import Model.Items.Armour;
+import Model.Items.DefaultArmour;
 import Model.Items.DamagePotion;
 import Model.Items.HealthPotion;
 import Model.Items.Item;
 import Model.Items.ItemException;
-import Model.Items.Potion;
-import Model.Items.Weapon;
+import Model.Items.DefaultPotion;
+import Model.Items.DefaultWeapon;
 
 /**
  * Extends a ShopLoader to iterate over a file of Items. Items must be
  * separated by newlines and attributes must be separated by a comma and a
- * space. Eg. {@code W, Short Sword, 5, 9, 10, slashing, Sword} for a weapon
+ * space. Configured to read DefaultWeapon ('W'), DefaultArmour ('A'),
+ * DefaultPotion ('P', with 'D' for damage or 'H' for healh). Eg. {@code W, 
+ * Short Sword, 5, 9, 10, slashing, Sword} for a default weapon
  * called {@code Short Sword} with 5-9 damage, cost of 10 gold,
  * {@code slashing} damage and type {@code Sword}.
  */
@@ -67,12 +69,12 @@ public class FileShopLoader extends ShopLoader
         {
             case 'W':
             {
-                item = readWeapon();
+                item = readDefaultWeapon();
                 break;
             }
             case 'A':
             {
-                item = readArmour();
+                item = readDefaultArmour();
                 break;
             }
             case 'P':
@@ -103,12 +105,13 @@ public class FileShopLoader extends ShopLoader
     }
 
     /**
-     * Reads attributes of a weapon, parses values and constructs weapon.
-     * @return The new weapon
+     * Reads attributes of a Default Weapon Item, parses values and constructs
+     * weapon.
+     * @return The new default weapon
      */
-    private Weapon readWeapon() throws NoSuchElementException
+    private DefaultWeapon readDefaultWeapon() throws NoSuchElementException
     {
-        Weapon weapon = null;
+        DefaultWeapon weapon = null;
         String name;
         int minDamage, maxDamage;
         int cost;
@@ -123,7 +126,7 @@ public class FileShopLoader extends ShopLoader
             damageType = elem[5];
             weaponType = elem[6];
 
-            weapon = new Weapon(name, cost, minDamage, maxDamage,
+            weapon = new DefaultWeapon(name, cost, minDamage, maxDamage,
                 weaponType, damageType);
         }
         catch(NumberFormatException | IndexOutOfBoundsException | 
@@ -137,13 +140,13 @@ public class FileShopLoader extends ShopLoader
     }
 
     /**
-     * Reads attributes of a piece of armour, parses values and constructs
+     * Reads attributes of a Default Armour Item, parses values and constructs
      * the armour.
-     * @return The new armour
+     * @return The new default armour
      */
-    private Armour readArmour() throws NoSuchElementException
+    private DefaultArmour readDefaultArmour() throws NoSuchElementException
     {
-        Armour armour = null;
+        DefaultArmour armour = null;
         String name;
         int minDefence, maxDefence;
         int cost;
@@ -158,7 +161,7 @@ public class FileShopLoader extends ShopLoader
             material = elem[5];
 
 
-            armour = new Armour(name, cost, minDefence, maxDefence,
+            armour = new DefaultArmour(name, cost, minDefence, maxDefence,
                 material);
         }
         catch(NumberFormatException | IndexOutOfBoundsException | 
@@ -176,9 +179,9 @@ public class FileShopLoader extends ShopLoader
      * health or damage potion.
      * @return The new potion
      */
-    private Potion readPotion()
+    private DefaultPotion readPotion()
     {
-        Potion potion = null;
+        DefaultPotion potion = null;
         String name;
         int minEffect, maxEffect;
         int cost;

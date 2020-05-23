@@ -1,10 +1,11 @@
 package Model.Items;
 
 /**
- * Represents a piece of armour that provides defence to a player character
- * when attacked if equipped.
+ * Default implementation of Armour (Defined as a wearable Item that should
+ * override getDefence in some way). Default Armour's provide defence in the
+ * defence range given, and have a vanity string attribute for material.
  */
-public class Armour extends Item
+public class DefaultArmour extends Item
 {
     String material;
     
@@ -16,7 +17,7 @@ public class Armour extends Item
      * @param maxDefence Maximum value that this item can return on getDefence()
      * @param material Material armour is made out of (Has no effect)
      */
-    public Armour(String name, int cost, int minDefence, int maxDefence,
+    public DefaultArmour(String name, int cost, int minDefence, int maxDefence,
         String material) throws ItemException
     {
         super(name, cost, minDefence, maxDefence);

@@ -14,16 +14,21 @@ public class SimpleCLI implements UserInterface
     }   
     
     @Override
-    public void display(String title, String content)
+    public void heading(String heading)
     {
-        System.out.println(title);
-        System.out.println(content);
+        System.out.println("\n\n" + heading + "\n");
+    }
+
+    @Override
+    public void display(String content)
+    {
+        System.out.println("\n" + content);
     }
 
     @Override
     public void log(String message)
     {
-        System.out.println("message");
+        System.out.println(message);
     }
 
     @Override
@@ -77,19 +82,5 @@ public class SimpleCLI implements UserInterface
         System.out.print(prompt + ": ");
 
         return sc.nextLine().trim();
-    }
-
-    @Override
-    public void showWelcome()
-    {
-        System.out.println("Welcome!");
-    }
-
-    @Override
-    public void showGoodbye()
-    {
-        System.out.println("Goodbye!");
-    }
-
-    
+    }    
 }

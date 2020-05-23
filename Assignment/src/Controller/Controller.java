@@ -113,6 +113,8 @@ public class Controller
         List<Item> allItems = player.getAllItems();
         ArrayList<Item> enchantableItems = new ArrayList<>();
 
+        ui.heading("Enchant item");
+
         for(Item item : allItems)
         {
             if(item.isEnchantable())
@@ -124,7 +126,10 @@ public class Controller
         if(enchantableItems.isEmpty())
         {
             // Refund the item
-            ui.display("Enchant item", );
+        }
+        else
+        {
+            // Select item and enchant
         }
     }
 }

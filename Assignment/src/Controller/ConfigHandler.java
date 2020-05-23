@@ -10,10 +10,10 @@ import java.util.NoSuchElementException;
 
 import Model.Characters.PlayerCharacter;
 import Model.Characters.CharacterException;
-import Model.Items.Armour;
+import Model.Items.DefaultArmour;
 import Model.Items.Item;
 import Model.Items.ItemException;
-import Model.Items.Weapon;
+import Model.Items.DefaultWeapon;
 import View.SimpleCLI;
 import View.UserInterface;
 
@@ -132,7 +132,7 @@ public class ConfigHandler
 
         switch(itemConfig[0])
         {
-            case "Weapon":
+            case "DefaultWeapon":
             {
                 String weaponType, damageType;
 
@@ -145,7 +145,7 @@ public class ConfigHandler
                     weaponType = itemConfig[5];
                     damageType = itemConfig[6];
 
-                    item = new Weapon(name, cost, minEffect, maxEffect,
+                    item = new DefaultWeapon(name, cost, minEffect, maxEffect,
                         weaponType, damageType);
                 }
                 catch(NumberFormatException | IndexOutOfBoundsException | 
@@ -181,7 +181,7 @@ public class ConfigHandler
 
         switch(itemConfig[0])
         {
-            case "Armour":
+            case "DefaultArmour":
             {
                 String material;
 
@@ -193,7 +193,7 @@ public class ConfigHandler
                     maxEffect = Integer.parseInt(itemConfig[4]);
                     material = itemConfig[5];
 
-                    item = new Armour(name, cost, minEffect, maxEffect,
+                    item = new DefaultArmour(name, cost, minEffect, maxEffect,
                         material);
                 }
                 catch(NumberFormatException | IndexOutOfBoundsException | 

@@ -1,13 +1,20 @@
 package Model.Items;
 
-public class HealthPotion extends Potion
+/**
+ * Represents a health potion that can be used to heal a character.
+ */
+/**
+ * Implementation of a DefaultPotion, represents a health potion that can be
+ * used to heal a character. Health potions heal in the range given.
+ */
+public class HealthPotion extends DefaultPotion
 {
     /**
      * Constructor.
      * @param name Name of the potion
      * @param cost Potion's cost in gold when bought
-     * @param minDefence Minimum value that this item can return on getHealing()
-     * @param maxDefence Maximum value that this item can return on getHealing()
+     * @param minHealing Minimum value that this item can return on getHealing()
+     * @param maxHealing Maximum value that this item can return on getHealing()
      */
     public HealthPotion(String name, int cost, int minHealing, int maxHealing)
         throws ItemException

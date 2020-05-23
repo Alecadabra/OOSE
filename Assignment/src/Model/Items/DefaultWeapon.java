@@ -3,10 +3,12 @@ package Model.Items;
 import Model.Items.Enchantments.Enchantable;
 
 /**
- * Represents a weapon that deals damage to another character when attacking if
- * equipped. A weapon can be enchanted to add functionality.
+ * Default implementation of a Weapon (Defined as an equippable Item that
+ * should override getDamage in some way). Default Weapon's deal damage in the
+ * damage range given, have vanity string attributes for type of weapon and 
+ * damage, and can be enchanted to add functionality.
  */
-public class Weapon extends Enchantable
+public class DefaultWeapon extends Enchantable
 {
     private String weaponType;
     private String damageType;
@@ -20,7 +22,7 @@ public class Weapon extends Enchantable
      * @param weaponType Type of weapon that this is (Has no effect)
      * @param damageType Type of damage this weapon deals (Has no effect)
      */
-    public Weapon(String name, int cost, int minDamage, int maxDamage,
+    public DefaultWeapon(String name, int cost, int minDamage, int maxDamage,
         String weaponType, String damageType) throws ItemException
     {
         super(name, cost, minDamage, maxDamage);

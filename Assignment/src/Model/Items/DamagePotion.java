@@ -1,9 +1,11 @@
 package Model.Items;
 
 /**
- * Represents a damage potion that can be used to deal damage to a character.
+ * Implementation of a DefaultPotion, represents a damage potion that can be
+ * used to deal damage to a character. Damage potions deal damage in the range
+ * given.
  */
-public class DamagePotion extends Potion
+public class DamagePotion extends DefaultPotion
 {    
     /**
      * Constructor.

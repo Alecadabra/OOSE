@@ -1,9 +1,10 @@
 package Model.Items;
 
 /**
- * Represents a potion that can be used on a character to heal and/or damage.
+ * Default abstract implementation of a potion (Defined as a usable item that
+ * should override gethealing and/or getDamage).
  */
-public abstract class Potion extends Item
+public abstract class DefaultPotion extends Item
 {
     /**
      * Constructor.
@@ -14,7 +15,7 @@ public abstract class Potion extends Item
      * @param maxEffect Maximum value that this item can return on getDamage()
      * or getHealing()
      */
-    public Potion(String name, int cost, int minEffect, int maxEffect)
+    public DefaultPotion(String name, int cost, int minEffect, int maxEffect)
         throws ItemException
     {
         super(name, cost, minEffect, maxEffect);
