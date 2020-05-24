@@ -26,7 +26,7 @@ public class Goblin extends Enemy
             // Special ability: 50% chance that its attack will have 3
             // extra damage
             dmg = getBaseDamage() + 3;
-            // TODO Notify view
+            logAction("Goblin used special ability: Increase damage!");
         }
         else
         {

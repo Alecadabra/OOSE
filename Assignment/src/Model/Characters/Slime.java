@@ -25,7 +25,7 @@ public class Slime extends Enemy
         {
             // Special ability: 20% chance that its attach will have no damage
             dmg = 0;
-            // TODO Notify view
+            logAction("Slime used special ability: Sleep");
         }
         else
         {

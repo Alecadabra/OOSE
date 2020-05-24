@@ -26,7 +26,7 @@ public class Ogre extends Enemy
             // 20% chance that it will attack twice in a row (without the
             // other character having a turn in between)
             dmg = getBaseDamage() + getBaseDamage();
-            // TODO Notify view
+            logAction("Ogre used special ability: Double attack!");
         }
         else
         {

@@ -4,25 +4,40 @@ import Model.Items.ItemException;
 
 /**
  * Represents an enchantment that can be applied to an enchantable item
- * (returns true on {@code isEnchantable}) to extends it's functionality when
- * providing defence or dealing damage. Uses the decorator pattern.
+ * (Any item that returns true on {@code isEnchantable}) to extends it's
+ * functionality when providing defence or dealing damage. Uses the decorator
+ * pattern.
  */
 public abstract class Enchantment extends Enchantable
 {
     protected Enchantable next;
 
     /**
-     * Constructor.
+     * Constructor..
      * @param name Name of the enchantment
      * @param cost Enchantment's cost in gold when bought
-     * @param next The Enchantable Item that this enchantment is being applied
-     * to
+     * @param next The enchantable that this is enchanting (Set to null
+     * if just a display item)
+     * @throws ItemException If an error occured
      */
     public Enchantment(String name, int cost, Enchantable next)
         throws ItemException
     {
         super(name, cost, 0, 0);
         this.next = next;
+    }
+
+    @Override
+    public String getName()
+    {
+        if(this.next == null)
+        {
+            return super.getName();
+        }
+        else
+        {
+            return next.getName();
+        }
     }
     
     /**
@@ -49,5 +64,4 @@ public abstract class Enchantment extends Enchantable
     {
         return next.getSell() + getSell();
     }
-
 }

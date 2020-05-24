@@ -13,6 +13,7 @@ import Model.Characters.CharacterException;
 import Model.Items.DefaultArmour;
 import Model.Items.Item;
 import Model.Items.ItemException;
+import Model.Items.Enchantments.Enchantable;
 import Model.Items.DefaultWeapon;
 import View.SimpleCLI;
 import View.UserInterface;
@@ -52,6 +53,9 @@ public class ConfigHandler
 
         try
         {
+            bossConstructor = (Constructor<?>)
+               Class.forName(factoryConfig[0]).getConstructor();
+
             for(int i = 0, j = 1; i < numEnemies; i++, j += 3)
             {
                 enemyConstructors[i] = (Constructor<?>)
@@ -59,9 +63,6 @@ public class ConfigHandler
                 enemyProbs[i] = Integer.parseInt(factoryConfig[j + 1]);
                 enemyModifiers[i] = Integer.parseInt(factoryConfig[j + 2]);
             }
-
-            bossConstructor = (Constructor<?>)
-               Class.forName(factoryConfig[0]).getConstructor();
 
             factory = new EnemyFactory(bossConstructor, enemyConstructors, 
                 enemyProbs, enemyModifiers);
@@ -85,7 +86,7 @@ public class ConfigHandler
         String[] playerConfig = getConfig("Player");
 
         String name;
-        int maxHp, gold;
+        int maxHp, gold, invSize;
         Item inWeapon, inArmour;
 
         try
@@ -95,9 +96,11 @@ public class ConfigHandler
             inWeapon = getStartingWeapon();
             inArmour = getStartingArmour();
             gold = Integer.parseInt(playerConfig[2]);
+            invSize = Integer.parseInt(playerConfig[3]);
 
             player =
-                new PlayerCharacter(name, maxHp, inWeapon, inArmour, gold);
+                new PlayerCharacter(name, maxHp, inWeapon, inArmour, gold,
+                    invSize);
         }
         catch(NumberFormatException | IndexOutOfBoundsException e)
         {
@@ -132,16 +135,17 @@ public class ConfigHandler
 
         switch(itemConfig[0])
         {
-            case "DefaultWeapon":
+            case "W":
             {
+                // Default weapon
                 String weaponType, damageType;
 
                 try
                 {
                     name = itemConfig[1];
-                    cost = Integer.parseInt(itemConfig[2]);
-                    minEffect = Integer.parseInt(itemConfig[3]);
-                    maxEffect = Integer.parseInt(itemConfig[4]);
+                    minEffect = Integer.parseInt(itemConfig[2]);
+                    maxEffect = Integer.parseInt(itemConfig[3]);
+                    cost = Integer.parseInt(itemConfig[4]);
                     weaponType = itemConfig[5];
                     damageType = itemConfig[6];
 
@@ -181,16 +185,17 @@ public class ConfigHandler
 
         switch(itemConfig[0])
         {
-            case "DefaultArmour":
+            case "A":
             {
+                // Default armour
                 String material;
 
                 try
                 {
                     name = itemConfig[1];
-                    cost = Integer.parseInt(itemConfig[2]);
-                    minEffect = Integer.parseInt(itemConfig[3]);
-                    maxEffect = Integer.parseInt(itemConfig[4]);
+                    minEffect = Integer.parseInt(itemConfig[2]);
+                    maxEffect = Integer.parseInt(itemConfig[3]);
+                    cost = Integer.parseInt(itemConfig[4]);
                     material = itemConfig[5];
 
                     item = new DefaultArmour(name, cost, minEffect, maxEffect,
@@ -275,6 +280,45 @@ public class ConfigHandler
         return loader;
     }
 
+    public EnchantmentHandler getEnchantmentHandler() throws ConfigException
+    {
+        EnchantmentHandler handler = null;
+        String[] handlerConfig = getConfig("Enchantments");
+
+        Constructor<?>[] constructors;
+
+        try
+        {
+            constructors = new Constructor<?>[handlerConfig.length];
+
+            for(int i = 0; i < constructors.length; i++)
+            {
+                constructors[i] = (Constructor<?>)
+                    Class.forName(handlerConfig[i])
+                    .getConstructor(Enchantable.class);
+            }
+
+            handler = new EnchantmentHandler(constructors);
+        }
+        catch(ReflectiveOperationException e)
+        {
+            String enchantsString = "";
+            for(int i = 0; i < handlerConfig.length; i++)
+            {
+                enchantsString += handlerConfig[i];
+                if(i + 1 != handlerConfig.length)
+                {
+                    enchantsString += ", ";
+                }
+            }
+            throw new ConfigException(String.format(
+                "Couldn't construct EnchantmentHandler for enchantments " +
+                "(%s); %s", enchantsString, e.getMessage()), e);
+        }
+
+        return handler;
+    }
+
     public String[] getConfig(String name) throws ConfigException
     {
         String line;
@@ -287,16 +331,27 @@ public class ConfigHandler
             try
             {
                 line = bfr.readLine();
-                elem = line.split("=", 1);
                 while(line != null)
                 {
+                    elem = line.split(" = ", 2);
+
                     // Make sure line isnt a comment or whitespace
-                    if(!(line.charAt(0) == '#' || line.equals("")))
+                    if(!(line.equals("") || line.charAt(0) == '#'))
                     {
                         // Remove spaces and make lowercase before keying
                         elem[0] = elem[0].toLowerCase().replaceAll(" ", "");
 
-                        configElem = elem[1].split(",");
+                        if(!elem[1].contains(","))
+                        {
+                            // If it's just a single element config
+                            configElem = new String[] {elem[1]};
+                        }
+                        else
+                        {
+                            // If it's a tuple of configurations
+                            configElem = elem[1].split(",");
+                        }
+
                         for(int i = 0; i < configElem.length; i++)
                         {
                             // Remove surrounding whitespace
@@ -307,7 +362,6 @@ public class ConfigHandler
                     }
 
                     line = bfr.readLine();
-                    elem = line.split(" = ", 1);
                 }
 
                 bfr.close();
@@ -318,7 +372,15 @@ public class ConfigHandler
                     "Couldn't get configuration for %s; File I/O error; %s",
                     name, e.getMessage()), e);
             }
+            catch(NullPointerException | IndexOutOfBoundsException e)
+            {
+                throw new ConfigException(String.format(
+                    "Couldn't get configuration for %s; " +
+                    "Invalid config file format", name), e);
+            }
         }
+
+        name = name.toLowerCase().replaceAll(" ", "");
 
         if(!config.containsKey(name))
         {
@@ -328,73 +390,6 @@ public class ConfigHandler
         }
 
         // Remove spaces and make lowercase before keying
-        return config.get(name.toLowerCase().replaceAll(" ", ""));
+        return config.get(name);
     }
-
-    /*
-    public static UserInterface uiFactory(String className)
-        throws ConfigException
-    {
-        Class<?> newClass;
-        Class<?> uiSuperClass;
-        UserInterface newObj;
-        
-        try
-        {
-            uiSuperClass = Class.forName("View.UserInterface");
-            newClass = Class.forName(className);
-        }
-        catch(ClassNotFoundException e)
-        {
-            throw new ConfigException(
-                String.format("Invalid class name %s", className, e));
-        }
-        catch(ClassCastException e)
-        {
-            throw new ConfigException(
-                String.format("Error creating objects %s", e.getMessage(), e));
-        }
-
-        if(uiSuperClass.isAssignableFrom(newClass))
-        {
-            try
-            {
-                newObj = (UserInterface)
-                    newClass.getDeclaredConstructor().newInstance();
-            }
-            catch(IllegalAccessException e)
-            {
-                throw new ConfigException(String.format(
-                    "Error creating objects %s", e.getMessage(), e));
-            }
-            catch(IllegalArgumentException e)
-            {
-                throw new ConfigException(String.format(
-                    "Error creating objects %s", e.getMessage(), e));
-            }
-            catch(InstantiationException e)
-            {
-                throw new ConfigException(String.format(
-                    "Error creating objects %s", e.getMessage(), e));
-            }
-            catch(InvocationTargetException e)
-            {
-                throw new ConfigException(String.format(
-                    "Error creating objects %s", e.getMessage(), e));
-            }
-            catch(NoSuchMethodException e)
-            {
-                throw new ConfigException(String.format(
-                    "Error creating objects %s", e.getMessage(), e));
-            }
-        }
-        else
-        {
-            throw new ConfigException(String.format(
-                "Specified UI class %s is not a UserInterface", className, e));
-        }
-
-        return newObj;
-    }
-     */
 }

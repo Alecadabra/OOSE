@@ -32,14 +32,14 @@ public class Dragon extends Enemy
             {
                 // Damage inflicted will double (25% chance)
                 dmg = getBaseDamage() * 2;
-                // TODO Notify view
+                logAction("Dragon used special ability: Double Damage!");
             }
             else
             {
                 // It will recover 10 health (10% chance)
                 dmg = getBaseDamage();
                 heal(10);
-                // TODO Notify view
+                logAction("Dragon used special ability: Recover health!");
 
             }
         }

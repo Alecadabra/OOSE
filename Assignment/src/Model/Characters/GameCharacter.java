@@ -4,6 +4,7 @@ import static java.lang.Math.max;
 import static java.lang.Math.min;
 
 import Model.Items.Item;
+import View.UserInterface;
 
 /**
  * Represents a game character.
@@ -14,6 +15,7 @@ public abstract class GameCharacter
     protected int maxHp;
     protected int hp;
     protected int gold;
+    protected UserInterface ui;
 
     /**
      * Constructor.
@@ -27,6 +29,7 @@ public abstract class GameCharacter
         this.maxHp = maxHp;
         this.hp = maxHp;
         this.gold = gold;
+        this.ui = null;
     }
 
     /**
@@ -51,7 +54,7 @@ public abstract class GameCharacter
     public void attack(GameCharacter character) throws CharacterException
     {
         character.defend(getDamage());
-        // TODO notify view
+        logAction(String.format("%s attacked %s", this.name, character.name));
     }
 
     /**
@@ -64,8 +67,10 @@ public abstract class GameCharacter
      */
     public void defend(int damage) throws CharacterException
     {
-        hp -= max(0, damage - getDefence());
-        // TODO notify view
+        int dmgTaken = max(0, damage - getDefence());
+
+        hp -= dmgTaken;
+        logAction(String.format("%s took %d damage", this.name, dmgTaken));
     }
 
     /**
@@ -75,8 +80,11 @@ public abstract class GameCharacter
      */
     public void heal(int amount)
     {
-        hp = min(maxHp, hp + amount);
-        // TODO notify view
+        int newHp = min(maxHp, hp + amount);
+
+        logAction(String.format("%s recovered %d health", this.name,
+            newHp - hp));
+        this.hp = newHp;
     }
 
     /**
@@ -89,7 +97,20 @@ public abstract class GameCharacter
     {
         heal(item.getHealing());
         defend(item.getDamage());
-        // TODO notify view
+        logAction(String.format("%s used on %s", item.getName(), this.name));
+    }
+
+    public void setLog(UserInterface ui)
+    {
+        this.ui = ui;
+    }
+
+    protected void logAction(String message)
+    {
+        if(this.ui != null)
+        {
+            ui.log(message);
+        }
     }
 
     /**

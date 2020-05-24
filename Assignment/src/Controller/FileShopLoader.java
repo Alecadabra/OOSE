@@ -17,8 +17,8 @@ import Model.Items.DefaultWeapon;
 /**
  * Extends a ShopLoader to iterate over a file of Items. Items must be
  * separated by newlines and attributes must be separated by a comma and a
- * space. Configured to read DefaultWeapon ('W'), DefaultArmour ('A'),
- * DefaultPotion ('P', with 'D' for damage or 'H' for healh). Eg. {@code W, 
+ * space. Configured to read DefaultWeapon ("W"), DefaultArmour ("A"),
+ * DefaultPotion ("P", with "D" for damage or "H" for healh). Eg. {@code W, 
  * Short Sword, 5, 9, 10, slashing, Sword} for a default weapon
  * called {@code Short Sword} with 5-9 damage, cost of 10 gold,
  * {@code slashing} damage and type {@code Sword}.
@@ -65,30 +65,35 @@ public class FileShopLoader extends ShopLoader
     {
         Item item;
 
-        switch(line.charAt(0))
+        // Select the item type
+        switch(elem[0])
         {
-            case 'W':
+            case "W":
             {
+                // W = Default weapon
                 item = readDefaultWeapon();
                 break;
             }
-            case 'A':
+            case "A":
             {
+                // A = Default armour
                 item = readDefaultArmour();
                 break;
             }
-            case 'P':
+            case "P":
             {
+                // P = Default potion
                 item = readPotion();
                 break;
             }
             default:
             {
-                throw new NoSuchElementException(
-                    "Invalid values in input file; " + line);
+                throw new NoSuchElementException(String.format(
+                    "Invalid values in input file (item type = %s)", elem[0]));
             }
         }
 
+        // Read next line
         readLine();
         
         return item;

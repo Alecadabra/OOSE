@@ -32,36 +32,35 @@ public class SimpleCLI implements UserInterface
     }
 
     @Override
-    public void showList(String title, List<String> list)
+    public void showList(String title, List<?> list)
     {
         System.out.println(title);
 
-        for(String s : list)
+        for(Object o : list)
         {
-            System.out.println(s);
+            System.out.println(o.toString());
         }
     }
 
     @Override
     public String inputFrom(String prompt, List<String> options)
     {
-        String in = null;
-        Iterator<String> iter = options.iterator();
+        String key = null;
+        Iterator<String> iter;
         String match = null;
         String curr;
-
-        // TODO clean up :)
 
         while(match == null)
         {
             System.out.print(prompt + ": ");
-            in = sc.nextLine().toLowerCase().trim();
+            key = sc.nextLine().toLowerCase().trim();
+            iter = options.iterator();
 
             while(iter.hasNext() && match == null)
             {
                 curr = iter.next().toLowerCase().trim();
 
-                if(curr.contains(in))
+                if(curr.contains(key))
                 {
                     match = curr;
                 }
@@ -73,7 +72,7 @@ public class SimpleCLI implements UserInterface
             }
         }
 
-        return in;
+        return match;
     }
 
     @Override

@@ -25,10 +25,10 @@ public class PlayerCharacter extends GameCharacter
      * @param gold Gold in posession
      */
     public PlayerCharacter(String name, int maxHp, Item inWeapon, Item inArmour,
-        int gold) throws CharacterException
+        int gold, int invSize) throws CharacterException
     {
         super(name, maxHp, gold);
-        this.inv = new Inventory(15); // TODO make inv size based on config
+        this.inv = new Inventory(invSize);
         this.weapon = inWeapon.getDescription();
         this.armour = inArmour.getDescription();
         try

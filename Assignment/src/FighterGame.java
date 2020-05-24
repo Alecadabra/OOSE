@@ -2,6 +2,7 @@ import java.util.Scanner;
 
 import Controller.ConfigHandler;
 import Controller.Controller;
+import Controller.EnchantmentHandler;
 import Controller.ShopLoader;
 import Model.Items.ShopStorage;
 import View.UserInterface;
@@ -16,6 +17,7 @@ public class FighterGame
         String configFile;
         Controller controller;
         ShopLoader shopLoader;
+        EnchantmentHandler enchantHandler;
         ShopStorage shopStorage;
 
         if(args.length == 0)
@@ -39,10 +41,12 @@ public class FighterGame
             // Get the user interface
             ui = config.getUI();
 
-            // Set up shop - get the loader from confighandler, make a new
-            // shop storage, load the data into the shopstorage
+            // Set up shop - get the loader from confighandler, get the
+            // enchantment handler, make a new shop storage, load the data 
+            // into the shopstorage
             shopLoader = config.getShopLoader();
-            shopStorage = new ShopStorage(shopLoader);
+            enchantHandler = config.getEnchantmentHandler();
+            shopStorage = new ShopStorage(shopLoader, enchantHandler);
             shopStorage.load();
 
             // Set up the controller and run the game!
@@ -56,6 +60,7 @@ public class FighterGame
         }
         catch(Exception e)
         {
+            // Last ditch exception handling
             try
             {
                 // Try print the error through the UI if it's currently working
@@ -66,6 +71,10 @@ public class FighterGame
             {
                 // Just print it without the fancy UI
                 System.out.println("Error - " + e.getMessage());
+
+                // TODO remove
+                System.out.println();
+                e.printStackTrace();
             }
         }
     }

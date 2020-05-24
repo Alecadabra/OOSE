@@ -180,6 +180,12 @@ public abstract class Item
 
         return equal;
     }
+
+    @Override
+    public String toString()
+    {
+        return getDescription();
+    }
     
     /**
      * Verify legality of a string attribute of an Item, for example a name.

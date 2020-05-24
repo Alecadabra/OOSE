@@ -10,7 +10,7 @@ public interface UserInterface
 
     public void log(String message);
 
-    public void showList(String title, List<String> list);
+    public void showList(String title, List<?> list);
 
     public String inputFrom(String prompt, List<String> options);
 

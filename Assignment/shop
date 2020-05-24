@@ -1,0 +1,9 @@
+W, Short Sword, 5, 9, 10, slashing, Sword
+W, Great Axe, 8, 15, 15, slashing, Axe
+W, Magic Staff, 1, 40, 20, Bludgeoning, Staff
+A, Leather Armour, 5, 15, 10, Leather
+A, Chain Mail, 10, 18, 50, Chain
+A, Dragon Skin, 20, 30, 80, Dragon Scale
+P, Potion of Healing, 5, 10, 12, H
+P, Potion of Greater Healing, 15, 20, 20, H
+P, Explosive Potion, 20, 20, 20, D

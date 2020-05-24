@@ -1,0 +1,14 @@
+# UserInterface
+UserInterface = SimpleCLI
+
+# Player
+Player = playerName, 10, 100, 15
+Starting weapon = W, Short Sword, 5, 9, 10, slashing, Sword
+starting armour = A, Leather Armour, 5, 15, 10, Leather
+
+# Shop and Enchantments
+ShopLoader = FileShopLoader, shop
+Enchantments = Model.Items.Enchantments.DamageAdd2, Model.Items.Enchantments.DamageAdd5, Model.Items.Enchantments.FireDamage, Model.Items.Enchantments.PowerUp
+
+# Enemies
+Enemies = Model.Characters.Dragon, Model.Characters.Slime, 50, -5, Model.Characters.Goblin, 30, -5, Model.Characters.Ogre, 20, -5
