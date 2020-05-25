@@ -20,6 +20,18 @@ public class DamagePotion extends DefaultPotion
         super(name, cost, minDamage, maxDamage);
     }
 
+    public Item clone()
+    {
+        DamagePotion clone = null;
+        try
+        {
+            clone = new DamagePotion(name, cost, minEffect, maxEffect);
+        }
+        catch(ItemException e) {}  // Should never happen
+
+        return (Item)clone;
+    }
+
     /**
      * Gets the description string of a damage potion, consisting of it's name
      * and damage, eg: {@code Explosive Potion (20-20 damage)}.

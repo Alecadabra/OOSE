@@ -40,6 +40,19 @@ public class DefaultWeapon extends Enchantable
         }
     }
 
+    public Item clone()
+    {
+        DefaultWeapon clone = null;
+        try
+        {
+            clone = new DefaultWeapon(
+                name, cost, minEffect, maxEffect, weaponType, damageType);
+        }
+        catch(ItemException e) {}  // Should never happen
+
+        return (Item)clone;
+    }
+
     /**
      * Gets the description string of a weapon, consisting of it's name,
      * weapon type, damage and damage type, eg:

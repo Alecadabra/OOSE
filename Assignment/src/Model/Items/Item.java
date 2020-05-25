@@ -42,6 +42,11 @@ public abstract class Item
     }
 
     /**
+     * Get a copy of this object.
+     */
+    public abstract Item clone();
+
+    /**
      * Get the name of the item.
      * @return Item name string
      */
@@ -172,7 +177,7 @@ public abstract class Item
 
         if(o instanceof Item)
         {
-            if(((Item)o).getDescription().equals(getDescription()))
+            if(((Item)o).getName().equals(getName()))
             {
                 equal = true;
             }

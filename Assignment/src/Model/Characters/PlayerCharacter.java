@@ -29,8 +29,8 @@ public class PlayerCharacter extends GameCharacter
     {
         super(name, maxHp, gold);
         this.inv = new Inventory(invSize);
-        this.weapon = inWeapon.getDescription();
-        this.armour = inArmour.getDescription();
+        this.weapon = inWeapon.getName();
+        this.armour = inArmour.getName();
         try
         {
             inv.add(inWeapon);
@@ -114,17 +114,17 @@ public class PlayerCharacter extends GameCharacter
     /**
      * Remove an item from the inventory and return it.
      * 
-     * @param desc The getDescription() of the item to remove
+     * @param desc The getName() of the item to remove
      * @return Item removed
      * @throws CharacterException If an error occured
      */
-    public Item removeItem(String desc) throws CharacterException
+    public Item removeItem(String name) throws CharacterException
     {
         Item item;
 
         try
         {
-            item = inv.remove(desc);
+            item = inv.remove(name);
         }
         catch(ItemException e)
         {
@@ -138,17 +138,17 @@ public class PlayerCharacter extends GameCharacter
     /**
      * Get an item from the inventory.
      * 
-     * @param desc The getDescription() of the item to remove
+     * @param name The getName() of the item to remove
      * @return The item
      * @throws CharacterException If an error occured
      */
-    public Item getItem(String desc) throws CharacterException
+    public Item getItem(String name) throws CharacterException
     {
         Item item;
 
         try
         {
-            item = inv.get(desc);
+            item = inv.get(name);
         }
         catch(ItemException e)
         {
@@ -167,4 +167,56 @@ public class PlayerCharacter extends GameCharacter
     {
         return inv.getAll();
     }
+
+    /**
+     * Get the number of free slots in the inventory.
+     * @return Free slots
+     */
+    public int getFreeSlots()
+    {
+        return inv.getSlots();
+    }
+
+    public void equip(String itemStr)
+    {
+        Item item;
+
+        try
+        {
+            item = inv.get(itemStr);
+
+            if(item.isEquipabble())
+            {
+                this.weapon = itemStr;
+            }
+        }
+        catch(ItemException e)
+        {
+            // Do nothing, keep the currently equipped item
+        }
+    }
+
+    public void wear(String itemStr)
+    {
+        Item item;
+
+        try
+        {
+            item = inv.get(itemStr);
+
+            if(item.isWearable())
+            {
+                this.armour = itemStr;
+            }
+        }
+        catch(ItemException e)
+        {
+            // Do nothing, keep the currently equipped item
+        }
+    }
+
+    public void kill()
+    {
+        this.hp = 0;
+	}
 }

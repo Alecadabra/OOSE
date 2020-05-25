@@ -2,8 +2,6 @@ import java.util.Scanner;
 
 import Controller.ConfigHandler;
 import Controller.Controller;
-import Controller.EnchantmentHandler;
-import Controller.ShopLoader;
 import Model.Items.ShopStorage;
 import View.UserInterface;
 import View.UserInterfaceException;
@@ -16,8 +14,6 @@ public class FighterGame
         ConfigHandler config;
         String configFile;
         Controller controller;
-        ShopLoader shopLoader;
-        EnchantmentHandler enchantHandler;
         ShopStorage shopStorage;
 
         if(args.length == 0)
@@ -44,9 +40,8 @@ public class FighterGame
             // Set up shop - get the loader from confighandler, get the
             // enchantment handler, make a new shop storage, load the data 
             // into the shopstorage
-            shopLoader = config.getShopLoader();
-            enchantHandler = config.getEnchantmentHandler();
-            shopStorage = new ShopStorage(shopLoader, enchantHandler);
+            shopStorage = new ShopStorage(
+                config.getShopLoader(), config.getEnchantmentHandler());
             shopStorage.load();
 
             // Set up the controller and run the game!
@@ -56,7 +51,7 @@ public class FighterGame
                 config.getEnemyFactory(),
                 shopStorage
             );
-            controller.run();
+            controller.execute();
         }
         catch(Exception e)
         {

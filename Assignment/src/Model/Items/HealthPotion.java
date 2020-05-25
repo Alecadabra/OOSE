@@ -22,6 +22,18 @@ public class HealthPotion extends DefaultPotion
         super(name, cost, minHealing, maxHealing);
     }
 
+    public Item clone()
+    {
+        HealthPotion clone = null;
+        try
+        {
+            clone = new HealthPotion(name, cost, minEffect, maxEffect);
+        }
+        catch(ItemException e) {}  // Should never happen
+
+        return (Item)clone;
+    }
+
     /**
      * Gets the description string of a health potion, consisting of it's name
      * and healing, eg: {@code Potion of Healing (5-10 healing)}.

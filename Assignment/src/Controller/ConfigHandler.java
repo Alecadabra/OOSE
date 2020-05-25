@@ -146,8 +146,8 @@ public class ConfigHandler
                     minEffect = Integer.parseInt(itemConfig[2]);
                     maxEffect = Integer.parseInt(itemConfig[3]);
                     cost = Integer.parseInt(itemConfig[4]);
-                    weaponType = itemConfig[5];
-                    damageType = itemConfig[6];
+                    damageType = itemConfig[5];
+                    weaponType = itemConfig[6];
 
                     item = new DefaultWeapon(name, cost, minEffect, maxEffect,
                         weaponType, damageType);

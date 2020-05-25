@@ -12,7 +12,7 @@ public interface UserInterface
 
     public void showList(String title, List<?> list);
 
-    public String inputFrom(String prompt, List<String> options);
+    public String inputFrom(String prompt, List<?> options);
 
     public String inputUnchecked(String prompt);
 }

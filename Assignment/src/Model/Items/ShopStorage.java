@@ -1,6 +1,9 @@
 package Model.Items;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
+import java.util.List;
 
 import Controller.EnchantmentHandler;
 import Controller.EnchantmentHandlerException;
@@ -41,6 +44,30 @@ public class ShopStorage
         {
             throw new ItemException(e.getMessage(), e);
         }
+    }
+
+    public List<Item> getItems()
+    {
+        return Collections.unmodifiableList(this.items);
+    }
+
+    public Item getItem(String name)
+    {
+        Item foundItem = null;
+        Iterator<Item> iter = items.iterator();
+        Item curr;
+
+        while(foundItem == null && iter.hasNext())
+        {
+            curr = iter.next();
+            if(curr.getName().toLowerCase().trim().contains(
+                name.toLowerCase().trim()))
+            {
+                foundItem = curr;
+            }
+        }
+
+        return foundItem;
     }
 
     /**

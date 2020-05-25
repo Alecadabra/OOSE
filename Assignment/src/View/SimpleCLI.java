@@ -16,7 +16,8 @@ public class SimpleCLI implements UserInterface
     @Override
     public void heading(String heading)
     {
-        System.out.println("\n\n" + heading + "\n");
+        System.out.println("\n-------------------------\n " + heading + 
+            "\n-------------------------\n");
     }
 
     @Override
@@ -28,39 +29,46 @@ public class SimpleCLI implements UserInterface
     @Override
     public void log(String message)
     {
-        System.out.println(message);
+        System.out.println("    " + message);
     }
 
     @Override
     public void showList(String title, List<?> list)
     {
-        System.out.println(title);
+        System.out.println("\n" + title);
 
         for(Object o : list)
         {
-            System.out.println(o.toString());
+            System.out.println("    " + o.toString());
         }
     }
 
     @Override
-    public String inputFrom(String prompt, List<String> options)
+    public String inputFrom(String prompt, List<?> options)
     {
-        String key = null;
-        Iterator<String> iter;
+        String key = "";
+        Iterator<?> iter;
         String match = null;
         String curr;
 
         while(match == null)
         {
-            System.out.print(prompt + ": ");
-            key = sc.nextLine().toLowerCase().trim();
+            System.out.print(prompt + ":\n    ");
+            key = "";
+            while(key == "")
+            {
+                if(sc.hasNextLine())
+                {
+                    key = sc.nextLine().toLowerCase().trim();
+                }
+            }
             iter = options.iterator();
 
             while(iter.hasNext() && match == null)
             {
-                curr = iter.next().toLowerCase().trim();
+                curr = iter.next().toString().toLowerCase().trim();
 
-                if(curr.contains(key))
+                if(key.contains(curr))
                 {
                     match = curr;
                 }
@@ -68,7 +76,7 @@ public class SimpleCLI implements UserInterface
             
             if(match == null)
             {
-                System.out.println("Invalid input");
+                System.out.println("    Invalid input");
             }
         }
 
@@ -78,7 +86,7 @@ public class SimpleCLI implements UserInterface
     @Override
     public String inputUnchecked(String prompt)
     {
-        System.out.print(prompt + ": ");
+        System.out.print(prompt + ":\n    ");
 
         return sc.nextLine().trim();
     }    

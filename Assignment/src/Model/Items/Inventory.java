@@ -33,7 +33,7 @@ public class Inventory
     public void add(Item item) throws ItemException
     {
         LinkedList<Item> list;
-        String key = item.getDescription();
+        String key = item.getName();
 
         if(count == maxSize)
         {
@@ -59,8 +59,8 @@ public class Inventory
 
     /**
      * Get an item from the inventory without removing it.
-     * @param key The getDescription() of the item
-     * @return The item matching the description
+     * @param key The getName() of the item
+     * @return The item matching the name
      * @throws ItemException If the item does not exist
      */
     public Item get(String key) throws ItemException
@@ -81,7 +81,7 @@ public class Inventory
 
     /**
      * Get an item from the inventoyr and remove it
-     * @param key The getDescription() of the item
+     * @param key The getName() of the item
      * @return The item matching the description
      * @throws ItemException If the item does not exist
      */
@@ -120,5 +120,14 @@ public class Inventory
         }
 
         return Collections.unmodifiableList(all);
+    }
+
+    /**
+     * Get remaining number of slots.
+     * @return Remaining slots
+     */
+    public int getSlots()
+    {
+        return maxSize - count;
     }
 }

@@ -34,6 +34,19 @@ public class DefaultArmour extends Item
         
     }
 
+    public Item clone()
+    {
+        DefaultArmour clone = null;
+        try
+        {
+            clone = new DefaultArmour(
+                name, cost, minEffect, maxEffect, material);
+        }
+        catch(ItemException e) {}  // Should never happen
+
+        return (Item)clone;
+    }
+
     /**
      * Gets the description string of an armour, consisting of it's name and
      * defence, eg: {@code Chain Mail (10-18 defence)}.

@@ -1,5 +1,6 @@
 package Model.Items.Enchantments;
 
+import Model.Items.Item;
 import Model.Items.ItemException;
 
 /**
@@ -27,6 +28,18 @@ public abstract class Enchantment extends Enchantable
         this.next = next;
     }
 
+    public Item clone()
+    {
+        if(this.next == null)
+        {
+            return null;
+        }
+        else
+        {
+            return next.clone();
+        }
+    }
+
     @Override
     public String getName()
     {
@@ -36,7 +49,8 @@ public abstract class Enchantment extends Enchantable
         }
         else
         {
-            return next.getName();
+            return String.format("%s [%s]",
+                next.getName(), name);
         }
     }
     
@@ -49,19 +63,40 @@ public abstract class Enchantment extends Enchantable
     @Override
     public String getDescription()
     {
-        return String.format("%s [+ %s enchantment]",
-            next.getDescription(), name);
+        if(this.next == null)
+        {
+            return getName();
+        }
+        else
+        {
+            return String.format("%s [%s]",
+                next.getDescription(), name);
+        }
     }
 
     @Override
     public int getCost()
     {
-        return next.getCost() + cost;
+        if(this.next == null)
+        {
+            return cost;
+        }
+        else
+        {
+            return next.getCost() + cost;
+        }
     }
 
     @Override
     public int getSell()
     {
-        return next.getSell() + getSell();
+        if(this.next == null)
+        {
+            return cost / 2;
+        }
+        else
+        {
+            return next.getSell() + cost / 2;
+        }
     }
 }
