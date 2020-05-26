@@ -1,5 +1,6 @@
 package Model.Characters;
 
+import java.util.Arrays;
 import java.util.List;
 
 import Model.Items.Inventory;
@@ -177,6 +178,43 @@ public class PlayerCharacter extends GameCharacter
         return inv.getSlots();
     }
 
+    public int getUsedSlots()
+    {
+        return inv.getUsed();
+    }
+
+    public int getCapacity()
+    {
+        return inv.getCapacity();
+    }
+
+    public void kill()
+    {
+        this.hp = 0;
+	}
+
+    /**
+     * Get a list of the player's attributes to show in the user interface.
+     * @return List<String> of name, health, gold, weapon and armour
+     */
+    public List<String> getAttributes()
+    {
+        try
+        {
+            return Arrays.asList(
+                "Name: " + this.name,
+                "Health: " + this.hp + "/" + this.maxHp,
+                "Gold: " + this.gold,
+                "Weapon: " + inv.get(this.weapon).getDescription(),
+                "Armour: " + inv.get(this.armour).getDescription()
+            );
+        }
+        catch(ItemException e)
+        {
+            return null;
+        }
+    }
+    
     public void equip(String itemStr)
     {
         Item item;
@@ -214,9 +252,38 @@ public class PlayerCharacter extends GameCharacter
             // Do nothing, keep the currently equipped item
         }
     }
-
-    public void kill()
+    
+    public boolean isEquipped(String name)
     {
-        this.hp = 0;
-	}
+        if(this.weapon.equals(name))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public String getEquippedName()
+    {
+        return weapon;
+    }
+    
+    public boolean isWearing(String name)
+    {
+        if(this.armour.equals(name))
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+    
+    public String getWearingName()
+    {
+        return armour;
+    }
 }

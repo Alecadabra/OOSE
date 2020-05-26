@@ -19,6 +19,14 @@ public abstract class ControllerScreen
 
     public void run()
     {
+        ui.clear();
+
+        ui.showList("Player Attributes", player.getAttributes());
+
+        ui.showList(String.format(
+            "Inventory (%d/%d)", player.getUsedSlots(), player.getCapacity()),
+            player.getAllItems());
+
         ui.heading(name);
 
         execute();

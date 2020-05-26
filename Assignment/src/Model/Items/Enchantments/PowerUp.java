@@ -2,6 +2,7 @@ package Model.Items.Enchantments;
 
 import static java.lang.Math.round;
 
+import Model.Items.Item;
 import Model.Items.ItemException;
 
 /**
@@ -18,6 +19,25 @@ public class PowerUp extends Enchantment
     public PowerUp(Enchantable next) throws ItemException
     {
         super("Power-Up", 10, next);
+    }
+
+    public Item clone()
+    {
+        if(this.next == null)
+        {
+            try
+            {
+                return new PowerUp(null);
+            }
+            catch(ItemException e)
+            {
+                return null;
+            }
+        }
+        else
+        {
+            return next.clone();
+        }
     }
 
     @Override

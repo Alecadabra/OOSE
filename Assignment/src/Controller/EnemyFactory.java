@@ -76,77 +76,14 @@ public class EnemyFactory
         
         return enemy;  
     }
-}
 
-/*
-public class EnemyFactory
-{
-    private int bossProb;
-    private int[] enemyProbs;
-    Constructor<?> bossConstructor;
-    Constructor<?>[] enemyConstructors;
-
-    public EnemyFactory()
+    /**
+     * Checks if an enemy is the boss enemy.
+     * @param enemy Enemy to check
+     * @return True if the specified enemy is the boss
+     */
+    public boolean isBoss(Enemy enemy)
     {
-        slimeProb = 50;
-        goblinProb = 30;
-        ogreProb = 20;
-        dragonProb = 0;
-    }
-
-    public Enemy getEnemy()
-    {
-        int rand = (int)(random() * 100);
-        Enemy enemy = null;
-
-        try
-        {
-            Constructor<?> constructor =
-                Class.forName("Dragon").getConstructor();
-        }
-        catch(ReflectiveOperationException e)
-        {
-            throw new Exception("dfd");
-        }
-
-        // Check which enemy to construct
-        if(rand < slimeProb)
-        {
-            enemy = new Slime();
-        }
-        else if(rand < slimeProb + goblinProb)
-        {
-            enemy = new Goblin();
-        }
-        else if(rand < slimeProb + goblinProb + ogreProb)
-        {
-            enemy = new Ogre();
-        }
-        else if(rand < slimeProb + goblinProb + ogreProb + dragonProb)
-        {
-            enemy = new Dragon();
-        }
-
-        // Increment probabilites
-        if(slimeProb >= 10)
-        {
-            slimeProb -= 5;
-            dragonProb += 5;
-        }
-
-        if(goblinProb >= 10)
-        {
-            goblinProb -= 5;
-            dragonProb += 5;
-        }
-
-        if(ogreProb >= 10)
-        {
-            ogreProb -= 5;
-            dragonProb += 5;
-        }
-
-        return enemy;  
+        return bossConstructor.getDeclaringClass().equals(enemy.getClass());
     }
 }
-*/

@@ -18,21 +18,45 @@ public class WeaponSelection extends ControllerScreen
     void execute()
     {
         List<Item> invItems = player.getAllItems();
-        ArrayList<Item> equippableItems = new ArrayList<>();
+        ArrayList<String> equippableItems = new ArrayList<>();
+        ArrayList<String> inputOptions = new ArrayList<>();
         String choice;
 
         for(Item curr : invItems)
         {
             if(curr.isEquipabble())
             {
-                equippableItems.add(curr);
+                if(curr.getName().contains("["))
+                {
+                    // Enchanted item - add tip on how to select
+                    equippableItems.add(curr.getDescription() +
+                        " *Enter '" + curr.getName() + "'*");
+                }
+                else
+                {
+                    equippableItems.add(curr.getDescription());
+                }
+                
+                inputOptions.add(curr.getName());
             }
         }
 
+        inputOptions.add("exit");
+        inputOptions.add("cancel");
+        inputOptions.add("q");
+
         ui.showList("Equippable Items", equippableItems);
         choice = ui.inputFrom(
-            "Select item to equip (Exact name)", equippableItems);
-        player.equip(choice);
-        ui.log("Equipped " + choice);
+            "Select item to equip, or cancel.",
+            inputOptions);
+
+        if(!(choice.equals("exit") || choice.equals("cancel") ||
+            choice.equals("q")))
+        {
+            player.equip(choice);
+            ui.log("Equipped " + choice);
+
+            ui.inputUnchecked("Press Enter to continue");
+        }
     }
 }

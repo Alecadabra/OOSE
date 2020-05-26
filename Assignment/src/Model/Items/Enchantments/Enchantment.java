@@ -99,4 +99,56 @@ public abstract class Enchantment extends Enchantable
             return next.getSell() + cost / 2;
         }
     }
+
+    @Override
+    public boolean isEnchantable()
+    {
+        if(next == null)
+        {
+            return false;
+        }
+        else
+        {
+            return true;
+        }
+    }
+
+    @Override
+    public boolean isEquipabble()
+    {
+        if(next == null)
+        {
+            return false;
+        }
+        else
+        {
+            return next.isEquipabble();
+        }
+    }
+
+    @Override
+    public boolean isWearable()
+    {
+        if(next == null)
+        {
+            return false;
+        }
+        else
+        {
+            return next.isWearable();
+        }
+    }
+
+    @Override
+    public boolean isUsable()
+    {
+        if(next == null)
+        {
+            return false;
+        }
+        else
+        {
+            return next.isUsable();
+        }
+    }
 }

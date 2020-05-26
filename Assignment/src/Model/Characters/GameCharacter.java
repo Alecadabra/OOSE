@@ -53,8 +53,8 @@ public abstract class GameCharacter
      */
     public void attack(GameCharacter character) throws CharacterException
     {
-        character.defend(getDamage());
         logAction(String.format("%s attacked %s", this.name, character.name));
+        character.defend(getDamage());
     }
 
     /**
@@ -69,8 +69,18 @@ public abstract class GameCharacter
     {
         int dmgTaken = max(0, damage - getDefence());
 
-        hp -= dmgTaken;
+        hp = max(0, hp - dmgTaken);
         logAction(String.format("%s took %d damage", this.name, dmgTaken));
+        
+        if(hp < 1)
+        {
+            logAction(String.format("%s has died!", name));
+        }
+        else
+        {
+            logAction(String.format("%s has %d health remaining",
+                this.name, this.hp));
+        }
     }
 
     /**
@@ -95,9 +105,21 @@ public abstract class GameCharacter
      */
     public void use(Item item) throws CharacterException
     {
-        heal(item.getHealing());
-        defend(item.getDamage());
+        int healing, damage;
+
         logAction(String.format("%s used on %s", item.getName(), this.name));
+        
+        healing = item.getHealing();
+        if(healing > 0)
+        {
+            heal(item.getHealing());
+        }
+
+        damage = item.getDamage();
+        if(damage > 0)
+        {
+            defend(item.getDamage());
+        }
     }
 
     public void setLog(UserInterface ui)
@@ -174,5 +196,11 @@ public abstract class GameCharacter
         {
             gold -= inGold;
         }
+    }
+
+    @Override
+    public String toString()
+    {
+        return this.name;
     }
 }

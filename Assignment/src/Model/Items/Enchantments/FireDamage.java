@@ -3,6 +3,7 @@ package Model.Items.Enchantments;
 import static java.lang.Math.random;
 import static java.lang.Math.round;
 
+import Model.Items.Item;
 import Model.Items.ItemException;
 
 /**
@@ -19,6 +20,25 @@ public class FireDamage extends Enchantment
     public FireDamage(Enchantable next) throws ItemException
     {
         super("Fire Damage", 20, next);
+    }
+
+    public Item clone()
+    {
+        if(this.next == null)
+        {
+            try
+            {
+                return new FireDamage(null);
+            }
+            catch(ItemException e)
+            {
+                return null;
+            }
+        }
+        else
+        {
+            return next.clone();
+        }
     }
 
     @Override

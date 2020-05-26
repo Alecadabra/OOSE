@@ -130,4 +130,14 @@ public class Inventory
     {
         return maxSize - count;
     }
+
+    public int getUsed()
+    {
+        return count;
+    }
+
+    public int getCapacity()
+    {
+        return maxSize;
+    }
 }

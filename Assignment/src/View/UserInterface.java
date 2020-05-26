@@ -4,6 +4,8 @@ import java.util.List;
 
 public interface UserInterface
 {
+    public void clear();
+
     public void heading(String heading);
     
     public void display(String content);

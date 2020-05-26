@@ -1,7 +1,6 @@
 package Controller.ControllerScreens;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import Controller.EnchantmentHandler;
@@ -14,62 +13,18 @@ import Model.Items.Enchantments.Enchantable;
 import Model.Items.Enchantments.Enchantment;
 import View.UserInterface;
 
-public class Shop extends ControllerScreen
+public class Buy extends ControllerScreen
 {
     private ShopStorage shopStorage;
-
-    public Shop(UserInterface ui, PlayerCharacter player,
+    
+    public Buy(UserInterface ui, PlayerCharacter player,
         ShopStorage shopStorage)
     {
-        super("Shop", ui, player);
+        super("Item Shop", ui, player);
         this.shopStorage = shopStorage;
     }
 
-    @Override
     void execute()
-    {
-        boolean exit = false;
-        List<String> inputOptions = Arrays.asList(
-            "purchase", "buy", "shop",
-            "sell",
-            "exit", "cancel", "quit", "q"
-        );
-        String choice;
-
-        while(!exit)
-        {
-            ui.display("Welcome to the shop");
-            choice = ui.inputFrom(
-                "You can shop for items to buy, sell items or exit",
-                inputOptions);
-
-            switch(choice)
-            {
-                case "purchase":
-                case "buy":
-                case "shop":
-                {
-                    purchaseItem();
-                    break;
-                }
-                case "sell":
-                {
-                    sellItem();
-                    break;
-                }
-                case "exit":
-                case "cancel":
-                case "quit":
-                case "q":
-                {
-                    exit = true;
-                    break;
-                }
-            }
-        }
-    }
-
-    private void purchaseItem()
     {
         List<Item> shopItems = shopStorage.getItems();
         ArrayList<String> itemsWithPrices = new ArrayList<>();
@@ -135,59 +90,7 @@ public class Shop extends ControllerScreen
                     ui.log("Couldn't purchase item; " + e.getMessage());
                 }
             }
-        }
-    }
-
-    private void sellItem()
-    {
-        List<Item> inv = player.getAllItems();
-        ArrayList<String> itemsWithPrices = new ArrayList<>();
-        ArrayList<String> inputOptions = new ArrayList<>();
-        String choice;
-        Item item;
-
-        for(Item curr : inv)
-        {
-            if(!(player.isEquipped(curr.getName()) ||
-                player.isWearing(curr.getName())))
-            {
-                itemsWithPrices.add(String.format("%s (%d gold sell price)",
-                    curr.getDescription(), curr.getSell()));
-                inputOptions.add(curr.getName());
-            }
-        }
-
-        if(itemsWithPrices.isEmpty())
-        {
-            ui.log("You do not have any items to sell");
-        }
-        else
-        {
-            inputOptions.add("exit");
-            inputOptions.add("cancel");
-            inputOptions.add("q");
-
-            ui.showList("Items to sell", itemsWithPrices);
-            choice = ui.inputFrom(
-                "Enter the name of an item to sell, or cancel.",
-                inputOptions);
-
-            if(!(choice.equals("exit") || choice.equals("cancel") ||
-                choice.equals("q")))
-            {
-                try
-                {
-                    item = player.removeItem(choice);
-                    player.addGold(item.getSell());
-                    ui.log(String.format(
-                        "Sold %s for %d gold. You now have %d gold",
-                        item.getName(), item.getSell(), player.getGold()));
-                }
-                catch(CharacterException e)
-                {
-                    ui.log("Couldn't get item, you have not been charged");
-                }
-            }
+            ui.inputUnchecked("Press Enter to continue");
         }
     }
 
@@ -281,7 +184,6 @@ public class Shop extends ControllerScreen
                     ui.log(String.format(
                         "%s returned to shop for %d gold",
                         enchant.getName(), enchant.getSell()));
-                    e.printStackTrace();
                 }
             }
         }

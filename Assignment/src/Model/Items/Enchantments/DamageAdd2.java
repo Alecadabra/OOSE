@@ -1,5 +1,6 @@
 package Model.Items.Enchantments;
 
+import Model.Items.Item;
 import Model.Items.ItemException;
 
 /**
@@ -16,6 +17,25 @@ public class DamageAdd2 extends Enchantment
     public DamageAdd2(Enchantable next) throws ItemException
     {
         super("Damage +2", 5, next);
+    }
+
+    public Item clone()
+    {
+        if(this.next == null)
+        {
+            try
+            {
+                return new DamageAdd2(null);
+            }
+            catch(ItemException e)
+            {
+                return null;
+            }
+        }
+        else
+        {
+            return next.clone();
+        }
     }
 
     @Override

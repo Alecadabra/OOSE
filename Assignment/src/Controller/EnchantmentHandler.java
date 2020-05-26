@@ -3,7 +3,6 @@ package Controller;
 import java.lang.reflect.Constructor;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import Model.Items.Item;
 import Model.Items.Enchantments.Enchantable;
@@ -22,7 +21,7 @@ public class EnchantmentHandler
         this.constructors = new HashMap<>();
         for(Constructor<?> curr : enchantConstructors)
         {
-            constructors.put(curr.getClass().getName(), curr);
+            constructors.put(curr.getDeclaringClass().getName(), curr);
         }
     }
 
@@ -35,16 +34,16 @@ public class EnchantmentHandler
     {
         // Needed to supress warning from Constructor.newInstance from passing
         // it null, as the enchantments created here have a 'next' of null
-        Object nullReference = null;
+        Enchantable nullReference = null;
 
         try
         {
             // Add a new instance of each stored enchantment into the list
-            for(Map.Entry<String,Constructor<?>> entry : 
-                constructors.entrySet())
+            for(String key : constructors.keySet())
             {
                 items.add(
-                    (Enchantment)entry.getValue().newInstance(nullReference));
+                    (Enchantment)constructors.get(key).newInstance(
+                        nullReference));
             }
         }
         catch(ReflectiveOperationException e)
@@ -71,12 +70,14 @@ public class EnchantmentHandler
         
         try
         {
-            newItem = (Enchantable)constructors.get(enchant).newInstance(item);
+            newItem = (Enchantable)constructors.get(enchant)
+                .newInstance(new Object[] {item});
         }
-        catch(ReflectiveOperationException e)
+        catch(ReflectiveOperationException | NullPointerException e)
         {
             throw new EnchantmentHandlerException(String.format(
-                "Could not enchant %s with %s; ", enchant, item.toString()), e);
+                "Could not enchant %s with %s; %s",
+                item.toString(), enchant, e.getMessage()), e);
         }
 
         return newItem;

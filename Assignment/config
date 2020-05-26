@@ -2,9 +2,9 @@
 UserInterface = SimpleCLI
 
 # Player
-Player = playerName, 10, 100, 15
-Starting weapon = W, Short Sword, 5, 9, 10, slashing, Sword
-starting armour = A, Leather Armour, 5, 15, 10, Leather
+Player = playerName, 20, 50, 15
+Starting weapon = W, Short Sword, 8, 14, 10, slashing, Sword
+starting armour = A, Leather Armour, 2, 8, 10, Leather
 
 # Shop and Enchantments
 ShopLoader = FileShopLoader, shop

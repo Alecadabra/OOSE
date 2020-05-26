@@ -30,8 +30,12 @@ public class Controller
         this.player = player;
         this.screens = new HashMap<>();
 
-        Shop shop = new Shop(ui, player, shopStorage);
-        screens.put("shop", shop);
+        Buy buy = new Buy(ui, player, shopStorage);
+        screens.put("buy", buy);
+        screens.put("shop", buy);
+
+        Sell sell = new Sell(ui, player);
+        screens.put("sell", sell);
 
         NameSelection nameSelection = new NameSelection(ui, player);
         screens.put("character", nameSelection);
@@ -51,12 +55,14 @@ public class Controller
         Exit exit = new Exit(ui, player);
         screens.put("exit", exit);
         screens.put("quit", exit);
+        screens.put("q", exit);
     }
 
     public void execute()
     {
         List<String> menuPrompts = Arrays.asList(
-            "Go to Shop",
+            "Buy From the Item Shop",
+            "Sell Items to the Item Shop",
             "Choose Character Name",
             "Choose Weapon",
             "Choose Armour",
@@ -67,17 +73,23 @@ public class Controller
         while(player.getHp() > 0)
         {
             // Main menu
+            ui.clear();
+
+            ui.showList("Player Attributes", player.getAttributes());
+
+            ui.showList(String.format("Inventory (%d/%d)",
+                player.getUsedSlots(), player.getCapacity()),
+                player.getAllItems());
+
             ui.heading("Main Menu");
 
-            ui.showList("Options", menuPrompts);
+            ui.showList("Menu Options", menuPrompts);
             screens.get(
                 ui.inputFrom(
-                    "Select an option",
+                    "Select an option, eg. \"shop\"",
                     Arrays.asList(screens.keySet().toArray())
                 )
             ).run();
         }
-
-        ui.heading("Goodbye");
     }
 }
