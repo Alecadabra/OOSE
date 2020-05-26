@@ -24,8 +24,9 @@ public abstract class ControllerScreen
         ui.showList("Player Attributes", player.getAttributes());
 
         ui.showList(String.format(
-            "Inventory (%d/%d)", player.getUsedSlots(), player.getCapacity()),
-            player.getAllItems());
+            "Inventory (%d/%d)", player.getInventory().getCount(), 
+            player.getInventory().getCapacity()),
+            player.getInventory().getAll());
 
         ui.heading(name);
 

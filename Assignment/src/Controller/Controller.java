@@ -6,6 +6,7 @@ import java.util.List;
 
 import Controller.ControllerScreens.ControllerScreen;
 import Model.Characters.PlayerCharacter;
+import Model.Items.ItemStorage;
 import Model.Items.ShopStorage;
 import View.UserInterface;
 import Controller.ControllerScreens.*;
@@ -21,16 +22,18 @@ public class Controller
      * @param ui UserInterface to use
      * @param player PlayerCharacter that is playing
      * @param enemyFactory EnemyFactory to use when starting a battle
-     * @param shopStorage ShopStorage to store shop items
+     * @param shopStorage ItemStorage populated with shop items
+     * @param enchantmentHandler EnchantmentHandler populated with enchantments
      */
     public Controller(UserInterface ui, PlayerCharacter player,
-        EnemyFactory enemyFactory, ShopStorage shopStorage)
+        EnemyFactory enemyFactory, ItemStorage shopStorage,
+        EnchantmentHandler enchantmentHandler)
     {
         this.ui = ui;
         this.player = player;
         this.screens = new HashMap<>();
 
-        Buy buy = new Buy(ui, player, shopStorage);
+        Buy buy = new Buy(ui, player, shopStorage, enchantmentHandler);
         screens.put("buy", buy);
         screens.put("shop", buy);
 
@@ -77,9 +80,10 @@ public class Controller
 
             ui.showList("Player Attributes", player.getAttributes());
 
-            ui.showList(String.format("Inventory (%d/%d)",
-                player.getUsedSlots(), player.getCapacity()),
-                player.getAllItems());
+            ui.showList(String.format(
+                "Inventory (%d/%d)", player.getInventory().getCount(), 
+                player.getInventory().getCapacity()),
+                player.getInventory().getAll());
 
             ui.heading("Main Menu");
 

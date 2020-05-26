@@ -1,6 +1,6 @@
 package Controller.ControllerScreens;
 
-import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 
 import Controller.EnchantmentHandler;
@@ -8,61 +8,66 @@ import Controller.EnchantmentHandlerException;
 import Model.Characters.CharacterException;
 import Model.Characters.PlayerCharacter;
 import Model.Items.Item;
-import Model.Items.ShopStorage;
+import Model.Items.ItemStorage;
 import Model.Items.Enchantments.Enchantable;
 import Model.Items.Enchantments.Enchantment;
 import View.UserInterface;
 
 public class Buy extends ControllerScreen
 {
-    private ShopStorage shopStorage;
+    private ItemStorage shopStorage;
+    private EnchantmentHandler enchantmentHandler;
     
     public Buy(UserInterface ui, PlayerCharacter player,
-        ShopStorage shopStorage)
+        ItemStorage shopStorage, EnchantmentHandler enchantmentHandler)
     {
         super("Item Shop", ui, player);
         this.shopStorage = shopStorage;
+        this.enchantmentHandler = enchantmentHandler;
     }
 
     void execute()
     {
-        List<Item> shopItems = shopStorage.getItems();
-        ArrayList<String> itemsWithPrices = new ArrayList<>();
-        ArrayList<String> inputOptions = new ArrayList<>();
+        List<Item> equippableItems = shopStorage.getAllEquippable();
+        List<Item> wearableItems = shopStorage.getAllWearable();
+        List<Item> usableItems = shopStorage.getAllUsable();
+        List<Enchantment> enchantments = shopStorage.getAllEnchantments();
+        LinkedList<String> itemsWithPrices = new LinkedList<>();
+        List<String> inputOptions = shopStorage.getAllNames();
         String choice;
-        Item item = null;
+        Item boughtItem = null;
 
-        for(Item curr : shopItems)
+        for(Item curr : shopStorage.getAll())
         {
             itemsWithPrices.add(String.format(
                 "%s (%d gold)", curr.getDescription(), curr.getCost()));
-            inputOptions.add(curr.getName());
         }
 
         inputOptions.add("exit");
         inputOptions.add("cancel");
-        inputOptions.add("q");
 
-        ui.showList(String.format(
-            "Items for sale - You have %d gold", player.getGold()),
-            itemsWithPrices);
+        ui.display(String.format("Items for sale - You have %d gold",
+            player.getGold()));
+        ui.showList("Equippable Items", equippableItems);
+        ui.showList("Wearable Items", wearableItems);
+        ui.showList("Usable Items", usableItems);
+        ui.showList("Enchantments", enchantments);
         choice = ui.inputFrom(
             "Enter the name of an item to purchase, or cancel",
             inputOptions);
-        if(!(choice.equals("exit") || choice.equals("cancel") ||
-            choice.equals("q")))
+        if(!(choice.equals("exit") || choice.equals("cancel")))
         {
-            item = shopStorage.getItem(choice);
+            boughtItem = shopStorage.getCopy(choice);
 
-            if(item == null)
+            if(boughtItem == null)
             {
                 ui.log("Couldn't get item, you have not been charged");
             }
-            else if(item.getCost() > player.getGold())
+            else if(boughtItem.getCost() > player.getGold())
             {
                 ui.log("You cannot afford this item");
             }
-            else if(player.getFreeSlots() == 0)
+            else if(player.getInventory().isFull())
             {
                 ui.log("You do not have any remaining inventory slots");
             }
@@ -70,19 +75,19 @@ public class Buy extends ControllerScreen
             {
                 try
                 {
-                    player.removeGold(item.getCost());
+                    player.removeGold(boughtItem.getCost());
                     ui.log(String.format(
                         "Bought %s for %d gold. You now have %d gold",
-                        item.getName(), item.getCost(), player.getGold()));
-                    item = item.clone();
-                    if(item instanceof Enchantment && !item.isEnchantable())
+                        boughtItem.getName(), boughtItem.getCost(),
+                        player.getGold()));;
+                    if(boughtItem instanceof Enchantment)
                     {
-                        enchantItem((Enchantment)item);
+                        enchantItem((Enchantment)boughtItem);
                         // Well that's not very polymorphic is it
                     }
                     else
                     {
-                        player.addItem(item);
+                        player.getInventory().add(boughtItem);
                     }
                 }
                 catch(CharacterException e)
@@ -96,94 +101,65 @@ public class Buy extends ControllerScreen
 
     private void enchantItem(Enchantment enchant)
     {
-        // All of the player's items
-        List<Item> allItems = player.getAllItems();
-        // All of the player's enchantable items
-        ArrayList<String> enchantableItems = new ArrayList<>();
-        // All of the options for the user to enter
-        ArrayList<String> inputOptions = new ArrayList<>();
-        // User's choice
+        List<Item> enchantableItems = shopStorage.getAllEnchantable();
+        List<String> inputOptions = shopStorage.getAllEnchantableNames();
         String choice;
-        // Item being enchanted
         Item item, enchantedItem;
-        // EnchantmentHandler from the shop to use to enchant the item
-        EnchantmentHandler enchanter = shopStorage.getEnchantmentHandler();
 
         ui.display("Enchant Item");
-
-        for(Item invItem : allItems)
-        {
-            if(invItem.isEnchantable())
-            {
-                if(invItem.getName().contains("["))
-                {
-                    // Enchanted item - add tip on how to select
-                    enchantableItems.add(invItem.getDescription() +
-                        " *Enter '" + invItem.getName() + "'*");
-                }
-                else
-                {
-                    enchantableItems.add(invItem.getDescription());
-                }
-                
-                inputOptions.add(invItem.getName());
-            }
-        }
 
         if(enchantableItems.isEmpty())
         {
             // Refund the item
-            player.addGold(enchant.getSell());
+            player.addGold(enchant.getCost());
             ui.log(String.format("You do not have any enchantable items, " +
-            "%s returned to shop for %d gold",
-                enchant.getName(), enchant.getSell()));
+                "%s automatically returned for full price",
+                enchant.getName()));
         }
         else
         {
-            // Select item and enchant
-
             // Add options to cancel and refund (Same action)
             inputOptions.add("cancel");
             inputOptions.add("refund");
             inputOptions.add("exit");
-            inputOptions.add("q");
 
             ui.showList("Enchantable Items", enchantableItems);
             choice = ui.inputFrom(
                 "Select item to enchant, or cancel and refund", inputOptions);
 
             if(choice.equals("cancel") || choice.equals("refund") ||
-                choice.equals("exit") || choice.equals("q"))
+                choice.equals("exit"))
             {
                 // Refund the item
-                player.addGold(enchant.getSell());
-                ui.log(String.format("%s returned to shop for %d gold",
-                    enchant.getName(), enchant.getSell()));
+                player.addGold(enchant.getCost());
+                ui.log(String.format(
+                    "%s automatically returned for full price",
+                    enchant.getName()));
             }
             else
             {
                 try
                 {
                     // Enchant the selected item
-                    item = player.removeItem(choice);
-                    enchantedItem = enchanter.enchant(
+                    item = player.getInventory().remove(choice);
+                    enchantedItem = enchantmentHandler.enchant(
                         enchant.getClass().getName(), (Enchantable)item);
-                    player.addItem(enchantedItem);
-                    if(player.isEquipped(item.getName()))
+                    player.getInventory().add(enchantedItem);
+                    if(player.isEquipped(item))
                     {
-                        player.equip(enchantedItem.getName());
+                        player.equip(enchantedItem);
                     }
                     ui.log(String.format("Enchanted %s with %s",
                         item.getName(), enchant.getName()));
                 }
-                catch(CharacterException | EnchantmentHandlerException e)
+                catch(EnchantmentHandlerException e)
                 {
                     ui.log("Could not enchant item; " +
                         e.getMessage());
-                    player.addGold(enchant.getSell());
+                    player.addGold(enchant.getCost());
                     ui.log(String.format(
-                        "%s returned to shop for %d gold",
-                        enchant.getName(), enchant.getSell()));
+                        "%s automatically returned for full price",
+                        enchant.getName(), enchant.getCost()));
                 }
             }
         }

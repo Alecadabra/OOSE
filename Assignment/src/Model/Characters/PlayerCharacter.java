@@ -3,9 +3,8 @@ package Model.Characters;
 import java.util.Arrays;
 import java.util.List;
 
-import Model.Items.Inventory;
 import Model.Items.Item;
-import Model.Items.ItemException;
+import Model.Items.ItemStorage;
 
 /**
  * Represents a playable character. Is a character that has an inventory of
@@ -13,7 +12,7 @@ import Model.Items.ItemException;
  */
 public class PlayerCharacter extends GameCharacter
 {
-    private Inventory inv;
+    private ItemStorage inv;
     private String weapon;
     private String armour;
 
@@ -24,168 +23,44 @@ public class PlayerCharacter extends GameCharacter
      * @param inWeapon Starting weapon
      * @param inArmour Starting armour
      * @param gold Gold in posession
+     * @param invSize Maximum capacity of inventory
      */
     public PlayerCharacter(String name, int maxHp, Item inWeapon, Item inArmour,
         int gold, int invSize) throws CharacterException
     {
         super(name, maxHp, gold);
-        this.inv = new Inventory(invSize);
+        this.inv = new ItemStorage(invSize);
         this.weapon = inWeapon.getName();
         this.armour = inArmour.getName();
-        try
-        {
-            inv.add(inWeapon);
-            inv.add(inArmour);
-        }
-        catch(ItemException e)
-        {
-            throw new CharacterException("Could not create character; " +
-                e.getMessage(), e);
-        }
+        this.inv.add(inWeapon);
+        this.inv.add(inArmour);
     }
 
     /**
      * Get the damage dealt by this character for an attack. Uses the damage of
      * the currently equipped damage item.
      * @return Damage integer
-     * @throws CharacterException If an error occured
      */
     @Override
-    protected int getDamage() throws CharacterException
+    protected int getDamage()
     {
-        int damage;
-
-        try
-        {
-            damage = inv.get(weapon).getDamage();
-        }
-        catch(ItemException e)
-        {
-            throw new CharacterException(
-                "Could not get damage for equipped damage item; " +
-                e.getMessage(), e);
-        }
-
-        return damage;
+        return inv.get(weapon).getDamage();
     }
 
     /**
      * Get the defence of this character for defending agaisnt an attack. Uses
      * the defence of the currently worn defence item.
      * @return Defence integer
-     * @throws CharacterException If an error occured
      */
     @Override
-    protected int getDefence() throws CharacterException
+    protected int getDefence()
     {
-        int defence;
-        
-        try
-        {
-            defence = inv.get(armour).getDefence();
-        }
-        catch(ItemException e)
-        {
-            throw new CharacterException(
-                "Could not get defence for worn defence item; " +
-                e.getMessage(), e);
-        }
-
-        return defence;
+        return inv.get(armour).getDefence();
     }
 
-    /**
-     * Add an item to the inventory.
-     * @param item Item to add
-     * @throws CharacterException If an error occured
-     */
-    public void addItem(Item item) throws CharacterException
+    public ItemStorage getInventory()
     {
-        try
-        {
-            inv.add(item);
-        }
-        catch(ItemException e)
-        {
-            throw new CharacterException(
-                "Could not add item to inventory; " + e.getMessage(), e);
-        }
-    }
-
-    /**
-     * Remove an item from the inventory and return it.
-     * 
-     * @param desc The getName() of the item to remove
-     * @return Item removed
-     * @throws CharacterException If an error occured
-     */
-    public Item removeItem(String name) throws CharacterException
-    {
-        Item item;
-
-        try
-        {
-            item = inv.remove(name);
-        }
-        catch(ItemException e)
-        {
-            throw new CharacterException(
-                "Could not remove item from inventory; " + e.getMessage(), e);
-        }
-
-        return item;
-    }
-
-    /**
-     * Get an item from the inventory.
-     * 
-     * @param name The getName() of the item to remove
-     * @return The item
-     * @throws CharacterException If an error occured
-     */
-    public Item getItem(String name) throws CharacterException
-    {
-        Item item;
-
-        try
-        {
-            item = inv.get(name);
-        }
-        catch(ItemException e)
-        {
-            throw new CharacterException(
-                "Could not get item from inventory; " + e.getMessage(), e);
-        }
-
-        return item;
-    }
-
-    /**
-     * Get an (unmodifiable) list of all items in inventory, with duplicates
-     * @return Unmodifiable list
-     */
-    public List<Item> getAllItems()
-    {
-        return inv.getAll();
-    }
-
-    /**
-     * Get the number of free slots in the inventory.
-     * @return Free slots
-     */
-    public int getFreeSlots()
-    {
-        return inv.getSlots();
-    }
-
-    public int getUsedSlots()
-    {
-        return inv.getUsed();
-    }
-
-    public int getCapacity()
-    {
-        return inv.getCapacity();
+        return inv;
     }
 
     public void kill()
@@ -199,63 +74,26 @@ public class PlayerCharacter extends GameCharacter
      */
     public List<String> getAttributes()
     {
-        try
-        {
-            return Arrays.asList(
-                "Name: " + this.name,
-                "Health: " + this.hp + "/" + this.maxHp,
-                "Gold: " + this.gold,
-                "Weapon: " + inv.get(this.weapon).getDescription(),
-                "Armour: " + inv.get(this.armour).getDescription()
-            );
-        }
-        catch(ItemException e)
-        {
-            return null;
-        }
+        return Arrays.asList(
+            "Name: " + this.name,
+            "Health: " + this.hp + "/" + this.maxHp,
+            "Gold: " + this.gold,
+            "Weapon: " + inv.get(this.weapon).getDescription(),
+            "Armour: " + inv.get(this.armour).getDescription()
+        );
     }
     
-    public void equip(String itemStr)
+    public void equip(Item newWeapon)
     {
-        Item item;
-
-        try
+        if(newWeapon != null && newWeapon.isEquipabble())
         {
-            item = inv.get(itemStr);
-
-            if(item.isEquipabble())
-            {
-                this.weapon = itemStr;
-            }
-        }
-        catch(ItemException e)
-        {
-            // Do nothing, keep the currently equipped item
+            this.weapon = newWeapon;
         }
     }
 
-    public void wear(String itemStr)
+    public boolean isEquipped(Item item)
     {
-        Item item;
-
-        try
-        {
-            item = inv.get(itemStr);
-
-            if(item.isWearable())
-            {
-                this.armour = itemStr;
-            }
-        }
-        catch(ItemException e)
-        {
-            // Do nothing, keep the currently equipped item
-        }
-    }
-    
-    public boolean isEquipped(String name)
-    {
-        if(this.weapon.equals(name))
+        if(this.weapon.equals(item.getName()))
         {
             return true;
         }
@@ -270,9 +108,17 @@ public class PlayerCharacter extends GameCharacter
         return weapon;
     }
     
-    public boolean isWearing(String name)
+    public void wear(Item newArmour)
     {
-        if(this.armour.equals(name))
+        if(newArmour != null && newArmour.isEquipabble())
+        {
+            this.weapon = newArmour;
+        }
+    }
+
+    public boolean isWearing(Item item)
+    {
+        if(this.armour.equals(item.getName()))
         {
             return true;
         }

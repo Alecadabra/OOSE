@@ -1,7 +1,7 @@
 package Controller;
 
-import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.NoSuchElementException;
 
 import Model.Items.Item;
@@ -16,13 +16,14 @@ import Model.Items.Item;
 public abstract class ShopLoader implements Iterator<Item>, Iterable<Item>
 {
     /**
-     * Loads an arraylist of items for use in a ShopStorage object. Uses the
+     * Gets an array of Items loaded from the concrete shoploader. Uses the
      * template method pattern to iterate over itself, adding items to the
      * list.
-     * @param list ArrayList of Items to fill
+     * @return Array of loaded Items
      */
-    public void load(ArrayList<Item> list) throws ShopLoaderException
+    public Item[] load() throws ShopLoaderException
     {
+        LinkedList<Item> list = new LinkedList<>();
         try
         {
             for(Item item : this)
@@ -35,11 +36,14 @@ public abstract class ShopLoader implements Iterator<Item>, Iterable<Item>
             throw new ShopLoaderException("Could not load shop item data; " +
                 e.getMessage(), e);
         }
+
+        return list.toArray(new Item[list.size()]);
     }
 
     @Override
     public Iterator<Item> iterator()
     {
+        // Bit of a cheat
         return this;
     }
 }

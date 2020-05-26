@@ -2,11 +2,9 @@ package Controller;
 
 import java.lang.reflect.Constructor;
 import java.util.HashMap;
-import java.util.List;
 
 import Model.Items.Item;
 import Model.Items.Enchantments.Enchantable;
-import Model.Items.Enchantments.Enchantment;
 
 public class EnchantmentHandler
 {
@@ -26,24 +24,25 @@ public class EnchantmentHandler
     }
 
     /**
-     * Load display instances of enchantments into an list.
-     * @param items List to populate
+     * Get an array of loaded display instances of enchantments.
+     * @return Item array of display enchantments
      * @throws EnchantmentHandlerException If an error occured
      */
-    public void load(List<Item> items) throws EnchantmentHandlerException
+    public Item[] load() throws EnchantmentHandlerException
     {
         // Needed to supress warning from Constructor.newInstance from passing
         // it null, as the enchantments created here have a 'next' of null
         Enchantable nullReference = null;
+        Item[] items = new Item[this.constructors.size()];
+        int i = 0;
 
         try
         {
             // Add a new instance of each stored enchantment into the list
-            for(String key : constructors.keySet())
+            for(Constructor<?> constructor : constructors.values())
             {
-                items.add(
-                    (Enchantment)constructors.get(key).newInstance(
-                        nullReference));
+                items[i] = (Item)constructor.newInstance(nullReference);
+                i++;
             }
         }
         catch(ReflectiveOperationException e)
@@ -51,6 +50,8 @@ public class EnchantmentHandler
             throw new EnchantmentHandlerException(String.format(
                 "Could not construct enchantment; %s", e.getMessage()), e);
         }
+
+        return items;
     }
     
     /**
