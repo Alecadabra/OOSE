@@ -1,0 +1,17 @@
+W, Copper Short Sword, 8, 14, 10, slashing, Sword
+W, Quarterstaff, 15, 20, 25, bludgeoning, Staff
+W, Bronze Spear, 15, 35, 40, piercing, Spear
+W, Great Sword, 40, 55, 60, slashing, Sword
+W, Greater Sword, 55, 70, 80, slashing, Sword
+A, Leather Armour, 2, 8, 10, Leather
+A, Copper Plate Mail, 10, 20, 25, Copper
+A, Chain Mail, 15, 20, 30, Chain
+A, Bronze Plate Mail, 30, 40, 55, Bronze
+A, Dragon Scale Armour, 45, 55, 75, Dragon Scale
+P, Potion of Lesser Healing, 4, 7, 5, H
+P, Potion of Healing, 10, 15, 10, H
+P, Shoddy Potion of Healing, 0, 15, 5, H
+P, Small Explosive, 20, 25, 5, D 
+P, Large Explosive, 25, 35, 10, D
+P, Firebolt Scroll, 40, 60, 20, D
+P, Vegemite Scroll, 120, 150, 100, D

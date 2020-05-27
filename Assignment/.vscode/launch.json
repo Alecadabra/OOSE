@@ -6,6 +6,13 @@
     "configurations": [
         {
             "type": "java",
+            "name": "CodeLens (Launch) - FighterGame",
+            "request": "launch",
+            "mainClass": "FighterGame",
+            "projectName": "Assignment_847b7455"
+        },
+        {
+            "type": "java",
             "name": "Debug (Launch) - Current File",
             "request": "launch",
             "mainClass": "${file}"
