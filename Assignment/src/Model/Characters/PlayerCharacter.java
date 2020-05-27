@@ -135,7 +135,7 @@ public class PlayerCharacter extends GameCharacter
      */
     public void wear(Item newArmour)
     {
-        if(newArmour != null && newArmour.isEquipabble())
+        if(newArmour != null && newArmour.isWearable())
         {
             this.weapon = newArmour.getName();
         }

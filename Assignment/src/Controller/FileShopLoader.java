@@ -249,7 +249,7 @@ public class FileShopLoader extends ShopLoader
             elem = line.split(",");
             for(int i = 0; i < elem.length; i++)
             {
-                elem[i] = elem[i].strip();
+                elem[i] = elem[i].trim();
             }
         }
         else

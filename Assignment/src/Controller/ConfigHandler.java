@@ -412,7 +412,7 @@ public class ConfigHandler
                         for(int i = 0; i < configElem.length; i++)
                         {
                             // Remove surrounding whitespace
-                            configElem[i] = configElem[i].strip();
+                            configElem[i] = configElem[i].trim();
                         }
 
                         config.put(elem[0], configElem);
