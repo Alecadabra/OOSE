@@ -6,11 +6,16 @@ import java.util.List;
 
 import Controller.ControllerScreens.ControllerScreen;
 import Model.Characters.PlayerCharacter;
+import Model.Items.DamagePotion;
+import Model.Items.ItemException;
 import Model.Items.ItemStorage;
-import Model.Items.ShopStorage;
 import View.UserInterface;
 import Controller.ControllerScreens.*;
 
+/**
+ * Controls the main menu and calls controller screens based on the user's
+ * menu selection.
+ */
 public class Controller
 {
     private UserInterface ui;
@@ -46,21 +51,25 @@ public class Controller
 
         WeaponSelection weaponSelection = new WeaponSelection(ui, player);
         screens.put("weapon", weaponSelection);
+        screens.put("equip", weaponSelection);
 
         ArmourSelection armourSelection = new ArmourSelection(ui, player);
         screens.put("armour", armourSelection);
+        screens.put("wear", armourSelection);
 
         Battle battle = new Battle(ui, player, enemyFactory);
         screens.put("start", battle);
         screens.put("battle", battle);
         screens.put("fight", battle);
-
-        Exit exit = new Exit(ui, player);
-        screens.put("exit", exit);
-        screens.put("quit", exit);
-        screens.put("q", exit);
     }
 
+    /**
+     * Runs the main menu until the player exits, dies or defeats the boss.
+     * On each return to the menu, this method simulates
+     * ControllerScreen.run() by calling ui.clear, shows the player's
+     * attributes and inventory, the heading 'Main Menu', and then runs the
+     * menu.
+     */
     public void execute()
     {
         List<String> menuPrompts = Arrays.asList(
@@ -72,6 +81,18 @@ public class Controller
             "Start Battle",
             "Exit Game"
         );
+        List<String> inputs = Arrays.asList(
+            "buy", "shop",
+            "sell",
+            "character", "name",
+            "weapon", "equip",
+            "armour", "wear",
+            "start", "battle", "fight",
+            "exit",
+            "vegemite" // Cheat code
+        );
+        ControllerScreen selection;
+        String input;
 
         while(player.getHp() > 0)
         {
@@ -83,17 +104,34 @@ public class Controller
             ui.showList(String.format(
                 "Inventory (%d/%d)", player.getInventory().getCount(), 
                 player.getInventory().getCapacity()),
-                player.getInventory().getAll());
+                player.getInventory().getAllNames());
 
             ui.heading("Main Menu");
 
             ui.showList("Menu Options", menuPrompts);
-            screens.get(
-                ui.inputFrom(
-                    "Select an option, eg. \"shop\"",
-                    Arrays.asList(screens.keySet().toArray())
-                )
-            ).run();
+            input = ui.inputFrom("Select an option, eg. \"shop\"", inputs);
+            selection = screens.get(input);
+
+            if(input.equals("vegemite"))
+            {
+                // Cheat code because the dragon is kinda impossible :)
+                try
+                {
+                    player.getInventory().add(new DamagePotion(
+                        "Vegemite Scroll", 100, 120, 150));
+                }
+                catch(ItemException e) {}
+            }
+            else if(selection != null)
+            {
+                selection.run();
+            }
+            else
+            {
+                // Player has chosen to exit
+                player.kill();
+                ui.heading("Goodbye!");
+            }
         }
     }
 }

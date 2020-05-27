@@ -9,7 +9,7 @@ import Model.Characters.Enemy;
 /**
  * Factory class used to generate enemies with {@code getEnemy()}. Probablities
  * of generating different types of enemies change every time the factory is
- * used.
+ * used. Uses reflective constructors.
  */
 public class EnemyFactory
 {
@@ -18,6 +18,23 @@ public class EnemyFactory
     private int[] enemyProbs;
     private int[] enemyModifiers;
 
+    /**
+     * Constructor.
+     * @param bossConstructor The java.lang.reflect.Constructor<?> of the boss
+     * of the game (Game ends if defeated)
+     * @param enemyConstructors An array of java.lang.reflect.Constructor<?>'s
+     * for each of the standard enemies
+     * @param enemyProbs An array of integers from 0 to 100, representing the
+     * initial probability of each enemy being created on each getEnemy() call.
+     * Each entry corresponds to a constructor in enemyConstructors
+     * @param enemyModifiers An array of integers, representing the change to
+     * an enemies probability of being created on each subsequent call to
+     * getEnemy. For example, a value of {@code -5} would correspond to a 5%
+     * decrease in the enemies chance to be created, and a 5% increase to the
+     * bosses probability. Each entry corresponds to a constructor in
+     * enemyConstructors
+     * @throws EnemyFactoryException
+     */
     public EnemyFactory(Constructor<?> bossConstructor,
         Constructor<?>[] enemyConstructors, int[] enemyProbs,
         int[] enemyModifiers) throws EnemyFactoryException
@@ -28,6 +45,11 @@ public class EnemyFactory
         this.enemyModifiers = enemyModifiers;
     }
 
+    /**
+     * Gets a randomly selected enemy based on the current probabilites.
+     * @return The new enemy
+     * @throws EnemyFactoryException If an error occured with the constructor
+     */
     public Enemy getEnemy() throws EnemyFactoryException
     {
         int rand = (int)(random() * 100);

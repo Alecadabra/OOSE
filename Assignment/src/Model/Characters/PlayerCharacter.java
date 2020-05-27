@@ -25,15 +25,15 @@ public class PlayerCharacter extends GameCharacter
      * @param gold Gold in posession
      * @param invSize Maximum capacity of inventory
      */
-    public PlayerCharacter(String name, int maxHp, Item inWeapon, Item inArmour,
-        int gold, int invSize) throws CharacterException
+    public PlayerCharacter(String name, int maxHp, ItemStorage inv,
+        Item inWeapon, Item inArmour, int gold) throws CharacterException
     {
         super(name, maxHp, gold);
-        this.inv = new ItemStorage(invSize);
-        this.weapon = inWeapon.getName();
-        this.armour = inArmour.getName();
+        this.inv = inv; // Dependency Injection! :)
         this.inv.add(inWeapon);
         this.inv.add(inArmour);
+        this.weapon = inWeapon.getName();
+        this.armour = inArmour.getName();
     }
 
     /**
@@ -58,11 +58,19 @@ public class PlayerCharacter extends GameCharacter
         return inv.get(armour).getDefence();
     }
 
+    /**
+     * Gets the inventory (ItemStorage object) of this player. Gives the
+     * original reference, rather than a copy, to simplify operations.
+     * @return The ItemStorage reference
+     */
     public ItemStorage getInventory()
     {
         return inv;
     }
 
+    /**
+     * Set hp to zero :(.
+     */
     public void kill()
     {
         this.hp = 0;
@@ -83,14 +91,23 @@ public class PlayerCharacter extends GameCharacter
         );
     }
     
+    /**
+     * Equips an equippable item, has no effect if item is not equippable
+     * @param newWeapon The Item to equip
+     */
     public void equip(Item newWeapon)
     {
         if(newWeapon != null && newWeapon.isEquipabble())
         {
-            this.weapon = newWeapon;
+            this.weapon = newWeapon.getName();
         }
     }
 
+    /**
+     * Checks if a given item is currently equipped
+     * @param item The item to check
+     * @return True if, and only if, the item is equipped
+     */
     public boolean isEquipped(Item item)
     {
         if(this.weapon.equals(item.getName()))
@@ -103,19 +120,32 @@ public class PlayerCharacter extends GameCharacter
         }
     }
 
+    /**
+     * Gets the getName() of the currently equipped item
+     * @return Name string of the item
+     */
     public String getEquippedName()
     {
         return weapon;
     }
     
+    /**
+     * Wears an wearable item, has no effect if item is not wearable
+     * @param newArmour The Item to wear
+     */
     public void wear(Item newArmour)
     {
         if(newArmour != null && newArmour.isEquipabble())
         {
-            this.weapon = newArmour;
+            this.weapon = newArmour.getName();
         }
     }
 
+    /**
+     * Checks if a given item is currently being worn
+     * @param item The item to check
+     * @return True if, and only if, the item is being worn
+     */
     public boolean isWearing(Item item)
     {
         if(this.armour.equals(item.getName()))
@@ -128,6 +158,10 @@ public class PlayerCharacter extends GameCharacter
         }
     }
     
+    /**
+     * Gets the getName() of the currently worn item
+     * @return Name string of the item
+     */
     public String getWearingName()
     {
         return armour;

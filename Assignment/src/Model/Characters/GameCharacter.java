@@ -15,6 +15,7 @@ public abstract class GameCharacter
     protected int maxHp;
     protected int hp;
     protected int gold;
+    // Characters are given UI's to use during a battle
     protected UserInterface ui;
 
     /**
@@ -122,11 +123,20 @@ public abstract class GameCharacter
         }
     }
 
+    /**
+     * Sets the UserInterface of this character so that it can log noteworthy
+     * actions such as attacking.
+     * @param ui The UserInterface object to use
+     */
     public void setLog(UserInterface ui)
     {
         this.ui = ui;
     }
 
+    /**
+     * Logs an action to the user interface, if it has been set.
+     * @param message The message to log
+     */
     protected void logAction(String message)
     {
         if(this.ui != null)

@@ -21,23 +21,41 @@ public class DamageAdd5 extends Enchantment
     
     public Item clone()
     {
+        Item clone;
+
         if(this.next == null)
         {
             try
             {
-                return new DamageAdd5(null);
+                clone = new DamageAdd5(null);
             }
             catch(ItemException e)
             {
-                return null;
+                // Shouldn't ever happen
+                clone = null;
             }
         }
         else
         {
-            return next.clone();
+            try
+            {
+                clone = new DamageAdd5((Enchantable)next.clone());
+            }
+            catch(ItemException e)
+            {
+                // Shouldn't ever happen
+                clone = null;
+            }
         }
+
+        return clone;
     }
 
+    /**
+     * Get the damage dealt, uses the decorator pattern to modify the 'next's'
+     * damage.
+     * @return The damage dealt
+     */
     @Override
     public int getDamage()
     {

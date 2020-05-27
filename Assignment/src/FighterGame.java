@@ -5,13 +5,13 @@ import Controller.Controller;
 import Controller.EnchantmentHandler;
 import Model.Items.ItemStorage;
 import View.UserInterface;
-import View.UserInterfaceException;
 
 public class FighterGame
 {
     public static void main(String[] args)
     {
-        UserInterface ui;
+        Scanner sc = null;
+        UserInterface ui = null;
         ConfigHandler config;
         String configFile;
         Controller controller;
@@ -20,11 +20,10 @@ public class FighterGame
 
         if(args.length == 0)
         {
-            Scanner sc = new Scanner(System.in);
+            sc = new Scanner(System.in);
             System.out.print("Enter config file name " +
                 "(Can be given in command-line arguments): ");
             configFile = sc.nextLine();
-            sc.close();
         }
         else
         {
@@ -53,7 +52,8 @@ public class FighterGame
                 ui,
                 config.getPlayerCharacter(),
                 config.getEnemyFactory(),
-                shopStorage
+                shopStorage,
+                enchantmentHandler
             );
             controller.execute();
         }
@@ -63,18 +63,23 @@ public class FighterGame
             try
             {
                 // Try print the error through the UI if it's currently working
-                // TODO Error message through UI
-                throw new UserInterfaceException("Stub"); // TODO remove
+                ui.show("A fatal error occured: " + e.getMessage());
             }
-            catch(UserInterfaceException ee)
+            catch(Exception ee)
             {
                 // Just print it without the fancy UI
-                System.out.println("Error - " + e.getMessage());
+                System.out.println("A fatal error occured: " + e.getMessage());
 
                 // TODO remove
                 System.out.println();
                 e.printStackTrace();
             }
+        }
+
+        if(sc != null)
+        {
+            // Close the scanner if it was opened
+            sc.close();
         }
     }
 }

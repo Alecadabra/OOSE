@@ -1,19 +1,34 @@
 package View;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Scanner;
+import java.util.function.Function;
 
+/**
+ * A simple command line user interface. Clears the terminal on clear(),
+ * uses some simple colours to emphasise text.
+ */
 public class SimpleCLI implements UserInterface
 {
-    private static final String C_CLEAR_SCREEN = "\033[H\033[2J";
-    private static final String C_CYAN = "\u001B[36m";
-    //private static final String C_YELLOW = "\u001B[33m";
-    private static final String C_BOLD = "\033[0;1m";
-    private static final String C_LINE = "\033[0;4m";
-    private static final String C_RESET = "\u001B[0m";
+    // Lambdas that modify the colour of a given string
+    private final Function<String, String> cyan =
+        s -> "\u001B[36m" + s + "\u001B[0m";
+    private final Function<String, String> yellow =
+        s -> "\u001B[33m" + s + "\u001B[0m";
+    private final Function<String, String> bold =
+        s -> "\033[0;1m" + s + "\u001B[0m";
+        
+    // Resets the colour back to normal
+    private final Function<Void, String> reset = s -> "\u001B[0m";
 
-    Scanner sc;
+    // CLears the terminal
+    private final Function<Void, String> clear = s -> "\033[H\033[2J";
+
+    // Scanner
+    private Scanner sc;
 
     public SimpleCLI()
     {
@@ -23,52 +38,73 @@ public class SimpleCLI implements UserInterface
     @Override
     public void clear()
     {
-        System.out.print(C_CLEAR_SCREEN + C_RESET + "\n\n" + C_RESET);
+        System.out.print(clear.apply(null) + "\n\n" + reset.apply(null));
     }
     
     @Override
     public void heading(String heading)
     {
         System.out.println("\n" + 
-            C_CYAN + "------------------------------" + C_RESET + "\n" +
-            C_BOLD + "  " + heading + C_RESET + "\n" +
-            C_CYAN + "------------------------------" + C_RESET + "\n");
+            cyan.apply("------------------------------") + "\n" +
+            "  " + bold.apply(heading) + "\n" +
+            cyan.apply("------------------------------"));
     }
 
     @Override
-    public void display(String content)
+    public void show(String content)
     {
-        System.out.println("\n" + C_LINE + content + C_RESET);
+        System.out.println(
+            "\n" + cyan.apply("[ ") + content + cyan.apply(" ]"));
     }
 
     @Override
     public void log(String message)
     {
-        System.out.println("  - " + message);
+        System.out.println("  " + yellow.apply("- ") + message);
     }
 
     @Override
     public void showList(String title, List<?> list)
     {
-        display(title);
+        show(title);
 
         for(Object o : list)
         {
-            System.out.println("  - " + o.toString());
+            System.out.println("  " + yellow.apply("* ") + o.toString());
         }
     }
 
     @Override
-    public String inputFrom(String prompt, List<?> options)
+    public String inputFrom(String prompt, List<String> options)
     {
-        String key = "";
+        String key;
         Iterator<?> iter;
         String match = null;
         String curr, orig;
 
+        // Make the list modifiable
+        if(options instanceof ArrayList)
+        {
+            options = (ArrayList<String>)options;
+        }
+        else if(options instanceof LinkedList)
+        {
+            options = (LinkedList<String>)options;
+        }
+        else
+        {
+            options = new ArrayList<>(options);
+        }
+
+        // Add options to cancel/exit or get list of options
+        options.add("Cancel");
+        options.add("Exit");
+        options.add("?");
+
         while(match == null)
         {
-            System.out.print("\n" + C_LINE +  prompt + C_RESET + ":\n  > ");
+            show(prompt);
+            System.out.print(yellow.apply("  > "));
             key = "";
             while(key == "")
             {
@@ -89,11 +125,21 @@ public class SimpleCLI implements UserInterface
                     match = orig;
                 }
             }
-            
+
             if(match == null)
             {
-                System.out.println("    Invalid input");
+                log("Invalid input, enter '?' to get possible options");
             }
+            else if(match.equals("?"))
+            {
+                showList("Possible options, case does not matter", options);
+                match = null;
+            }
+        }
+
+        if(match.equals("Cancel") || match.equals("Exit"))
+        {
+            match = null;
         }
 
         return match;
@@ -102,8 +148,18 @@ public class SimpleCLI implements UserInterface
     @Override
     public String inputUnchecked(String prompt)
     {
-        System.out.print("\n" + C_LINE +  prompt + C_RESET + ":\n    ");
+        String in = "";
 
-        return sc.nextLine().trim();
+        sc = new Scanner(System.in);
+
+        show(prompt);
+        System.out.print(yellow.apply("  > "));
+
+        if(sc.hasNextLine())
+        {
+            in = sc.nextLine().trim();
+        }
+
+        return in;
     }    
 }

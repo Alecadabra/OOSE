@@ -1,14 +1,21 @@
 package Controller.ControllerScreens;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import Model.Characters.PlayerCharacter;
-import Model.Items.Item;
+import Model.Items.ItemStorage;
 import View.UserInterface;
 
+/**
+ * Weapon selection screen.
+ */
 public class WeaponSelection extends ControllerScreen
 {
+    /**
+     * Constructor.
+     * @param ui The user interface to use
+     * @param player The player character interacting with the screen
+     */
     public WeaponSelection(UserInterface ui, PlayerCharacter player)
     {
         super("Weapon Selection", ui, player);
@@ -17,43 +24,17 @@ public class WeaponSelection extends ControllerScreen
     @Override
     void execute()
     {
-        List<Item> invItems = player.getAllItems();
-        ArrayList<String> equippableItems = new ArrayList<>();
-        ArrayList<String> inputOptions = new ArrayList<>();
+        ItemStorage inv = player.getInventory();
+        List<String> equippableItems = inv.getAllEquippableDescriptions();
+        List<String> inputs = inv.getAllEquippableNames();
         String choice;
 
-        for(Item curr : invItems)
-        {
-            if(curr.isEquipabble())
-            {
-                if(curr.getName().contains("["))
-                {
-                    // Enchanted item - add tip on how to select
-                    equippableItems.add(curr.getDescription() +
-                        " *Enter '" + curr.getName() + "'*");
-                }
-                else
-                {
-                    equippableItems.add(curr.getDescription());
-                }
-                
-                inputOptions.add(curr.getName());
-            }
-        }
-
-        inputOptions.add("exit");
-        inputOptions.add("cancel");
-        inputOptions.add("q");
-
         ui.showList("Equippable Items", equippableItems);
-        choice = ui.inputFrom(
-            "Select item to equip, or cancel.",
-            inputOptions);
+        choice = ui.inputFrom("Select item to equip, or cancel.", inputs);
 
-        if(!(choice.equals("exit") || choice.equals("cancel") ||
-            choice.equals("q")))
+        if(choice != null)
         {
-            player.equip(choice);
+            player.equip(inv.get(choice));
             ui.log("Equipped " + choice);
 
             ui.inputUnchecked("Press Enter to continue");

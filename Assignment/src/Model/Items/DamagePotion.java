@@ -22,14 +22,19 @@ public class DamagePotion extends DefaultPotion
 
     public Item clone()
     {
-        DamagePotion clone = null;
+        Item clone;
+        
         try
         {
             clone = new DamagePotion(name, cost, minEffect, maxEffect);
         }
-        catch(ItemException e) {}  // Should never happen
+        catch(ItemException e)
+        {
+            // Should never happen
+            clone = null;
+        }
 
-        return (Item)clone;
+        return clone;
     }
 
     /**

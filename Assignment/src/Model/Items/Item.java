@@ -77,12 +77,12 @@ public abstract class Item
 
     /**
      * Get the sell price for this item when sold to the shop. This is half the
-     * cost of the item (rounded down).
+     * cost of the item.
      * @return Sell cost integer
      */
     public int getSell()
     {
-        return cost / 2;
+        return (int)round(cost / 2.0);
     }
 
     /**

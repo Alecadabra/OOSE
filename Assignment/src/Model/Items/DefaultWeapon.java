@@ -42,15 +42,20 @@ public class DefaultWeapon extends Enchantable
 
     public Item clone()
     {
-        DefaultWeapon clone = null;
+        Item clone;
+
         try
         {
             clone = new DefaultWeapon(
                 name, cost, minEffect, maxEffect, weaponType, damageType);
         }
-        catch(ItemException e) {}  // Should never happen
+        catch(ItemException e)
+        {
+            // Should never happen
+            clone = null;
+        }
 
-        return (Item)clone;
+        return clone;
     }
 
     /**

@@ -2,7 +2,7 @@ package Model.Items;
 
 /**
  * Default abstract implementation of a potion (Defined as a usable item that
- * should override gethealing and/or getDamage).
+ * should override getHealing and/or getDamage).
  */
 public abstract class DefaultPotion extends Item
 {

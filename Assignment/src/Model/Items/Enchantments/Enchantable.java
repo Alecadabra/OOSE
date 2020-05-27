@@ -4,7 +4,8 @@ import Model.Items.Item;
 import Model.Items.ItemException;
 
 /**
- * Defines an Item that can be enchanted. Uses the decorator pattern.
+ * Defines an Item that can be enchanted, or an enchantment. Uses the decorator
+ * pattern.
  */
 public abstract class Enchantable extends Item
 {

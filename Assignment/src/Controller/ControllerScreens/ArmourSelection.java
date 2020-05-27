@@ -1,14 +1,21 @@
 package Controller.ControllerScreens;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import Model.Characters.PlayerCharacter;
-import Model.Items.Item;
+import Model.Items.ItemStorage;
 import View.UserInterface;
 
+/**
+ * Armour selection screen.
+ */
 public class ArmourSelection extends ControllerScreen
 {
+    /**
+     * Constructor.
+     * @param ui The user interface to use
+     * @param player The player character interacting with the screen
+     */
     public ArmourSelection(UserInterface ui, PlayerCharacter player)
     {
         super("Armour Selection", ui, player);
@@ -17,43 +24,18 @@ public class ArmourSelection extends ControllerScreen
     @Override
     void execute()
     {
-        List<Item> invItems = player.getAllItems();
-        ArrayList<String> wearableItems = new ArrayList<>();
-        ArrayList<String> inputOptions = new ArrayList<>();
+        ItemStorage inv = player.getInventory();
+        List<String> wearableItems = inv.getAllWearableDescriptions();
+        List<String> inputs = inv.getAllWearableNames();
         String choice;
 
-        for(Item curr : invItems)
-        {
-            if(curr.isWearable())
-            {
-                if(curr.getName().contains("["))
-                {
-                    // Enchanted item - add tip on how to select
-                    wearableItems.add(curr.getDescription() +
-                        " *Enter '" + curr.getName() + "'*");
-                }
-                else
-                {
-                    wearableItems.add(curr.getDescription());
-                }
-                
-                inputOptions.add(curr.getName());
-            }
-        }
-
-        inputOptions.add("exit");
-        inputOptions.add("cancel");
-        inputOptions.add("q");
-
         ui.showList("Wearable Items", wearableItems);
-        choice = ui.inputFrom(
-            "Select item to wear, or cancel",
-            inputOptions);
+        choice = ui.inputFrom("Select item to wear, or cancel", inputs);
 
-        if(!(choice.equals("exit") || choice.equals("cancel") ||
-            choice.equals("q")))
+        // Make sure the user didn't choose to exit
+        if(choice != null)
         {
-            player.wear(choice);
+            player.wear(inv.get(choice));
             ui.log("Equipped " + choice);
             
             ui.inputUnchecked("Press Enter to continue");

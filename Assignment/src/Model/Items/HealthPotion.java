@@ -24,14 +24,19 @@ public class HealthPotion extends DefaultPotion
 
     public Item clone()
     {
-        HealthPotion clone = null;
+        Item clone;
+        
         try
         {
             clone = new HealthPotion(name, cost, minEffect, maxEffect);
         }
-        catch(ItemException e) {}  // Should never happen
+        catch(ItemException e)
+        {
+            // Should never happen
+            clone = null;
+        }
 
-        return (Item)clone;
+        return clone;
     }
 
     /**

@@ -6,6 +6,9 @@ import java.util.HashMap;
 import Model.Items.Item;
 import Model.Items.Enchantments.Enchantable;
 
+/**
+ * Handles enchantments using reflective constructor objects.
+ */
 public class EnchantmentHandler
 {
     HashMap<String, Constructor<?>> constructors;

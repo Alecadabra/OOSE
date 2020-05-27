@@ -13,11 +13,18 @@ import Model.Characters.CharacterException;
 import Model.Items.DefaultArmour;
 import Model.Items.Item;
 import Model.Items.ItemException;
+import Model.Items.ItemStorage;
 import Model.Items.Enchantments.Enchantable;
 import Model.Items.DefaultWeapon;
 import View.SimpleCLI;
 import View.UserInterface;
 
+/**
+ * Class to handle configuration file. Reads the file and builds a map
+ * of configuration settings to use when it's many factory methods are used.
+ * Has factory methods for EnemyFactory, PlayerCharacter, Starting Weapon,
+ * Starting Armour, UserInterface, ShopLoader & EnchantmentHandler.
+ */
 public class ConfigHandler
 {
     private FileInputStream strm;
@@ -25,6 +32,11 @@ public class ConfigHandler
     private BufferedReader bfr;
     private HashMap<String, String[]> config;
 
+    /**
+     * Constructor.
+     * @param fileName File name of the configuration file
+     * @throws ConfigException If a File I/O error occured
+     */
     public ConfigHandler(String fileName) throws ConfigException
     {
         try
@@ -41,6 +53,11 @@ public class ConfigHandler
         this.config = new HashMap<>();
     }
 
+    /**
+     * Get the EnemyFactory object specified by the config file
+     * @return New EnemyFactory object
+     * @throws ConfigException If an error occured
+     */
     public EnemyFactory getEnemyFactory() throws ConfigException
     {
         EnemyFactory factory = null;
@@ -80,14 +97,20 @@ public class ConfigHandler
         return factory;
     }
 
+    /**
+     * Get the PlayerCharacter object specified by the config file
+     * @return New PlayerCharacter object
+     * @throws ConfigException If an error occured
+     */
     public PlayerCharacter getPlayerCharacter() throws ConfigException
     {
         PlayerCharacter player = null;
         String[] playerConfig = getConfig("Player");
 
         String name;
-        int maxHp, gold, invSize;
+        int maxHp, gold;
         Item inWeapon, inArmour;
+        ItemStorage inv;
 
         try
         {
@@ -96,11 +119,10 @@ public class ConfigHandler
             inWeapon = getStartingWeapon();
             inArmour = getStartingArmour();
             gold = Integer.parseInt(playerConfig[2]);
-            invSize = Integer.parseInt(playerConfig[3]);
+            inv = new ItemStorage(Integer.parseInt(playerConfig[3]));
 
-            player =
-                new PlayerCharacter(name, maxHp, inWeapon, inArmour, gold,
-                    invSize);
+            player = new PlayerCharacter(
+                name, maxHp, inv, inWeapon, inArmour, gold);
         }
         catch(NumberFormatException | IndexOutOfBoundsException e)
         {
@@ -125,6 +147,11 @@ public class ConfigHandler
         return player;
     }
 
+    /**
+     * Get the Starting Weapon Item object specified by the config file
+     * @return New Item object
+     * @throws ConfigException If an error occured
+     */
     public Item getStartingWeapon() throws ConfigException
     {
         Item item = null;
@@ -175,6 +202,11 @@ public class ConfigHandler
         return item;
     }
 
+    /**
+     * Get the Starting Armour Item object specified by the config file
+     * @return New Item object
+     * @throws ConfigException If an error occured
+     */
     public Item getStartingArmour() throws ConfigException
     {
         Item item = null;
@@ -224,6 +256,11 @@ public class ConfigHandler
         return item;
     }
 
+    /**
+     * Get the UserInterface object specified by the config file
+     * @return New UserInterface object
+     * @throws ConfigException If an error occured
+     */
     public UserInterface getUI() throws ConfigException
     {
         UserInterface ui = null;
@@ -248,6 +285,11 @@ public class ConfigHandler
         return ui;
     }
 
+    /**
+     * Get the ShopLoader object specified by the config file
+     * @return New ShopLoader object
+     * @throws ConfigException If an error occured
+     */
     public ShopLoader getShopLoader() throws ConfigException
     {
         ShopLoader loader = null;
@@ -280,6 +322,11 @@ public class ConfigHandler
         return loader;
     }
 
+    /**
+     * Get the EnchantmentHandler object specified by the config file
+     * @return New EnchantmentHandler object
+     * @throws ConfigException If an error occured
+     */
     public EnchantmentHandler getEnchantmentHandler() throws ConfigException
     {
         EnchantmentHandler handler = null;
@@ -319,6 +366,16 @@ public class ConfigHandler
         return handler;
     }
 
+    /**
+     * Gets the configuration for the specified name as an array of strings.
+     * Eg. For the line in the config file {@code Player = playerName, 20, 50,
+     * 15}, {@code getConfig("Player")} would return an array of {@code 
+     * ("playerName", "20", "50", "15")}.
+     * If this is the first time calling getConfig(), the file will be read.
+     * @param name Name of the configuration
+     * @return The String array of the config for this name
+     * @throws ConfigException If an error occured
+     */
     public String[] getConfig(String name) throws ConfigException
     {
         String line;

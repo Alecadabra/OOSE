@@ -1,20 +1,19 @@
 package Model.Items.Enchantments;
 
-import Model.Items.Item;
 import Model.Items.ItemException;
 
 /**
  * Represents an enchantment that can be applied to an enchantable item
- * (Any item that returns true on {@code isEnchantable}) to extends it's
- * functionality when providing defence or dealing damage. Uses the decorator
- * pattern.
+ * (Any item that returns true on {@code isEnchantable()}) to extend it's
+ * functionality when providing defence, dealing damage or healing. Uses the
+ * decorator pattern.
  */
 public abstract class Enchantment extends Enchantable
 {
     protected Enchantable next;
 
     /**
-     * Constructor..
+     * Constructor.
      * @param name Name of the enchantment
      * @param cost Enchantment's cost in gold when bought
      * @param next The enchantable that this is enchanting (Set to null
@@ -26,18 +25,6 @@ public abstract class Enchantment extends Enchantable
     {
         super(name, cost, 0, 0);
         this.next = next;
-    }
-
-    public Item clone()
-    {
-        if(this.next == null)
-        {
-            return null;
-        }
-        else
-        {
-            return next.clone();
-        }
     }
 
     @Override
@@ -92,11 +79,11 @@ public abstract class Enchantment extends Enchantable
     {
         if(this.next == null)
         {
-            return cost / 2;
+            return super.getSell();
         }
         else
         {
-            return next.getSell() + cost / 2;
+            return next.getSell() + super.getSell();
         }
     }
 
@@ -105,10 +92,13 @@ public abstract class Enchantment extends Enchantable
     {
         if(next == null)
         {
+            // If this is just a display enchantment in a shop we don't want
+            // it messing up anything
             return false;
         }
         else
         {
+            // Enchantments themselves can be enchanted (Decorator pattern)
             return true;
         }
     }

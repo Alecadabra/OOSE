@@ -36,15 +36,20 @@ public class DefaultArmour extends Item
 
     public Item clone()
     {
-        DefaultArmour clone = null;
+        Item clone;
+
         try
         {
             clone = new DefaultArmour(
                 name, cost, minEffect, maxEffect, material);
         }
-        catch(ItemException e) {}  // Should never happen
+        catch(ItemException e)
+        {
+            // Should never happen
+            clone = null;
+        }
 
-        return (Item)clone;
+        return clone;
     }
 
     /**

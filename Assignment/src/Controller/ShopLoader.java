@@ -43,7 +43,7 @@ public abstract class ShopLoader implements Iterator<Item>, Iterable<Item>
     @Override
     public Iterator<Item> iterator()
     {
-        // Bit of a cheat
+        // Bit of a hack
         return this;
     }
 }
