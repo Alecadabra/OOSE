@@ -10,7 +10,7 @@ injection, and various other design patterns.
 
 ## Assignment
 
-A long term coding assignment.
+A long term assignment, but something fairly interesting - A simplistic turn-based fighter game.
 
 ## Practical Excercises
 
