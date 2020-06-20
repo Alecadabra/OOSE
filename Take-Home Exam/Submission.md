@@ -206,3 +206,125 @@ public class PlayerCollisionConcreteObserver implements CollisionObserver
     }    
 }
 ```
+
+# Question 2
+
+## Overview
+
+GameLoader still just aggregates a single Parser.
+
+Parser aggregates a single Lexer and also an ElementFactory.
+
+ElementFactory is non-static so that it can be part of Parser's dependency injection.
+
+## Implementation
+
+### GameLoader.java
+
+```java
+public class GameLoader
+{
+    private Parser parser;
+    
+    public GameLoader(Parser parser)
+    {
+        this.parser = parser;
+    }
+
+    public Game load() throws GameLoadException
+    {
+        Element[] elements;
+        Game game;
+
+        elements = parser.parse();
+        game = new Game(elements);
+
+        return game;
+    }
+}
+```
+
+### Parser.java
+
+```java
+public class Parser
+{
+    private Lexer lexer;
+    private ElementFactory elementFactory;
+
+    public Parser(Lexer lexer, ElementFactory elementFactory)
+    {
+        this.lexer = lexer;
+        this.elementFactory = elementFactory;
+    }
+
+    public Element[] parse() throws GameLoadException
+    {
+        LinkedList<Element> elementsList = new LinkedList<>();
+        String name;
+        int x, y;
+
+        name = lexer.nextToken();
+        while(name != null)
+        {
+            try
+            {
+                x = Integer.parseInt(lexer.nextToken());
+                y = Integer.parseInt(lexer.nextToken());
+            }
+            catch(NumberFormatException e)
+            {
+                throw new GameLoadException("Invalid x/y values");
+            }
+
+            elementsList.add(elementFactory.createElement(name, x, y));
+        }
+
+        if(elementsList.isEmpty())
+        {
+            throw new GameLoadException("No elements to load");
+        }
+
+        return (Element[])elementsList.toArray();
+        
+    }
+}
+```
+
+### ElementFactory.java
+
+```java
+public class ElementFactory
+{
+    public Element createElement(String name, int x, int y)
+        throws GameLoadException
+    {
+        Element elem;
+
+        switch(name)
+        {
+            case "Brick":
+            {
+                elem = new Brick(x,y);
+                break;
+            }
+            case "Character":
+            {
+                elem = new Character(x,y);
+                break;
+            }
+            case "Enemy":
+            {
+                elem = new Enemy(x,y);
+                break;
+            }
+            default:
+            {
+                throw new GameLoadException("Invalid Element Type '" + name + "'");
+            }
+        }
+
+        return elem;
+    }
+}
+```
