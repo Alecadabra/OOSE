@@ -328,3 +328,127 @@ public class ElementFactory
     }
 }
 ```
+
+# Question 3
+
+## Part (a)
+
+### ToolSet.java
+
+```java
+public class ToolSet
+{
+    private Canvas canvas;
+    private List<Class<? extends ToolState>> toolList;
+    private int currToolIdx;
+    private ToolState tool;
+
+    public ToolSet()
+    {
+        this.canvas = new Canvas();
+        this.toolList = Arrays.asList(
+            LineTool.class, RectangleTool.class, CircleTool.class);
+        this.currToolIdx = 0;
+        this.tool = getTool();
+    }
+
+    public void draw(int x1, int y1, int x2, int y2)
+    {
+        tool.draw(canvas, x1, y1, x2, y2);
+    }
+
+    public void fill(int x1, int y1, int x2, int y2)
+    {
+        tool.fill(canvas, x1, y1, x2, y2);
+    }
+
+    public void nextTool()
+    {
+        if(currToolIdx == toolList.size() - 1)
+        {
+            currToolIdx = 0;
+        }
+        else
+        {
+            currToolIdx += 1;
+        }
+
+        this.tool = getTool();
+    }
+
+    public void prevTool()
+    {
+        if(currToolIdx == 0)
+        {
+            currToolIdx = toolList.size() - 1;
+        }
+        else
+        {
+            currToolIdx -= 1;
+        }
+
+        this.tool = getTool();
+    }
+
+    private ToolState getTool()
+    {
+        try
+        {
+            /* Construct a new instance of the class at the current index
+             * of the tool list by getting the constructor of the class and
+             * calling it with no arguments (an empty array of objects) */
+            return toolList.get(currToolIdx).getConstructor()
+                .newInstance(new Object[0]);
+        }
+        catch(ReflectiveOperationException e)
+        {
+            return null;
+        }
+    }
+}
+```
+
+### ToolState.java
+
+```java
+public interface ToolState
+{
+    public void draw(Canvas canvas, int x1, int y1, int x2, int y2);
+
+    public void fill(Canvas canvas, int x1, int y1, int x2, int y2);
+}
+```
+
+### LineTool.java
+
+```java
+public class LineTool implements ToolState
+{
+    @Override
+    public void draw(Canvas canvas, int x1, int y1, int x2, int y2)
+    {
+        canvas.drawLine(x1, y1, x2, y2);
+    }
+
+    @Override
+    public void fill(Canvas canvas, int x1, int y1, int x2, int y2)
+    {
+        canvas.drawLine(x1, y1, x2, y2);
+    }
+}
+```
+
+## Part (b)
+
+### Part (i)
+
+Add another method `gradient(int x1, int y1, int x2, int y2)` to the ToolSet
+class and `gradient(Canvas canvas, int x1, int y1, int x2, int y2)` to the
+ToolState interface. Have each tool subclass override it with their own
+corresponding gradient method in Canvas.
+
+### Part (ii)
+
+Implement a new class for the tool that implements ToolState as normal and add
+the tool to the ToolSet constructor. Eg. if the tool was called `TriangleTool`
+then the constructor in ToolSet would now contain `this.toolList = Arrays.asList(LineTool.class, RectangleTool.class, CircleTool.class, TriangleTool.class);`.
