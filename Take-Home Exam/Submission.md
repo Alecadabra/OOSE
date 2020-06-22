@@ -452,3 +452,41 @@ corresponding gradient method in Canvas.
 Implement a new class for the tool that implements ToolState as normal and add
 the tool to the ToolSet constructor. Eg. if the tool was called `TriangleTool`
 then the constructor in ToolSet would now contain `this.toolList = Arrays.asList(LineTool.class, RectangleTool.class, CircleTool.class, TriangleTool.class);`.
+
+# Question 4
+
+## The problem
+
+All of the ...Displayers are doing the same thing, the only difference is the class that they concern. We can use generics to have a single displayer class that displays a `<T extends Element>`.
+
+Note: The UML appears to have GameScreen storing arrays of displayers which we will not be able to do with generics, so I'll be using ArrayLists.
+
+## Implementation
+
+### GameScreen.java
+
+```java
+public class GameScreen
+{
+    private List<Displayer<Brick>> bdisp = new ArrayList<>();
+    private List<Displayer<Character>> cdisp = new ArrayList<>();
+    private List<Displayer<Enemy>> edisp = new ArrayList<>();
+
+    ...
+}
+```
+
+### Displayer.java
+
+```java
+public class Displayer<T extends Element>
+{
+    private T element;
+
+    public Displayer(T element) { ... }
+
+    public void display() { ... }
+
+    public T getElement() { ... }
+}
+```
