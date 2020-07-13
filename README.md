@@ -1,6 +1,10 @@
 # Object Oriented Software Engineering (Curtin University)
 
-A 2nd-year unit taken in Semester 1 2020.
+Part of my Computer Science degree at Curtin University.
+
+1st Year <br> 1st Sem <br> 2019 | 1st Year <br> 2nd Sem <br> 2019 | 2nd Year <br> 1st Sem <br> 2020 | 2nd Year <br> 2nd Sem <br> 2020 | 3rd Year <br> 1st Sem <br> 2021 | 3rd Year <br> 2nd Sem <br> 2021  
+--- | --- | --- | --- | --- | --- |
+[OOPD](https://github.com/Alecadabra/OOPD) | [UCP](https://github.com/Alecadabra/UCP)<br>[DSA](https://github.com/Alecadabra/DSA) | [OS](https://github.com/Alecadabra/OS)<br>**OOSE**
 
 From the unit handbook:
 
