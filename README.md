@@ -1,6 +1,6 @@
 # Object Oriented Software Engineering (Curtin University)
 
-Part of my Computer Science degree at Curtin University.
+Part of my Computer Science degree at Curtin University. My final mark was 91%.
 
 1st Year <br> 1st Sem <br> 2019 | 1st Year <br> 2nd Sem <br> 2019 | 2nd Year <br> 1st Sem <br> 2020 | 2nd Year <br> 2nd Sem <br> 2020 | 3rd Year <br> 1st Sem <br> 2021 | 3rd Year <br> 2nd Sem <br> 2021  
 --- | --- | --- | --- | --- | --- |
