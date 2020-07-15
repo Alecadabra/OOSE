@@ -12,18 +12,24 @@ From the unit handbook:
 Unified Modelling Language. Topics include UML and its relationship to code, the Model-View-Controller architecture, separation of concerns, dependency
 injection, and various other design patterns.
 
-## Assignment
+## [Assignment](Assignment)
 
 A long term assignment, but something fairly interesting - A simplistic turn-based fighter game.
 
-## Practical Excercises
+## [Practical Excercises](Practical%20Excercises)
 
 Weekly unasessed assignments to demonstrate that week's course content. I don't
 provide the worksheets that these are based on for copyright reasons so they
 don't make a lot of sense without context.
 
-## Take-Home Test
+## [Take-Home Test](Take-Home%20Test)
 
 Week-long test/assignment that replaced a standard in-class test because of
+COVID. Question booklet also not provided so the answers don't make a lot of
+sense without context.
+
+## [Take-Home Exam](Take-Home%20Exam)
+
+Week-long test/assignment that replaced a standard final exam because of
 COVID. Question booklet also not provided so the answers don't make a lot of
 sense without context.
