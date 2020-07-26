@@ -8,13 +8,11 @@ Part of my Computer Science degree at Curtin University. My final mark was 91%.
 
 From the unit handbook:
 
-> Object oriented design concepts, including polymorphism, design patterns, and
-Unified Modelling Language. Topics include UML and its relationship to code, the Model-View-Controller architecture, separation of concerns, dependency
-injection, and various other design patterns.
+> Object oriented design concepts, including polymorphism, design patterns, and Unified Modelling Language. Topics include UML and its relationship to code, the Model-View-Controller architecture, separation of concerns, dependency injection, and various other design patterns.
 
 ## [Assignment](Assignment)
 
-A long term assignment, but something fairly interesting - A simplistic turn-based fighter game.
+A long term assignment implementing a simplistic turn-based fighter game using good software engineering practices. Uses many design patterns and is very expandable and generic. See the UML inside for a good overview.
 
 ## [Practical Excercises](Practical%20Excercises)
 
