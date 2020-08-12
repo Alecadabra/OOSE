@@ -6,7 +6,7 @@ Part of my Computer Science degree at Curtin University. My final mark was 91%.
 --- | --- | --- | --- | --- | --- |
 [OOPD](https://github.com/Alecadabra/OOPD) | [UCP](https://github.com/Alecadabra/UCP)<br>[DSA](https://github.com/Alecadabra/DSA) | [OS](https://github.com/Alecadabra/OS)<br>**OOSE**
 
-From the unit handbook:
+Syllabus:
 
 > Object oriented design concepts, including polymorphism, design patterns, and Unified Modelling Language. Topics include UML and its relationship to code, the Model-View-Controller architecture, separation of concerns, dependency injection, and various other design patterns.
 
